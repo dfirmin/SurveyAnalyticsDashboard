@@ -1,0 +1,28 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.gc.dto.Survey_QA" table="Survey_QA"
+		schema="SurveyDB">
+
+
+		<id name="Survey_QAID">	
+			<column name="Survey_QAID" sql-type="int(11)" ></column>
+		</id>
+
+		<property name="SurveyID">
+			<column name="SurveyID" sql-type="int(11)" length="11"></column>
+		</property>
+		<property name="questionID">
+			<column name="QuestionID" sql-type="int(11)" length="11"></column>
+		</property>
+		<property name="offeredAnswerID">
+			<column name="OfferedAnswerID" sql-type="int(11)" length="11"></column>
+		</property>
+		
+
+
+	</class>
+</hibernate-mapping>		
