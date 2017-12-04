@@ -4,11 +4,11 @@ import java.io.Serializable;
 
 public class Users implements Serializable{
 	private String firstName;
-	private String LastName;
-	private String Email;
-	private String Password;
-	private int UserID;
-	private int PersonID;
+	private String lastName;
+	private String email;
+	private String password;
+	private int userID;
+	private int personID;
 	
 	public Users() {
 		
@@ -23,43 +23,44 @@ public class Users implements Serializable{
 	}
 
 	public String getLastName() {
-		return LastName;
+		return lastName;
 	}
 
 	public void setLastName(String lastName) {
-		LastName = lastName;
+		this.lastName = lastName;
 	}
 
 	public String getEmail() {
-		return Email;
+		return email;
 	}
 
 	public void setEmail(String email) {
-		Email = email;
+		this.email = email;
 	}
 
 	public String getPassword() {
-		return Password;
+		return password;
 	}
 
 	public void setPassword(String password) {
-		Password = password;
+		this.password = password;
 	}
 
 	public int getUserID() {
-		return UserID;
+		return userID;
 	}
 
 	public void setUserID(int userID) {
-		UserID = userID;
+		this.userID = userID;
 	}
 
 	public int getPersonID() {
-		return PersonID;
+		return personID;
 	}
 
 	public void setPersonID(int personID) {
-		PersonID = personID;
+		this.personID = personID;
 	}
+
 	
 }
