@@ -1,0 +1,28 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.gc.dto.ProductDto" table="Product"
+		schema="GCBS">
+
+
+		<id name="productID">	
+			<column name="ProductID" sql-type="int(11)"></column>
+		</id>
+
+		<property name="code">
+			<column name="Code" sql-type="varchar(10)" length="10"></column>
+		</property>
+		<property name="description">
+			<column name="Description" sql-type="varchar(255)" length="255"></column>
+		</property>
+		<property name="listPrice">
+			<column name="ListPrice" sql-type="double"></column>
+		</property>
+
+
+
+	</class>
+</hibernate-mapping>		
