@@ -7,6 +7,7 @@ public class Survey_Question implements Serializable{
 	private int surveyID;
 	private int questionID;
 	
+	
 	public Survey_Question() {
 		
 	}
