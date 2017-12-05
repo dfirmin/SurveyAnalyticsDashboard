@@ -48,6 +48,11 @@ import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneScore;
 @Controller
 public class MikeHomeController {
 	
+	@RequestMapping("/v")
+	public String visualize() {
+		return "visual";
+	}
+	
 	@RequestMapping("/nl")
 	public ModelAndView naturalLanguage(Model model) {
 		NaturalLanguageUnderstanding service = new NaturalLanguageUnderstanding(
