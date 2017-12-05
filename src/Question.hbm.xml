@@ -1,0 +1,23 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.gc.dto.Question" table="Question"
+		schema="SurveyDB">
+
+
+		<id name="questionID">	
+			<column name="QuestionID" sql-type="int(11)" length= "11"></column>
+		</id>
+
+		<property name="questionText">
+			<column name="QuestionText" sql-type="varchar(255)" length="255"></column>
+		</property>
+		<property name="questionType">
+			<column name="QuestionType" sql-type="varchar(20)" length="20"></column>
+		</property>
+		
+	</class>
+</hibernate-mapping>		

@@ -1,0 +1,34 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.gc.dto.Users" table="Users"
+		schema="SurveyDB">
+
+
+		<id name="userID">	
+			<column name="UserID" sql-type="int(11)" ></column>
+		</id>
+
+		<property name="personID">
+			<column name="PersonID" sql-type="int(11)" length="11"></column>
+		</property>
+		<property name="firstName">
+			<column name="FirstName" sql-type="int(30)" length="30"></column>
+		</property>
+		<property name="lastName">
+			<column name="LastName" sql-type="int(30)" length="30"></column>
+		</property>
+		<property name="email">
+			<column name="Email" sql-type="int(50)" length="50"></column>
+		</property>
+		<property name="password">
+			<column name="Password" sql-type="int(30)" length="30"></column>
+		</property>
+		
+
+
+	</class>
+</hibernate-mapping>		

@@ -1,0 +1,19 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.gc.dto.Offered_Answer" table="Offered_Answer"
+		schema="SurveyDB">
+
+
+		<id name="offeredAnswerID">	
+			<column name="OfferedAnswerID" sql-type="int(11)"></column>
+		</id>
+
+		<property name="answerText">
+			<column name="AnswerText" sql-type="varchar(255)" length="255"></column>
+		</property>
+	</class>
+</hibernate-mapping>		

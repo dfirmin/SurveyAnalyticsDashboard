@@ -4,22 +4,22 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="com.gc.dto.ProductDto" table="Product"
-		schema="GCBS">
+	<class name="com.gc.dto.Survey" table="Survey"
+		schema="SurveyDB">
 
 
-		<id name="productID">	
-			<column name="ProductID" sql-type="int(11)"></column>
+		<id name="surveyID">	
+			<column name="SurveyID" sql-type="int(11)"></column>
 		</id>
 
-		<property name="code">
-			<column name="Code" sql-type="varchar(10)" length="10"></column>
-		</property>
 		<property name="description">
 			<column name="Description" sql-type="varchar(255)" length="255"></column>
 		</property>
-		<property name="listPrice">
-			<column name="ListPrice" sql-type="double"></column>
+		<property name="frequency">
+			<column name="Frequency" sql-type="date"></column>
+		</property>
+		<property name="createDate">
+			<column name="CreateDate" sql-type="date"></column>
 		</property>
 
 
