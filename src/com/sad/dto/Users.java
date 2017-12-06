@@ -13,6 +13,20 @@ public class Users implements Serializable{
 	public Users() {
 		
 	}
+	
+	
+
+	public Users(String firstName, String lastName, String email, String password, int userID, int personID) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
+		this.userID = userID;
+		this.personID = personID;
+	}
+
+
 
 	public String getFirstName() {
 		return firstName;

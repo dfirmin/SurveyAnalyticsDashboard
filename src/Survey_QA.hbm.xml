@@ -8,7 +8,7 @@
 		schema="SurveyDB">
 
 
-		<id name="Survey_QAID">	
+		<id name="SurveyQAID">	
 			<column name="Survey_QAID" sql-type="int(11)" ></column>
 		</id>
 

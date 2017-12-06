@@ -10,6 +10,14 @@ public class Offered_Answer implements Serializable{
 	public Offered_Answer() {
 		
 	}
+	
+
+	public Offered_Answer(int offeredAnswerID, String answerText) {
+		super();
+		this.offeredAnswerID = offeredAnswerID;
+		this.answerText = answerText;
+	}
+
 
 	public int getOfferedAnswerID() {
 		return offeredAnswerID;

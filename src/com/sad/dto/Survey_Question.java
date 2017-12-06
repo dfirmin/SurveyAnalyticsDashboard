@@ -11,6 +11,16 @@ public class Survey_Question implements Serializable{
 	public Survey_Question() {
 		
 	}
+	
+	
+
+	public Survey_Question(int surveyID, int questionID) {
+		super();
+		this.surveyID = surveyID;
+		this.questionID = questionID;
+	}
+
+
 
 	public int getSurveyID() {
 		return surveyID;
