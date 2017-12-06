@@ -6,11 +6,21 @@ public class Survey_QA implements Serializable{
 	private int SurveyQAID;
 	private int SurveyID;
 	private int questionID;
-	private int offeredAnsweriD;
+	private int offeredAnswerID;
 	
 	public Survey_QA() {
 		
 	}
+
+	
+	public Survey_QA(int surveyQAID, int surveyID, int questionID, int offeredAnswerID) {
+		super();
+		SurveyQAID = surveyQAID;
+		SurveyID = surveyID;
+		this.questionID = questionID;
+		this.offeredAnswerID = offeredAnswerID;
+	}
+
 
 	public int getSurveyQAID() {
 		return SurveyQAID;
@@ -36,13 +46,15 @@ public class Survey_QA implements Serializable{
 		this.questionID = questionID;
 	}
 
-	public int getOfferedAnsweriD() {
-		return offeredAnsweriD;
+	public int getOfferedAnswerID() {
+		return offeredAnswerID;
 	}
 
-	public void setOfferedAnsweriD(int offeredAnsweriD) {
-		this.offeredAnsweriD = offeredAnsweriD;
+	public void setOfferedAnswerID(int offeredAnswerID) {
+		this.offeredAnswerID = offeredAnswerID;
 	}
+
+	
 	
 	
 

@@ -13,6 +13,18 @@ public class Survey implements Serializable{
 	public Survey() {
 		
 	}
+	
+	
+
+	public Survey(int surveyID, String description, Date frequency, Date createDate) {
+		super();
+		this.surveyID = surveyID;
+		this.description = description;
+		this.frequency = frequency;
+		this.createDate = createDate;
+	}
+
+
 
 	public int getSurveyID() {
 		return surveyID;

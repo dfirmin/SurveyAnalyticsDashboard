@@ -7,7 +7,7 @@
 <title>Home</title>
 </head>
 <body>
-	<h1>We are S:A:D</h1>
+	<h1>We are SAD:</h1>
 
 </body>
 </html>
