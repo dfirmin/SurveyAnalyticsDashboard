@@ -1,26 +1,27 @@
 package com.sad.controller;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
-import org.hibernate.Criteria;
+import javax.servlet.http.HttpServletRequest;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.mysql.jdbc.Statement;
 import com.sad.dto.SurveyQADto;
 
 @Controller
 public class AlexController {
 
+	
+	ArrayList<String> questionIDs = new ArrayList<String>();
 	@RequestMapping("/getSurvey")
 	public String getSurvey(Model model) {
 
@@ -42,6 +43,26 @@ public class AlexController {
 
 		String message = ("<form action='submit' method='get'><input hidden value='" + surveyID + "'>");
 
+		message += ("<label>Select Your Bootcamp</label>" );
+		message += ("<select name = 'cohorts' required>");
+		
+			message += ("<option value='Java'>Java</option>");
+			message += ("<option value='.Net'>.Net</option>");
+			message += ("<option value='Front-End'>Front-End</option>");
+
+		
+		message += ("</select ><br>");
+		
+		message += ("<label>Select Your Name</label>" );
+		message += ("<select name = 'userId' required>");
+		
+			message += ("<option value='000000'>Player1</option>");
+			message += ("<option value='000001'>Taco</option>");
+			message += ("<option value='000002'>Jake the Dog</option>");
+
+		
+		message += ("</select ><br>");
+		
 		for (int i = 0; i < results.size(); i++) {
 			/*
 			 * message += (results.get(i).getQuestionID()+ results.get(i).getQuestionText()+
@@ -54,30 +75,30 @@ public class AlexController {
 
 			switch (questionType) {
 			case "radio":
-
+				questionIDs.add(String.valueOf(questionID));
 				message += ("<fieldset name='" + questionID + "'>");
-				message += ("<input hidden name='question" + questionID + "' value ='" + questionID + "'><br><label>"
+				message += ("<br><label>"
 						+ results.get(i).getQuestionText() + "</label><br>");
-		
 
 				boolean continueLoop = true;
-					while (continueLoop) {
-						message += ("<input type='radio' name ='" + questionID + "' value='"
-								+ results.get(i).getAnswerText() + "'>" + results.get(i).getAnswerText() + "<br>");
-						i++;
-						if (results.size() == i || !(questionID == results.get(i).getQuestionID())) {
-							continueLoop = false;
-						}
-						
+				while (continueLoop) {
+					message += ("<input type='radio' name ='" + questionID + "' value='"
+							+ results.get(i).getAnswerText() + "' required>" + results.get(i).getAnswerText() + "<br>");
+					i++;
+					if (results.size() == i || !(questionID == results.get(i).getQuestionID())) {
+						continueLoop = false;
 					}
-				
+
+				}
+
 				i--;
 				message += ("</fieldset>");
 				break;
 			case "slider":
-				message += ("<input hidden name='question" + questionID + "' value ='" + questionID + "'><label>"
-						+ results.get(i).getQuestionText() + "</label> <br>");
+				questionIDs.add(String.valueOf(questionID));
 
+				message += ("<label>"
+						+ results.get(i).getQuestionText() + "</label> <br>");
 				String answer1 = results.get(i).getAnswerText();
 				i++;
 				String answer2 = results.get(i).getAnswerText();
@@ -85,7 +106,7 @@ public class AlexController {
 				String[] arr1 = answer1.split(":");
 				String[] arr2 = answer2.split(":");
 
-				message += ("<input type='range' min='" + arr1[0] + "' max='" + arr2[0]
+				message += ("<input name ='" + questionID + "' type='range' min='" + arr1[0] + "' max='" + arr2[0]
 						+ "' value='5' list='tickmarks'>");
 				message += ("<datalist id='tickmarks'><option value='0' label='" + arr1[1]
 						+ "'><option value='1'><option value='2'><option value='3'><option value='4'><option value='5' ><option value='6'><option value='7'><option value='8'><option value='9'><option value='10' label='"
@@ -93,11 +114,31 @@ public class AlexController {
 
 				break;
 			case "drop-down":
+				questionIDs.add(String.valueOf(questionID));
+				message += ("<label>" + results.get(i).getQuestionText()+"</label><br>" );
+				message += ("<select name ='" + questionID + "''>");
+				continueLoop = true;
+				while (continueLoop) {
+					message += ("<option value='" + results.get(i).getAnswerText() +"'>"+results.get(i).getAnswerText()+"</option>");
+					
+					i++;
+					if (results.size() == i || !(questionID == results.get(i).getQuestionID())) {
+						continueLoop = false;
+					}
+
+				}
+				message += ("</select ><br><br>");
+				i--;
+
+				
+
 				break;
 			case "short answer":
-				message += ("<input hidden name='question" + questionID + "' value ='" + questionID + "'><label>"
+				questionIDs.add(String.valueOf(questionID));
+
+				message += ("<label>"
 						+ results.get(i).getQuestionText() + "</label> <br>"
-						+ "<input type='text' value='' name='question" + questionID + "'> <br><br>");
+						+ "<input type='text' value='' name='" + questionID + "'> <br><br>");
 				break;
 			default:
 				break;
@@ -112,5 +153,21 @@ public class AlexController {
 
 		return "testSurvey";
 	}
+	
+	@RequestMapping("/submit")
+	public String submitToDB(HttpServletRequest request, Model model) {
+		System.out.println(request.getParameter("cohort"));
+		System.out.println(request.getParameter("userId"));
+		
+		for(int i = 0; i < questionIDs.size(); i++) {
+			System.out.println(questionIDs.get(i));
+			System.out.println(request.getParameter(questionIDs.get(i)).toString());
+		}
+		
+		
+		
+		return "success";
+	}
+	
 
 }
