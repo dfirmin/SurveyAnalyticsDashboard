@@ -1,0 +1,33 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.sad.dto.SurveyQADto" table="SurveyQADto"
+		schema="SurveyDB">
+
+
+		<id name="surveyQAID">	
+			<column name="Survey_QAID" sql-type="int(11)"></column>
+		</id>
+
+		<property name="questionID">
+			<column name="QuestionID" sql-type="int(11)" length="11"></column>
+		</property>
+		<property name="questionText">
+			<column name="QuestionText" sql-type="varchar(255)" length="255"></column>
+		</property>
+		<property name="questionType">
+			<column name="QuestionType" sql-type="varchar(20)" length="20"></column>
+		</property>
+		<property name="offeredAnswerID">
+			<column name="OfferedAnswerID" sql-type="int(11)" length="11"></column>
+		</property>
+		<property name="answerText">
+			<column name="AnswerText" sql-type="varchar(255)" length="255"></column>
+		</property>
+	</class>
+
+	
+</hibernate-mapping>		
