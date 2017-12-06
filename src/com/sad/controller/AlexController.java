@@ -1,6 +1,7 @@
 package com.sad.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -15,6 +16,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.ibm.watson.developer_cloud.natural_language_understanding.v1.NaturalLanguageUnderstanding;
+import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.AnalysisResults;
+import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.AnalyzeOptions;
+import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.EmotionOptions;
+import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.Features;
+import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.KeywordsOptions;
+import com.sad.dao.AnswerDaoImpl;
+import com.sad.dto.Answer;
 import com.sad.dto.SurveyQADto;
 
 @Controller
@@ -41,7 +50,7 @@ public class AlexController {
 				.addEntity(SurveyQADto.class);
 		List<SurveyQADto> results = (List<SurveyQADto>) query.list();
 
-		String message = ("<form action='submit' method='get'><input hidden value='" + surveyID + "'>");
+		String message = ("<form action='submit' method='get'><input hidden name = 'surveyID' value='" + surveyID + "'>");
 
 		message += ("<label>Select Your Bootcamp</label>" );
 		message += ("<select name = 'cohorts' required>");
@@ -56,9 +65,9 @@ public class AlexController {
 		message += ("<label>Select Your Name</label>" );
 		message += ("<select name = 'userId' required>");
 		
-			message += ("<option value='000000'>Player1</option>");
-			message += ("<option value='000001'>Taco</option>");
-			message += ("<option value='000002'>Jake the Dog</option>");
+			message += ("<option value='1'>Player1</option>");
+			message += ("<option value='1'>Taco</option>");
+			message += ("<option value='1'>Jake the Dog</option>");
 
 		
 		message += ("</select ><br>");
@@ -157,16 +166,91 @@ public class AlexController {
 	@RequestMapping("/submit")
 	public String submitToDB(HttpServletRequest request, Model model) {
 		System.out.println(request.getParameter("cohort"));
-		System.out.println(request.getParameter("userId"));
+		int personID = Integer.valueOf(request.getParameter("userId"));
+		int surveyID = Integer.valueOf(request.getParameter("surveyID"));
+		
+		int[] watsonTopic = {3,7,11,15,16,19,20,22,23};
+		int[] watsonEmotion = {1,8,12,25};
+		
+		AnswerDaoImpl transfer = new AnswerDaoImpl();
+		
+		NaturalLanguageUnderstanding service = getNLUService();
 		
 		for(int i = 0; i < questionIDs.size(); i++) {
+			
+			int questionID = Integer.valueOf(questionIDs.get(i));
+			
+			
+			
+			String watsonString = "";
 			System.out.println(questionIDs.get(i));
-			System.out.println(request.getParameter(questionIDs.get(i)).toString());
+			String answer = request.getParameter(questionIDs.get(i)).toString();
+			
+			Answer answerDto = new Answer(0, personID, questionID, surveyID, answer, watsonString, null );
+			transfer.addAnswer(answerDto);
+			
+			System.out.println(answer);
+		/*
+			if(!answer.equals("")) {
+			for (int j = 0; j<watsonTopic.length ; j++) {
+				if(watsonTopic[j] == questionID) {
+					watsonString = WatsonTopic(answer, service);
+				}
+			}
+			
+			for (int k = 0; k<watsonEmotion.length ; k++) {
+				if(watsonEmotion[k] == Integer.valueOf(questionIDs.get(i))) {
+					watsonString = WatsonEmotion(answer, service);
+				}
+			}
+		}
+		*/
 		}
 		
 		
 		
 		return "success";
+	}
+	
+	public NaturalLanguageUnderstanding getNLUService() {
+		NaturalLanguageUnderstanding service = new NaturalLanguageUnderstanding(
+				  NaturalLanguageUnderstanding.VERSION_DATE_2017_02_27,
+				  "16e04451-f41c-4ff2-9d71-2b82a2885591",
+				  "gE4g5KcU6B0h"
+				);
+		return service;
+	}
+	
+	public String WatsonTopic(String text, NaturalLanguageUnderstanding service) {
+		
+		KeywordsOptions keywords= new KeywordsOptions.Builder()
+				  .build();
+		Features features = new Features.Builder()
+				  .keywords(keywords)
+				  .build();
+		AnalyzeOptions parameters = new AnalyzeOptions.Builder().html(text).features(features).build();
+		AnalysisResults results = service.analyze(parameters).execute();
+		System.out.println("KEYWORDS");
+		System.out.println(results);
+		return results.toString();
+	}
+	
+	public String WatsonEmotion(String text, NaturalLanguageUnderstanding service) {
+		
+		EmotionOptions emotion= new EmotionOptions.Builder()
+				  .build();
+		Features features2 = new Features.Builder()
+				  .emotion(emotion)
+				  .build();
+		AnalyzeOptions parameters2 = new AnalyzeOptions
+				.Builder()
+				.html(text)
+				.features(features2)
+				.build();
+		AnalysisResults results2 = service.analyze(parameters2).execute();
+		System.out.println("EMOTIONS");
+		System.out.println(results2);
+		return results2.toString();
 	}
 	
 
