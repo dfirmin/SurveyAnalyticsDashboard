@@ -28,7 +28,7 @@
 			<column name="WatsonResponse" sql-type="varchar(255)" length="11"></column>
 		</property>
 		<property name="submitDate">
-			<column name="SubmitDate" sql-type=date></column>
+			<column name="SubmitDate" sql-type="date"></column>
 		</property>
 
 
