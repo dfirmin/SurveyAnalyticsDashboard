@@ -30,10 +30,18 @@
         ]);
 
         // Set chart options
-        var options = {'title':"Average Students' Confidence Over Time",
-                       'width':500,
-                       'height':400,
-                       'vAxis': {format: 'percent'}};
+        var options = {
+        					'title':"Average Students' Confidence Over Time",
+                       	'width':500,
+                       	'height':400,
+                       	'vAxis': {
+                    	   				format: 'percent',
+                    	   				title: 'Avg Confidence'
+                    	   			},
+        					'hAxis': {
+        								title: 'Week'
+        							}
+        				};
 
         // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.ColumnChart(document.getElementById('confovertime'));
