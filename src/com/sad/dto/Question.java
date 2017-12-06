@@ -3,6 +3,8 @@ package com.sad.dto;
 import java.io.Serializable;
 
 public class Question implements Serializable{
+
+	private static final long serialVersionUID = -7356239409367121445L;
 	private int questionID;
 	private String questionText;
 	private String questionType;
@@ -10,6 +12,17 @@ public class Question implements Serializable{
 	public Question() {
 		
 	}
+	
+	
+
+	public Question(int questionID, String questionText, String questionType) {
+		super();
+		this.questionID = questionID;
+		this.questionText = questionText;
+		this.questionType = questionType;
+	}
+
+
 
 	public int getQuestionID() {
 		return questionID;

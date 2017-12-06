@@ -18,8 +18,17 @@
 		<property name="questionID">
 			<column name="QuestionID" sql-type="int(11)" length="11"></column>
 		</property>
-		<property name="offeredAnswerID">
-			<column name="OfferedAnswerID" sql-type="int(11)" length="11"></column>
+		<property name="surveyID">
+			<column name="SurveyID" sql-type="int(11)" length="11"></column>
+		</property>
+		<property name="userResponse">
+			<column name="UserResponse" sql-type="varchar(255)" length="255"></column>
+		</property>
+		<property name="watsonResponse">
+			<column name="WatsonResponse" sql-type="varchar(255)" length="11"></column>
+		</property>
+		<property name="submitDate">
+			<column name="SubmitDate" sql-type=date></column>
 		</property>
 
 

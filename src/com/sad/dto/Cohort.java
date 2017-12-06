@@ -10,6 +10,15 @@ public class Cohort implements Serializable {
 	public Cohort() {
 		
 	}
+	
+	
+	public Cohort(int cohortID, String cohortName, String cohortSemester) {
+		super();
+		this.cohortID = cohortID;
+		this.cohortName = cohortName;
+		this.cohortSemester = cohortSemester;
+	}
+
 
 	public int getCohortID() {
 		return cohortID;
