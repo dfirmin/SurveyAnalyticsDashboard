@@ -1,6 +1,8 @@
 package com.sad.dto;
 
-public class Persons {
+import java.io.Serializable;
+
+public class Persons implements Serializable{
 	private String personID;
 	private String firstName;
 	private String lastName;

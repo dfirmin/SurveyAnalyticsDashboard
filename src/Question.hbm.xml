@@ -4,7 +4,7 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="com.gc.dto.Question" table="Question"
+	<class name="com.gc.sad.Question" table="Question"
 		schema="SurveyDB">
 
 

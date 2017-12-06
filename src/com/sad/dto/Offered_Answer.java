@@ -1,6 +1,8 @@
 package com.sad.dto;
 
-public class Offered_Answer {
+import java.io.Serializable;
+
+public class Offered_Answer implements Serializable{
 
 	private int offeredAnswerID;
 	private String answerText;

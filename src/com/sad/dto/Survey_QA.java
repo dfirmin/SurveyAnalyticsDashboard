@@ -1,6 +1,8 @@
 package com.sad.dto;
 
-public class Survey_QA {
+import java.io.Serializable;
+
+public class Survey_QA implements Serializable{
 	private int SurveyQAID;
 	private int SurveyID;
 	private int questionID;
