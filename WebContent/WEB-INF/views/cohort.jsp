@@ -11,11 +11,13 @@
 <h1>Classes</h1>
 <a href="addCohort">Add Cohort</a>
 	<table border="1">
-		<c:forEach var="myVar" items="${cohortID}">
+		<c:forEach var="myVar" items="${cohortID}" varStatus="status">
 			<tr>
-				<td>${myVar.cohortID}</td>
+				<td>${status.count}</td>
+				<!-- <td>${myVar.cohortID}</td> -->
 				<td>${myVar.cohortName}</td>
 				<td>${myVar.cohortSemester}</td>
+				<td>${myVar.startDate}</td>
 				<td><a href="delete?id=${myVar.cohortID}"> Delete </a></td>
 				<td><a href="updatecohortform?id=${myVar.cohortID}"> Update </a></td>
 
