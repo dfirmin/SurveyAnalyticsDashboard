@@ -20,6 +20,10 @@
 	</bean>
 
 	<mvc:resources mapping="/resources/**" location="/resources/" />
+	
+	<mvc:resources mapping="/webjars/**" location="/webjars/">
+	<mvc:resource-chain resource-cache="false" />
+	</mvc:resources>
 
 	<mvc:annotation-driven />
 

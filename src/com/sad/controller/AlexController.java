@@ -1,8 +1,7 @@
 package com.sad.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,6 +17,8 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.NaturalLanguageUnderstanding;
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.AnalysisResults;
@@ -26,14 +27,57 @@ import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.Em
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.Features;
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.KeywordsOptions;
 import com.sad.dao.AnswerDaoImpl;
+import com.sad.dao.UsersDaoImpl;
 import com.sad.dto.Answer;
 import com.sad.dto.SurveyQADto;
+import com.sad.dto.Users;
 
 @Controller
 public class AlexController {
 
 	ArrayList<String> questionIDs = new ArrayList<String>();
 
+	@RequestMapping("/dashboard")
+	public String showDashboard() {
+		return "dashboard";
+	}
+	
+	@RequestMapping("/loginPage")
+	public String showLogin() {
+		return "loginPage";
+	}
+	
+	@RequestMapping(value = "/login", method=RequestMethod.POST)
+	public String login(@RequestParam("email") String email, @RequestParam("password") String password, Model model) {
+		UsersDaoImpl users = new UsersDaoImpl();
+		
+		ArrayList<Users> list = users.getAllUsers("email", email);
+		
+		String webPage = "loginPage";
+		
+		if(!list.isEmpty()) {
+			
+			String dbPassword = list.get(0).getPassword();
+			
+			
+			if(password.equals(dbPassword)) {
+				model.addAttribute("firstName", list.get(0).getFirstName() );
+				webPage = "dashboard";
+			}
+			else {
+				String alert = "<script>alert('Password is incorrect. Try again.')</script>";
+				model.addAttribute("alert", alert );
+			}
+		}
+		else {
+			String alert = "<script>alert('Username does not exist. Try again.')</script>";
+			model.addAttribute("alert", alert );	
+		}
+		
+		
+		return webPage;
+	}
+	
 	@RequestMapping("/getSurvey")
 	public String getSurvey(Model model) {
 
@@ -277,7 +321,8 @@ public class AlexController {
 		while (keys.hasNext()) {
 	        String key = keys.next();
 			Double val = emoObj.getDouble(key);
-		    if (maxVal < val) {
+		    
+			if (maxVal < val) {
 		    		maxVal = val;
 		    		emotion = key;
 		    }
@@ -286,6 +331,44 @@ public class AlexController {
 		
 
 		return emotion + ":" + maxVal;
+	}
+	
+	
+	/*
+	 * Function returns lower limit week-of-date in relation to start date
+	 */
+	public LocalDate setDate() {
+		
+		/* 	LocalDate => SQL Date
+
+			LocalDate locald = LocalDate.of(1967, 06, 22);
+			Date date = Date.valueOf(locald); // Magic happens here!
+			r.setDateOfBirth(date);
+			
+		
+			SQL Date => LocalDate
+			
+			Date date = r.getDate();
+			LocalDate localD = date.toLocalDate();
+			
+		 */
+		
+		LocalDate startDate = LocalDate.of(2017, 12, 04);
+		LocalDate resultDate = startDate;
+		Long weeks = 1L;
+		boolean searching = true;
+		
+		while(searching) {
+			
+			if(LocalDate.now().isBefore(resultDate.plusWeeks(weeks))) {
+				searching = false;
+			}
+			else {
+				resultDate = resultDate.plusWeeks(weeks);
+			}
+		}
+
+		return resultDate;
 	}
 
 }

@@ -7,6 +7,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Restrictions;
+
 
 import com.sad.dto.Survey;
 import com.sad.dto.Users;
@@ -27,6 +29,23 @@ public class UsersDaoImpl implements UsersDao {
 		session.close();
 		return list;
 	}
+	
+	@Override
+	public ArrayList<Users> getAllUsers(String column, String str) {
+		Configuration config = new Configuration().configure("hibernate.cfg.xml");
+
+		SessionFactory sessionFactory = config.buildSessionFactory();
+
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		Criteria crit = session.createCriteria(Users.class);
+		crit.add(Restrictions.like(column, str));
+		ArrayList<Users> list = (ArrayList<Users>) crit.list();
+		tx.commit();
+		session.close();
+		return list;
+	}
+	
 
 	@Override
 	public void updateUsers(Users user) {
