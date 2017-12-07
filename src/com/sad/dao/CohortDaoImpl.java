@@ -62,7 +62,7 @@ public class CohortDaoImpl implements CohortDao {
 	}
 
 	@Override
-	public void addCohort(Cohort newCohort) {
+	public void addCohort(Cohort cohort) {
 		Configuration config = new Configuration().configure("hibernate.cfg.xml");
 
 		SessionFactory sessionFactory = config.buildSessionFactory();
@@ -70,7 +70,7 @@ public class CohortDaoImpl implements CohortDao {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
-		session.save(newCohort);
+		session.save(cohort);
 		tx.commit();
 		session.close();
 

@@ -9,7 +9,7 @@
 </head>
 <body>
 <h1>Classes</h1>
-
+<a href="addCohort">Add Cohort</a>
 	<table border="1">
 		<c:forEach var="myVar" items="${cohortID}">
 			<tr>
@@ -17,7 +17,7 @@
 				<td>${myVar.cohortName}</td>
 				<td>${myVar.cohortSemester}</td>
 				<td><a href="delete?id=${myVar.cohortID}"> Delete </a></td>
-				<td><a href="update?id=${myVar.cohortID}"> Update </a></td>
+				<td><a href="updatecohortform?id=${myVar.cohortID}"> Update </a></td>
 
 			</tr>
 
