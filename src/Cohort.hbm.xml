@@ -18,5 +18,8 @@
 		<property name="cohortSemester">
 			<column name="CohortSemester" sql-type="varchar(255)" length="255"></column>
 		</property>
+		<property name="startDate">
+			<column name="StartDate" sql-type="varchar(255)" length="255"></column>
+		</property>
 	</class>
 </hibernate-mapping>		
