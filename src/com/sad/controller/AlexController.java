@@ -29,6 +29,7 @@ import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.Ke
 import com.sad.dao.AnswerDaoImpl;
 import com.sad.dao.UsersDaoImpl;
 import com.sad.dto.Answer;
+import com.sad.dto.Cohort;
 import com.sad.dto.SurveyQADto;
 import com.sad.dto.Users;
 
@@ -98,24 +99,26 @@ public class AlexController {
 						+ "WHERE Survey_QA.SurveyID =" + surveyID + " Order by questionid;" + "")
 				.addEntity(SurveyQADto.class);
 		List<SurveyQADto> results = (List<SurveyQADto>) query.list();
+		
+		query = session.createSQLQuery("select max(cohortID), cohortname, Max(startdate) from cohort group by cohortname").addEntity(Cohort.class);
+		List<Cohort> cohorts = (List<Cohort>) query.list();
 
 		String message = ("<form action='submit' method='get'><input hidden name = 'surveyID' value='" + surveyID
 				+ "'>");
 
 		// select bootcamp dropdown
 		message += ("<label>Select Your Bootcamp</label>");
-		message += ("<select name = 'cohorts' required>");
-		message += ("<option value='Java'>Java</option>");
-		message += ("<option value='.Net'>.Net</option>");
-		message += ("<option value='Front-End'>Front-End</option>");
+		message += ("<select id='cohorts' name = 'cohorts' required><option selected='0'>Select a language</option>");
+		
+		for (int i = 0; i < cohorts.size(); i++) {
+			message += ("<option value='"+cohorts.get(i).getCohortID()+"'>"+cohorts.get(i).getCohortName() +"</option>");	
+		}
 		message += ("</select ><br>");
 
 		// select person name dropdown
 		message += ("<label>Select Your Name</label>");
-		message += ("<select name = 'userId' required>");
-		message += ("<option value='1'>Player1</option>");
-		message += ("<option value='1'>Taco</option>");
-		message += ("<option value='1'>Jake the Dog</option>");
+		message += ("<select id='students' name = 'userId' required disabled>");
+		message += ("<option selected='0' >Select an option from above</option>");
 		message += ("</select ><br>");
 
 		// loop through each row in query table

@@ -16,7 +16,7 @@
       <div class="jumbotron">
         <div class="container">
           <h1 class="display-3">We are SAD: Survey Analytics Dashboard<h1>
-          <p>You won't know glad, till you get sad.</p>
+          <p>You won't know glad, till you get SAD.</p>
           <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more »</a></p>
         </div>
       </div>
