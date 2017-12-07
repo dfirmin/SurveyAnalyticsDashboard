@@ -16,4 +16,8 @@ ArrayList<Users> getAllUsers();
 
 	void updateUsers(Users user);
 
+
+
+	ArrayList<Users> getAllUsers(String column, String str);
+
 }
