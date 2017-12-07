@@ -1,23 +1,30 @@
 package com.sad.dto;
 
 import java.io.Serializable;
+import java.sql.Date;
 
 public class Cohort implements Serializable {
 	private int cohortID;
 	private String cohortName;
 	private String cohortSemester;
+	private Date startDate;
 	
 	public Cohort() {
 		
 	}
 	
 	
-	public Cohort(int cohortID, String cohortName, String cohortSemester) {
+	
+
+	public Cohort(int cohortID, String cohortName, String cohortSemester, Date startDate) {
 		super();
 		this.cohortID = cohortID;
 		this.cohortName = cohortName;
 		this.cohortSemester = cohortSemester;
+		this.startDate = startDate;
 	}
+
+
 
 
 	public int getCohortID() {
@@ -43,6 +50,18 @@ public class Cohort implements Serializable {
 	public void setCohortSemester(String cohortSemester) {
 		this.cohortSemester = cohortSemester;
 	}
+
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	
+	
 	
 	
 

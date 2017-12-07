@@ -10,6 +10,7 @@ import org.hibernate.cfg.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -24,48 +25,52 @@ public class DController {
 
 	@RequestMapping("/deantetest")
 	public ModelAndView index(Model model) {
-		
-		
-
-			Configuration config = new Configuration().configure("hibernate.cfg.xml");
-			/*
-			 * The SessionFactory is a factory of session and client of Connection Provider.
-			 * It holds second level cache (optional) of data
-			 */
-			SessionFactory sessionFactory = config.buildSessionFactory();
-			/*
-			 * A Session is used to get a physical connection with a database. The Session
-			 * object is lightweight and designed to be instantiated each time an
-			 * interaction is needed with the database. Persistent objects are saved and
-			 * retrieved through a Session object.
-			 * 
-			 * The session objects should not be kept open for a long time because they are
-			 * not usually thread safe and they should be created and destroyed them as
-			 * needed. The main function of the Session is to offer, create, read, and
-			 * delete operations for instances of mapped entity classes.
-			 */
-			Session session = sessionFactory.openSession();
-			Transaction tx = session.beginTransaction();
-			Criteria crit = session.createCriteria(Question.class); // the strikethrough indicates this is deprecated
-			ArrayList<Question> list = (ArrayList<Question>) crit.list();
-			System.out.println(list);
-			tx.commit();
-			session.close();
 			
 			Persons personDto = new Persons(0,"DeAnte","Firmin","deantedfirmin@gmail.com","Clinton Twp",1);
 			PersonsDaoImpl newPersonDao = new PersonsDaoImpl();
-			
 			newPersonDao.addPersons(personDto);
 			
 			
 			
-			Answer answerDto = new Answer(0,1,1,1);
+			Answer answerDto = new Answer(0,1,1,1, null, null, null);
 			AnswerDaoImpl newAnswerDao = new AnswerDaoImpl();
-			newAnswerDao.addAnswer(newAnswer);
+			newAnswerDao.addAnswer(answerDto);
 			
 			
 
 			return new ModelAndView("deantetest");
+		}
+	@RequestMapping("/studenttest")
+	public ModelAndView studentTest(Model model) {
+		
+		Persons personDto = new Persons(0,"DeAnte","Firmin","deantedfirmin@gmail.com","Clinton Twp",1);
+		PersonsDaoImpl newPersonDao = new PersonsDaoImpl();
+		newPersonDao.addPersons(personDto);
+		ArrayList<Persons> list = newPersonDao.getAllPersons();
+		
+		//System.out.println(list);
+
+		return new ModelAndView("studenttest","list",list);
+	}
+	
+	 @RequestMapping(value = "/deleteperson", method = RequestMethod.GET)
+	public ModelAndView deletePerson(Model model, @RequestParam("id") int id) {
+		Persons person = new Persons();
+		person.setPersonID(id);
+		PersonsDaoImpl newPersonDao = new PersonsDaoImpl();
+		newPersonDao.deletePersons(person);
+
+		return new ModelAndView("studenttest");
+	}
+	 
+	 @RequestMapping(value = "/updateperson", method = RequestMethod.GET)
+		public ModelAndView updatePerson(Model model, @RequestParam("id") int id) {
+			Persons person = new Persons();
+			person.setPersonID(id);
+			PersonsDaoImpl newPersonDao = new PersonsDaoImpl();
+			newPersonDao.updatePersons(person);
+
+			return new ModelAndView("studenttest");
 		}
 	
 //	@RequestMapping("/submitprofile")
