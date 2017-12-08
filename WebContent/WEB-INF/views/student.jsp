@@ -56,25 +56,39 @@
 
 				</div>
 				<div class="col-md-9">
-
 					<div>
-						<a href="addCohort">Add Cohort</a>
 						<table border="1">
-							<c:forEach var="myVar" items="${cohortID}" varStatus="status">
-								<tr>
-									<td>${status.count}</td>
-									<!-- <td>${myVar.cohortID}</td> -->
-									<td>${myVar.cohortName}</td>
-									<td>${myVar.cohortSemester}</td>
-									<td>${myVar.startDate}</td>
-									<td><a href="delete?id=${myVar.cohortID}"> Delete </a></td>
-									<td><a href="updatecohortform?id=${myVar.cohortID}">
-											Update </a></td>
+							<a href="addperson">Add Person</a>
+							<tr>
+								<th></th>
+								<th>First Name</th>
+								<th>Last Name</th>
+								<th>Email</th>
+								<th>Location</th>
+								<th>Cohort</th>
+							</tr>
 
-								</tr>
+							<tbody>
 
-							</c:forEach>
+								<c:forEach var="myVar" items="${list}">
+									<tr>
+										<td></td>
+										<td>${myVar.firstName}</td>
+										<td>${myVar.lastName}</td>
+										<td>${myVar.email}</td>
+										<td>${myVar.location}</td>
+										<td>${myVar.cohortID}</td>
 
+										<td><a href="deleteperson?id=${myVar.personID}">
+												Delete </a></td>
+										<td><a href="addupdateperson?id=${myVar.personID}">
+												Update </a></td>
+
+
+									</tr>
+
+								</c:forEach>
+							</tbody>
 						</table>
 					</div>
 
