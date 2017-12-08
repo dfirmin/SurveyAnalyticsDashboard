@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="navbar-header">
             
-            <a class="navbar-brand" href="#">SAD</a>
+            <a class="navbar-brand" href="#"><img style="height:50px; width:88px" src="resources/sad_logo.png"></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
