@@ -7,9 +7,13 @@
 	<class name="com.sad.dto.SummaryResult" table="SummaryResults"
 		schema="SurveyDB">
 
-		<id name="cohortID">
-			<column name="CohortID" sql-type="int(11)" length="11"></column>
+		<id name="pID">
+			<column name="Pid" sql-type="int(11)" length="11"></column>
 		</id>
+		
+		<property name="cohortID">
+			<column name="CohortID" sql-type="int(11)" length="11"></column>
+		</property>
 		
 		<property name="userResponse">
 			<column name="UserResponse" sql-type="varchar(255)" length="255"></column>
