@@ -1,7 +1,11 @@
 package com.sad.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -42,7 +46,7 @@ public class AlexController {
 	
 	@RequestMapping("/getSurvey")
 	public String getSurvey(Model model) {
-
+		  
 		// initialize database connection
 		Configuration config = new Configuration().configure("hibernate.cfg.xml");
 		SessionFactory sessionFactory = config.buildSessionFactory();
@@ -57,12 +61,12 @@ public class AlexController {
 						+ "inner JOIN Survey_QA " + "ON Question.QuestionID = Survey_QA.QuestionID "
 						+ "inner JOIN Offered_Answer "
 						+ "ON Offered_Answer.OfferedAnswerID = Survey_QA.OfferedAnswerID "
-						+ "WHERE Survey_QA.SurveyID =" + surveyID + " Order by questionid;" + "")
+						+ "WHERE Survey_QA.SurveyID =" + surveyID + " Order by questionid, survey_qaid ;" + "")
 				.addEntity(SurveyQADto.class);
 		List<SurveyQADto> results = (List<SurveyQADto>) query.list();
 
 		query = session.createSQLQuery(
-				"select max(cohortID) as cohortId, cohortname, Max(cohortSemester) as cohortSemester, Max(startdate) as startDate from cohort group by cohortname")
+				"select max(cohortID) as cohortId, cohortname, Max(cohortSemester) as cohortSemester, Max(startdate) as startDate from cohort group by cohortname order by cohortid")
 				.addEntity(Cohort.class);
 		List<Cohort> cohorts = (List<Cohort>) query.list();
 		System.out.println(cohorts.toString());
@@ -74,7 +78,7 @@ public class AlexController {
 		
 		// select bootcamp dropdown
 		message += ("<label>Select Your Bootcamp</label>");
-		message += ("<select id='cohorts' name = 'cohorts' required><option selected='0'>Select a language</option>");
+		message += ("<select id='cohorts' onChange='selectedDrop(this);' name = 'cohorts' required><option selected='0'>Select a language</option>");
 
 		for (int i = 0; i < cohorts.size(); i++) {
 			message += ("<option value='" + cohorts.get(i).getCohortID() + "'>" + cohorts.get(i).getCohortName()
@@ -102,7 +106,7 @@ public class AlexController {
 
 		// select person name dropdown
 		message += ("<label>Select Your Name</label>");
-		message += ("<select id='students' name = 'students' required disabled>");
+		message += ("<select id='students' name = 'students' required >");
 		message += ("<option selected='0' >Select an option from above</option>");
 		message += ("</select ><br>");
 
@@ -121,7 +125,7 @@ public class AlexController {
 
 			// for each questionType in row, perform different functionality
 			switch (questionType) {
-
+			 
 			case "radio":
 				questionIDs.add(String.valueOf(questionID));
 				message += ("<fieldset name='" + questionID + "'>");
@@ -138,7 +142,7 @@ public class AlexController {
 						continueLoop = false;
 					}
 				}
-
+				
 				i--;
 				message += ("</fieldset>");
 				break;
@@ -206,9 +210,29 @@ public class AlexController {
 
 	@RequestMapping("/submit")
 	public String submitToDB(HttpServletRequest request, Model model) {
-		System.out.println(request.getParameter("cohort"));
-		int personID = Integer.valueOf(request.getParameter("userId"));
+		Configuration config = new Configuration().configure("hibernate.cfg.xml");
+		SessionFactory sessionFactory = config.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+System.out.println(request.getParameter("cohorts"));
+		int cohortID = Integer.valueOf(request.getParameter("cohorts"));
+		System.out.println(cohortID);
+		Query query = session.createSQLQuery(
+				"select cohortID , cohortname, cohortSemester, startdate  from cohort where cohortID =" + cohortID)
+				.addEntity(Cohort.class);
+		List<Cohort> cohort = (List<Cohort>) query.list();
+		
+		String startDate = cohort.get(0).getStartDate();
+		java.sql.Date weekOfDate = setDate(startDate);
+		System.out.println(weekOfDate);
+		System.out.println(request.getParameter("students"));
+
+		int personID = Integer.valueOf(request.getParameter("students"));
+		System.out.println(personID);
+
 		int surveyID = Integer.valueOf(request.getParameter("surveyID"));
+		System.out.println(surveyID);
+
 
 		int[] watsonTopic = { 3, 7, 11, 15, 16, 19, 20, 22, 23 };
 		int[] watsonEmotion = { 1, 8, 12, 25 };
@@ -240,8 +264,8 @@ public class AlexController {
 					}
 				}
 			}
-
-			Answer answerDto = new Answer(0, personID, questionID, surveyID, answer, watsonString, null);
+			
+			Answer answerDto = new Answer(0, personID, questionID, surveyID, answer, watsonString, weekOfDate);
 			transfer.addAnswer(answerDto);
 
 		}
@@ -319,22 +343,12 @@ public class AlexController {
 	/*
 	 * Function returns lower limit week-of-date in relation to start date
 	 */
-	public LocalDate setDate() {
+	public java.sql.Date setDate(String str) {
 
-		/*
-		 * LocalDate => SQL Date
-		 * 
-		 * LocalDate locald = LocalDate.of(1967, 06, 22); Date date =
-		 * Date.valueOf(locald); // Magic happens here! r.setDateOfBirth(date);
-		 * 
-		 * 
-		 * SQL Date => LocalDate
-		 * 
-		 * Date date = r.getDate(); LocalDate localD = date.toLocalDate();
-		 * 
-		 */
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); 
+		LocalDate startDate = LocalDate.parse(str, formatter);
 
-		LocalDate startDate = LocalDate.of(2017, 12, 04);
 		LocalDate resultDate = startDate;
 		Long weeks = 1L;
 		boolean searching = true;
@@ -347,8 +361,7 @@ public class AlexController {
 				resultDate = resultDate.plusWeeks(weeks);
 			}
 		}
-
-		return resultDate;
+		return java.sql.Date.valueOf(resultDate);
 	}
 
 }
