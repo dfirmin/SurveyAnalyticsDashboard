@@ -18,8 +18,7 @@
 			<div class="row">
 				<div class="col-md-10">
 					<h1>
-						<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-						Survey Analytics Dashboard <small>Grand Circus</small>
+						<img src="resources/sad_logo.png" height="50px" width="88px"><small>Grand Circus</small>
 					</h1>
 				</div>
 			</div>

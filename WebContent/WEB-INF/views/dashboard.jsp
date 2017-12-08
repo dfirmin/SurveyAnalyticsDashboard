@@ -32,7 +32,7 @@
 			<div class="row">
 				<div class="col-md-10">
 					<h1>
-						<img src="resources/sad_logo.png" height="80" width="90"><small>Grand Circus</small>
+						<img src="resources/sad_logo.png" height="50px" width="88px"><small>Grand Circus</small>
 					</h1>
 				</div>
 			</div>
