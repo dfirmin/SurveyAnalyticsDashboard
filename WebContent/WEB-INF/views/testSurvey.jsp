@@ -11,34 +11,44 @@
 <body>
 ${ results }
 
+ <script type="text/javascript" src="webjars/jquery/2.1.1/jquery.min.js"></script>
+
 <script>
 
 var A = document.getElementById("cohorts");
 var B = document.getElementById("students");
 
-A.onchange = function() {
-    //clear out B
-    B.length = 0;
-	B.disabled = false;
-    var _val = this.options[this.selectedIndex].value;
+B.disabled = true;
+var arr = ${persons};
+B.disabled = true; 
 
-    var arr = ${persons};
+function selectedDrop(sel) {
+	var val=0;
+	var val = sel.selectedIndex;
+	var selArr = arr[val-1];
+    var $secondChoice = $("#students");
 
-    for (var i in arr[_val]) {
-    	var newArr = arr[_val][i].split(":");
-    	console.log(arr[_val][i]);
-      //create option tag
-      var op = document.createElement('option');
-      //set its value
-      op.value = newArr[0];
-      //set the display label
-      op.text = newArr[1];
-      //append it to B
-      B.appendChild(op);
-    }
-  };
-  //fire this to update B on load
-  A.onchange();
+	if(val == 0){
+		B.disabled = true; 
+		 $secondChoice.empty();
+			
+				$secondChoice.append("<option value='0'>Select an option from above</option>");
+			
+
+	}
+	else{
+		
+		B.removeAttribute("disabled");
+    $secondChoice.empty();
+	for(var i in selArr) {
+		var newArr = selArr[i].split(":");
+		$secondChoice.append("<option value='"+newArr[0]+"'>" + newArr[1] + "</option>");
+	}
+	}
+}
+
+
+
 </script>
 </body>
 </html>
