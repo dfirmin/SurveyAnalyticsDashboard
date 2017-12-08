@@ -39,43 +39,7 @@ public class AlexController {
 
 	ArrayList<String> questionIDs = new ArrayList<String>();
 
-	@RequestMapping("/dashboard")
-	public String showDashboard() {
-		return "dashboard";
-	}
-
-	@RequestMapping("/loginPage")
-	public String showLogin() {
-		return "loginPage";
-	}
-
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(@RequestParam("email") String email, @RequestParam("password") String password, Model model) {
-		UsersDaoImpl users = new UsersDaoImpl();
-
-		ArrayList<Users> list = users.getAllUsers("email", email);
-
-		String webPage = "loginPage";
-
-		if (!list.isEmpty()) {
-
-			String dbPassword = list.get(0).getPassword();
-
-			if (password.equals(dbPassword)) {
-				model.addAttribute("firstName", list.get(0).getFirstName());
-				webPage = "dashboard";
-			} else {
-				String alert = "<script>alert('Password is incorrect. Try again.')</script>";
-				model.addAttribute("alert", alert);
-			}
-		} else {
-			String alert = "<script>alert('Username does not exist. Try again.')</script>";
-			model.addAttribute("alert", alert);
-		}
-
-		return webPage;
-	}
-
+	
 	@RequestMapping("/getSurvey")
 	public String getSurvey(Model model) {
 
@@ -130,7 +94,7 @@ public class AlexController {
 			}
 			persons.add(personStrings);
 		}
-	
+
 		System.out.println(persons.toString());
 		model.addAttribute("persons", persons);
 
@@ -138,7 +102,7 @@ public class AlexController {
 
 		// select person name dropdown
 		message += ("<label>Select Your Name</label>");
-		message += ("<select id='students' name = 'userId' required disabled>");
+		message += ("<select id='students' name = 'students' required disabled>");
 		message += ("<option selected='0' >Select an option from above</option>");
 		message += ("</select ><br>");
 
