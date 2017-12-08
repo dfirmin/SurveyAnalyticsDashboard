@@ -30,6 +30,7 @@ import com.sad.dao.AnswerDaoImpl;
 import com.sad.dao.UsersDaoImpl;
 import com.sad.dto.Answer;
 import com.sad.dto.Cohort;
+import com.sad.dto.Persons;
 import com.sad.dto.SurveyQADto;
 import com.sad.dto.Users;
 
@@ -38,46 +39,6 @@ public class AlexController {
 
 	ArrayList<String> questionIDs = new ArrayList<String>();
 
-	@RequestMapping("/dashboard")
-	public String showDashboard() {
-		return "dashboard";
-	}
-	
-	@RequestMapping("/loginPage")
-	public String showLogin() {
-		return "loginPage";
-	}
-	
-	@RequestMapping(value = "/login", method=RequestMethod.POST)
-	public String login(@RequestParam("email") String email, @RequestParam("password") String password, Model model) {
-		UsersDaoImpl users = new UsersDaoImpl();
-		
-		ArrayList<Users> list = users.getAllUsers("email", email);
-		
-		String webPage = "loginPage";
-		
-		if(!list.isEmpty()) {
-			
-			String dbPassword = list.get(0).getPassword();
-			
-			
-			if(password.equals(dbPassword)) {
-				model.addAttribute("firstName", list.get(0).getFirstName() );
-				webPage = "dashboard";
-			}
-			else {
-				String alert = "<script>alert('Password is incorrect. Try again.')</script>";
-				model.addAttribute("alert", alert );
-			}
-		}
-		else {
-			String alert = "<script>alert('Username does not exist. Try again.')</script>";
-			model.addAttribute("alert", alert );	
-		}
-		
-		
-		return webPage;
-	}
 	
 	@RequestMapping("/getSurvey")
 	public String getSurvey(Model model) {
@@ -99,25 +60,49 @@ public class AlexController {
 						+ "WHERE Survey_QA.SurveyID =" + surveyID + " Order by questionid;" + "")
 				.addEntity(SurveyQADto.class);
 		List<SurveyQADto> results = (List<SurveyQADto>) query.list();
-		
-		query = session.createSQLQuery("select max(cohortID), cohortname, Max(startdate) from cohort group by cohortname").addEntity(Cohort.class);
-		List<Cohort> cohorts = (List<Cohort>) query.list();
 
+		query = session.createSQLQuery(
+				"select max(cohortID) as cohortId, cohortname, Max(cohortSemester) as cohortSemester, Max(startdate) as startDate from cohort group by cohortname")
+				.addEntity(Cohort.class);
+		List<Cohort> cohorts = (List<Cohort>) query.list();
+		System.out.println(cohorts.toString());
 		String message = ("<form action='submit' method='get'><input hidden name = 'surveyID' value='" + surveyID
 				+ "'>");
 
+		ArrayList<ArrayList<String>> persons = new ArrayList<ArrayList<String>>();
+		//List<List<Persons>>  personList = new ArrayList< List<Persons>>();
+		
 		// select bootcamp dropdown
 		message += ("<label>Select Your Bootcamp</label>");
 		message += ("<select id='cohorts' name = 'cohorts' required><option selected='0'>Select a language</option>");
-		
+
 		for (int i = 0; i < cohorts.size(); i++) {
-			message += ("<option value='"+cohorts.get(i).getCohortID()+"'>"+cohorts.get(i).getCohortName() +"</option>");	
+			message += ("<option value='" + cohorts.get(i).getCohortID() + "'>" + cohorts.get(i).getCohortName()
+					+ "</option>");
+
+			query = session
+					.createSQLQuery("select * from persons where cohortId ="
+							+ cohorts.get(i).getCohortID() + "")
+					.addEntity(Persons.class);
+			List<Persons> personsInCohort = (List<Persons>) query.list();
+			
+			ArrayList<String> personStrings = new ArrayList<String>();
+			for(int j= 0 ; j < personsInCohort.size(); j++) {
+				Persons person = new Persons();
+				person = personsInCohort.get(j);
+				personStrings.add("'"+String.valueOf(person.getPersonID())+":"+ person.getFirstName() +" " + person.getLastName()+"'");
+			}
+			persons.add(personStrings);
 		}
+
+		System.out.println(persons.toString());
+		model.addAttribute("persons", persons);
+
 		message += ("</select ><br>");
 
 		// select person name dropdown
 		message += ("<label>Select Your Name</label>");
-		message += ("<select id='students' name = 'userId' required disabled>");
+		message += ("<select id='students' name = 'students' required disabled>");
 		message += ("<option selected='0' >Select an option from above</option>");
 		message += ("</select ><br>");
 
@@ -240,8 +225,6 @@ public class AlexController {
 			System.out.println(questionIDs.get(i));
 			String answer = request.getParameter(questionIDs.get(i)).toString();
 
-			
-
 			System.out.println(answer);
 
 			if (!answer.equals("")) {
@@ -257,7 +240,7 @@ public class AlexController {
 					}
 				}
 			}
-			
+
 			Answer answerDto = new Answer(0, personID, questionID, surveyID, answer, watsonString, null);
 			transfer.addAnswer(answerDto);
 
@@ -295,8 +278,6 @@ public class AlexController {
 		return jsonEmotionString(results2.toString());
 	}
 
-
-
 	public String jsonKeywordString(String jsonStr) {
 		JSONObject jsonObj = new JSONObject(jsonStr);
 		JSONArray arr = jsonObj.getJSONArray("keywords");
@@ -318,55 +299,51 @@ public class AlexController {
 		JSONObject emoObj = jsonObj.getJSONObject("emotion").getJSONObject("document").getJSONObject("emotion");
 
 		Iterator<String> keys = emoObj.keys();
-		
+
 		Double maxVal = 0.0;
 		String emotion = "";
 		while (keys.hasNext()) {
-	        String key = keys.next();
+			String key = keys.next();
 			Double val = emoObj.getDouble(key);
-		    
+
 			if (maxVal < val) {
-		    		maxVal = val;
-		    		emotion = key;
-		    }
-		        
+				maxVal = val;
+				emotion = key;
+			}
+
 		}
-		
 
 		return emotion + ":" + maxVal;
 	}
-	
-	
+
 	/*
 	 * Function returns lower limit week-of-date in relation to start date
 	 */
 	public LocalDate setDate() {
-		
-		/* 	LocalDate => SQL Date
 
-			LocalDate locald = LocalDate.of(1967, 06, 22);
-			Date date = Date.valueOf(locald); // Magic happens here!
-			r.setDateOfBirth(date);
-			
-		
-			SQL Date => LocalDate
-			
-			Date date = r.getDate();
-			LocalDate localD = date.toLocalDate();
-			
+		/*
+		 * LocalDate => SQL Date
+		 * 
+		 * LocalDate locald = LocalDate.of(1967, 06, 22); Date date =
+		 * Date.valueOf(locald); // Magic happens here! r.setDateOfBirth(date);
+		 * 
+		 * 
+		 * SQL Date => LocalDate
+		 * 
+		 * Date date = r.getDate(); LocalDate localD = date.toLocalDate();
+		 * 
 		 */
-		
+
 		LocalDate startDate = LocalDate.of(2017, 12, 04);
 		LocalDate resultDate = startDate;
 		Long weeks = 1L;
 		boolean searching = true;
-		
-		while(searching) {
-			
-			if(LocalDate.now().isBefore(resultDate.plusWeeks(weeks))) {
+
+		while (searching) {
+
+			if (LocalDate.now().isBefore(resultDate.plusWeeks(weeks))) {
 				searching = false;
-			}
-			else {
+			} else {
 				resultDate = resultDate.plusWeeks(weeks);
 			}
 		}
