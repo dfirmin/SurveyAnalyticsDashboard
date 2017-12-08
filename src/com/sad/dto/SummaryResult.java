@@ -11,37 +11,64 @@ import java.io.Serializable;
  */
 public class SummaryResult implements Serializable{
 	
-
-	private String UserResponse;
-	private int CohortID;
+	private int pID;
+	private String userResponse;
+	private int cohortID;
 	private int counter;
 	
 	
 	public SummaryResult() {
 		
 	}
+
+
+	public int getpID() {
+		return pID;
+	}
+
+
+	public void setpID(int pID) {
+		this.pID = pID;
+	}
+
+
 	public String getUserResponse() {
-		return UserResponse;
+		return userResponse;
 	}
+
+
 	public void setUserResponse(String userResponse) {
-		UserResponse = userResponse;
+		this.userResponse = userResponse;
 	}
+
+
 	public int getCohortID() {
-		return CohortID;
+		return cohortID;
 	}
+
+
 	public void setCohortID(int cohortID) {
-		CohortID = cohortID;
+		this.cohortID = cohortID;
 	}
+
+
 	public int getCounter() {
 		return counter;
 	}
+
+
 	public void setCounter(int counter) {
 		this.counter = counter;
 	}
+
+
 	@Override
 	public String toString() {
-		return "SummaryResult [UserResponse=" + UserResponse + ", CohortID=" + CohortID + ", counter=" + counter + "]";
+		return "SummaryResult [pID=" + pID + ", userResponse=" + userResponse + ", cohortID=" + cohortID + ", counter="
+				+ counter + "]";
 	}
+
+
 	
 	
 	

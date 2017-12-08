@@ -39,7 +39,7 @@ public class MikeHomeController {
 	
 	public static void jobs_applied(Model model, Session session) {
 		Transaction tx = session.beginTransaction();
-		String hql = "select userresponse, count(userresponse) from answer where questionid = 26 group by userresponse";
+		String hql = "select userresponse, count(userresponse) from Answer where questionid = 26 group by userresponse";
 		Query query = session.createSQLQuery(hql).addEntity(Jobs_Applied.class);
 		//query.setParameter("userresponse", 1);
 		//query.setParameter("count(userresponse)", 1);
@@ -79,11 +79,20 @@ public class MikeHomeController {
 	
 	public static void confidenceChart(Model model, Session session) {
 		Transaction tx = session.beginTransaction();
-		String hql = "select Answer.UserResponse, Persons.CohortID, count(Persons.PersonID)  as counter from Answer inner join Persons on Answer.PersonID = Persons.PersonID and Answer.QuestionID = :questionID and Persons.CohortID = :cohortID group by Answer.UserResponse";
+		String hql = "select (@cnt \\:= @cnt + 1) as Pid, table2.Cohortid as CohortID, table2.userResponse as userResponse, table2.counter as counter from\n" + 
+				"(select @s \\:=@s+1 Pid, Persons.CohortID as Cohortid, table1.userresponse as userResponse, count(Userresponse) as counter from\n" + 
+				"		(select PersonID, UserResponse from Answer where questionid =1) as table1\n" + 
+				"	inner join Persons on Persons.PersonID = table1.PersonID\n" + 
+				"    group by cohortid, Userresponse) as table2\n" + 
+				"CROSS JOIN (SELECT @cnt \\:= 0) AS dummy;";
 		Query query = session.createSQLQuery(hql).addEntity(SummaryResult.class);
-		query.setParameter("questionID", 1);
-		query.setParameter("cohortID", 1);
+		//query.setParameter("questionID", 1);
+		//query.setParameter("cohortID", 1);
 		List<SummaryResult> resultList = query.list();
+		
+		for (int i = 0; i <resultList.size(); i++) {
+			System.out.println(resultList.get(i).toString());
+		}
 		
 		System.out.println(resultList.get(0));
 		
@@ -109,41 +118,53 @@ public class MikeHomeController {
 		int front_other = 0;
 		
 		for (int j=0; j<resultList.size(); j++) {
-			if ((resultList.get(j).getUserResponse().contains("great")) && (resultList.get(j).getCohortID() == 1)) {
-				java_great += resultList.get(j).getCounter();
+			if ((resultList.get(j).getUserResponse().contains("Great!")) && (resultList.get(j).getCohortID() == 1)) {
+				java_great = resultList.get(j).getCounter();
+				System.out.println(java_great);
 			}
 			else if ((resultList.get(j).getUserResponse().contains("little")) && (resultList.get(j).getCohortID() == 1)) {
-				java_little += resultList.get(j).getCounter();
+				java_little = resultList.get(j).getCounter();
+				System.out.println(java_little);
 			}
-			else if ((resultList.get(j).getUserResponse().contains("total")) && (resultList.get(j).getCohortID() == 1)) {
-				java_total += resultList.get(j).getCounter();	
+			else if ((resultList.get(j).getUserResponse().contains("Totally")) && (resultList.get(j).getCohortID() == 1)) {
+				java_total = resultList.get(j).getCounter();	
+				System.out.println(java_total);
 			}
-			else if ((resultList.get(j).getUserResponse().contains("other")) && (resultList.get(j).getCohortID() == 1)) {
-				java_other += resultList.get(j).getCounter();
+			else if ((resultList.get(j).getUserResponse().contains("Other")) && (resultList.get(j).getCohortID() == 1)) {
+				java_other = resultList.get(j).getCounter();
+				System.out.println(java_other);
 			}
-			else if ((resultList.get(j).getUserResponse().contains("great")) && (resultList.get(j).getCohortID() == 2)) {
-				net_great += resultList.get(j).getCounter();
+			else if ((resultList.get(j).getUserResponse().contains("Great!")) && (resultList.get(j).getCohortID() == 2)) {
+				net_great = resultList.get(j).getCounter();
+				System.out.println(net_great);
 			}
 			else if ((resultList.get(j).getUserResponse().contains("little")) && (resultList.get(j).getCohortID() == 2)) {
-				net_little += resultList.get(j).getCounter();
+				net_little = resultList.get(j).getCounter();
+				System.out.println(net_little);
 			}
-			else if ((resultList.get(j).getUserResponse().contains("total")) && (resultList.get(j).getCohortID() == 2)) {
-				net_total += resultList.get(j).getCounter();
+			else if ((resultList.get(j).getUserResponse().contains("Totally")) && (resultList.get(j).getCohortID() == 2)) {
+				net_total = resultList.get(j).getCounter();
+				System.out.println(net_total);
 			}
-			else if ((resultList.get(j).getUserResponse().contains("other")) && (resultList.get(j).getCohortID() == 2)) {
-				net_other += resultList.get(j).getCounter();
+			else if ((resultList.get(j).getUserResponse().contains("Other")) && (resultList.get(j).getCohortID() == 2)) {
+				net_other = resultList.get(j).getCounter();
+				System.out.println(net_other);
 			}
-			else if ((resultList.get(j).getUserResponse().contains("great")) && (resultList.get(j).getCohortID() == 3)) {
-				front_great += resultList.get(j).getCounter();
+			else if ((resultList.get(j).getUserResponse().contains("Great!")) && (resultList.get(j).getCohortID() == 3)) {
+				front_great = resultList.get(j).getCounter();
+				System.out.println(front_great);
 			}
 			else if ((resultList.get(j).getUserResponse().contains("little")) && (resultList.get(j).getCohortID() == 3)) {
-				front_little += resultList.get(j).getCounter();
+				front_little = resultList.get(j).getCounter();
+				System.out.println(front_little);
 			}
-			else if ((resultList.get(j).getUserResponse().contains("total")) && (resultList.get(j).getCohortID() == 3)) {
-				front_total += resultList.get(j).getCounter();
+			else if ((resultList.get(j).getUserResponse().contains("Totally")) && (resultList.get(j).getCohortID() == 3)) {
+				front_total = resultList.get(j).getCounter();
+				System.out.println(front_total);
 			}
-			else if ((resultList.get(j).getUserResponse().contains("other")) && (resultList.get(j).getCohortID() == 3)) {
-				front_other += resultList.get(j).getCounter();
+			else if ((resultList.get(j).getUserResponse().contains("Other")) && (resultList.get(j).getCohortID() == 3)) {
+				front_other = resultList.get(j).getCounter();
+				System.out.println(front_other);
 			}
 		}
 		
