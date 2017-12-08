@@ -19,7 +19,9 @@ google.charts.load('current', {'packages':['corechart']});
             */);
 
         var options = {
-              title: 'My Daily Activities'
+              title: 'Number of Jobs Applied',
+              width:500,
+              height:400	  
             };
 
         var chart = new google.visualization.PieChart(document.getElementById('jobs_applied'));

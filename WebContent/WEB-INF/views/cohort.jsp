@@ -59,7 +59,14 @@
 
 					<div>
 						<a href="addCohort">Add Cohort</a>
-						<table border="1">
+						<table class="table-striped table-bordered table-hover">
+						<tr>
+								<th></th>
+								<th></th>
+								<th>Cohort</th>
+								<th>Semester</th>
+							
+							</tr>
 							<c:forEach var="myVar" items="${cohortID}" varStatus="status">
 								<tr>
 									<td>${status.count}</td>

@@ -55,9 +55,13 @@
 
 
 				</div>
-				<div class="col-md-9">
+				
+				<div class="panel-heading">
+				  <h3 class="panel-title">Students</h3>
+				  </div>
+				<div class="col-md-9 panel-body">
 					<div>
-						<table border="1">
+						<table class="table-striped table-bordered table-hover">
 							<a href="addperson">Add Person</a>
 							<tr>
 								<th></th>

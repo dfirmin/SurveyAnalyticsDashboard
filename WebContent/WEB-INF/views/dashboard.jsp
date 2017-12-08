@@ -32,8 +32,7 @@
 			<div class="row">
 				<div class="col-md-10">
 					<h1>
-						<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-						Survey Analytics Dashboard <small>Grand Circus</small>
+						<img src="resources/sad_logo.png" height="80" width="90"><small>Grand Circus</small>
 					</h1>
 				</div>
 			</div>
@@ -71,50 +70,23 @@
 				</div>
 				<div class="col-md-9">
 					<!-- Chart section -->
-					<div class="panel panel-default">
-						<div class="panel-heading main-color-bg">
-							<h3 class="panel-title">Statistics</h3>
-						</div>
-						<div class="panel-body">
-							<div class="col-md-6">
-								<div class="well well-lg dash-box">
+					<div id="jobs_applied"></div>
+					<div id="confovertime"></div>
 
-									<h4>Chart1</h4>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="well well-lg dash-box">
 
-									<h4>Chart2</h4>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="well well-lg dash-box">
-
-									<h4>Chart3</h4>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="well well-lg dash-box">
-
-									<h4>Chart4</h4>
-								</div>
-							</div>
-						</div>
-					</div>
 
 
 				</div>
 			</div>
 		</div>
 	</section>
-	<div id="confovertime"></div>
-	<div id="jobs_applied"></div>
-	<div id="interviews"></div>
+
+	<!--<div id="interviews"></div>
 	<div id="indepth_topics"></div>
 	<div id="what_make_conf"></div>
 	<div id="material_pace"></div>
-	<div id="conducive_learning"></div>
+	<div id="conducive_learning"></div>-->
+
 
 	<script type="text/javascript"
 		src="https://www.gstatic.com/charts/loader.js"></script>

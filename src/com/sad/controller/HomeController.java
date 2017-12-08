@@ -2,6 +2,9 @@ package com.sad.controller;
 
 import java.util.ArrayList;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +23,11 @@ public class HomeController {
 		return "index";
 	}
 	@RequestMapping("/dashboard")
-	public String showDashboard() {
+	public String showDashboard(Model model) {
+		
+		MikeHomeController mikecontroller = new MikeHomeController();
+		mikecontroller.visualizeFeeling(model);
+		
 		return "dashboard";
 	}
 
