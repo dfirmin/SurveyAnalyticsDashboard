@@ -124,6 +124,15 @@ public class Answer implements Serializable{
 	public void setSurveyID(int surveyID) {
 		this.surveyID = surveyID;
 	}
+
+
+
+	@Override
+	public String toString() {
+		return "Answer [answerID=" + answerID + ", personID=" + personID + ", questionID=" + questionID + ", surveyID="
+				+ surveyID + ", userResponse=" + userResponse + ", watsonResponse=" + watsonResponse + ", submitDate="
+				+ submitDate + "]";
+	}
 	
 	
 
