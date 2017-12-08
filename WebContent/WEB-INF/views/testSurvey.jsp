@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -13,20 +14,25 @@ ${ results }
 <script>
 
 var A = document.getElementById("cohorts");
-var B = document.getElementById("cohorts");
+var B = document.getElementById("students");
+
 A.onchange = function() {
     //clear out B
     B.length = 0;
-    //get the selected value from A
+	B.disabled = false;
     var _val = this.options[this.selectedIndex].value;
-    //loop through bOption at the selected value
-    for (var i in bOptions[_val]) {
+
+    var arr = ${persons};
+
+    for (var i in arr[_val]) {
+    	var newArr = arr[_val][i].split(":");
+    	console.log(arr[_val][i]);
       //create option tag
       var op = document.createElement('option');
       //set its value
-      op.value = bOptions[_val][i];
+      op.value = newArr[0];
       //set the display label
-      op.text = bOptions[_val][i];
+      op.text = newArr[1];
       //append it to B
       B.appendChild(op);
     }
