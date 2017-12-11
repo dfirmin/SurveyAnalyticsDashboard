@@ -30,6 +30,9 @@
 		<property name="submitDate">
 			<column name="SubmitDate" sql-type="date"></column>
 		</property>
+		<property name="week">
+			<column name="Week" sql-type="int(11)" length="11"></column>
+		</property>
 
 
 

@@ -6,13 +6,27 @@
     <html>
       <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="resources/css/style.css" type="text/css" rel="stylesheet">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel='stylesheet' href='webjars/bootstrap/3.2.0/css/bootstrap.min.css'>
           <title>Insert title here</title>
         </head>
         <body>
-          <div id="page">
-          ${ survey }
+          <div class ="outerDiv">
+          	<div class="row" >
+			<div class="col-md-2"></div>
+  			<div id="page" class="col-md-8">
+  			<div class="row" >
+  				<div class="col-md-1"></div>
+  				<div class="col-md-10">  ${ survey }</div>
+				<div class="col-md-1"></div>
+				</div>
+  			</div>
+  			<div class="col-md-2"></div>
+			</div>
         </div>
           <script type="text/javascript" src="webjars/jquery/2.1.1/jquery.min.js"></script>
+          <script type="text/javascript" src="webjars/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
           <script>
 
@@ -52,7 +66,6 @@
                   if (val == 0) {
                     B.disabled = true;
                     $secondChoice.empty();
-
                     $secondChoice.append("<option value='0'>Select an option from above</option>");
 
                   } else {
