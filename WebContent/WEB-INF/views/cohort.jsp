@@ -18,7 +18,7 @@
 				<td>${myVar.cohortName}</td>
 				<td>${myVar.cohortSemester}</td>
 				<td>${myVar.startDate}</td>
-				<td><a href="delete?id=${myVar.cohortID}"> Delete </a></td>
+				<td><a href="deleteC?id=${myVar.cohortID}"> Delete </a></td>
 				<td><a href="updatecohortform?id=${myVar.cohortID}"> Update </a></td>
 
 			</tr>
