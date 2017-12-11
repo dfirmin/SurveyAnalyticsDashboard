@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,7 +36,6 @@ public class SiddiqueController {
 
 	}
 
-	
 	// display the list of classes
 	@RequestMapping("/cohort")
 	public ModelAndView getAllCohorts() {
@@ -56,7 +56,6 @@ public class SiddiqueController {
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public ModelAndView add(@RequestParam("cohortName") String cohortName,
 			@RequestParam("cohortSemester") String cohortSemester, @RequestParam("startDate") String StartDate) {
-		System.out.println(StartDate);
 
 		String[] splitStartDate = StartDate.split("/");
 		int year = Integer.parseInt(splitStartDate[2]);
@@ -74,6 +73,7 @@ public class SiddiqueController {
 
 	@RequestMapping("updatecohortform")
 	public String updateForm() {
+		
 		return "updateCohort";
 	}
 
@@ -89,11 +89,18 @@ public class SiddiqueController {
 	}
 
 	
-	  @RequestMapping("/deleteCohort") public ModelAndView delete() {
-	  
-	  return new ModelAndView("cohort", "cohortID", ""); 
-	  
-	  }
-	
+	@RequestMapping(value = "/deleteC", method = RequestMethod.GET)
+	public ModelAndView deleteCohort (Model model, @RequestParam("cohortID") int cohortID) {
+		Cohort cohort = new Cohort();
+		cohort.setCohortID(cohortID);
+		CohortDaoImpl newCohortDao = new CohortDaoImpl();
+		
+		newCohortDao.deleteCohort(cohort);
+		ArrayList<Cohort> listCohort = newCohortDao.getAllCohorts(); 
+		return new ModelAndView("cohort", "cohortID", listCohort);
+
+	}
 
 }
+
+
