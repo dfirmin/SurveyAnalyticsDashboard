@@ -15,8 +15,8 @@
     <main role="main">
 
       <!-- Main jumbotron for a primary marketing message or call to action -->
-      <div class="jumbotron">
-        <div class="container main-container">       
+      <div class="jumbotron" style = "background-image: url(https://www.grandcircus.co/wp-content/uploads/2017/10/GC_facecollage2_bw.jpg)">
+        <div class="container main-container" style = "color: white; font-family:brandon, Arial Black, Helvetica, sans-serif">       
           <h1 class="display-3">We are SAD: Survey Analytics Dashboard<h1>
           <p>You won't know glad, till you get SAD.</p>
           

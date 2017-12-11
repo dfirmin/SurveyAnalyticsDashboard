@@ -13,12 +13,17 @@
 <body>
 
 
+
+
+
+
 	<header id="header">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-10">
 					<h1>
-						<img src="resources/sad_logo.png" height="50px" width="88px"><small>Grand Circus</small>
+						<img src="resources/sad_logo.png" height="50px" width="88px"><small>Grand
+							Circus</small>
 					</h1>
 				</div>
 			</div>
@@ -38,8 +43,8 @@
 			<div class="row">
 				<div class="col-md-3">
 					<div class="list-group">
-						<a href="dashboard" class="list-group-item main-color-bg">
-							<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+						<a href="dashboard" class="list-group-item main-color-bg"> <span
+							class="glyphicon glyphicon-cog" aria-hidden="true"></span>
 							Dashboard
 						</a> <a href="survey" class="list-group-item"><span
 							class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
@@ -54,10 +59,24 @@
 
 
 				</div>
-				
+
+				<div class="dropdown pull-right">
+				<form action="result" method="post">
+					<select id="cohortSelect" name="cohort">
+						<option value="All">All</option>
+						<c:forEach var="cohort" items="${listcohorts}">
+							<option value="${cohort.cohortName}">${cohort.cohortName}</option>
+						</c:forEach>
+					</select>
+					 <input type="submit" value="Search">
+					</form>
+					
+				</div>
+
+
 				<div class="panel-heading">
-				  <h3 class="panel-title">Students</h3>
-				  </div>
+					<h3 class="panel-title">Students</h3>
+				</div>
 				<div class="col-md-9 panel-body">
 					<div>
 						<table class="table-striped table-bordered table-hover">

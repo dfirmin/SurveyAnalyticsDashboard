@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.sad.dto;
+package com.sad.MikesStuff;
 
 import java.io.Serializable;
 
