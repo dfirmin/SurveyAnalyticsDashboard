@@ -19,6 +19,7 @@
 	google.charts.setOnLoadCallback(confOverTime);
 	google.charts.setOnLoadCallback(jobs_applied);
 	google.charts.setOnLoadCallback(indepth_topics);
+	
 </script>
 </head>
 <body>

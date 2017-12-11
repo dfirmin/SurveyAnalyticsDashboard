@@ -1,8 +1,6 @@
-package com.sad.dao;
+package com.sad.MikesStuff;
 
 import java.util.ArrayList;
-
-import com.sad.dto.Results;
 
 public interface ResultsDao {
 
