@@ -12,6 +12,7 @@ public class Answer implements Serializable{
 	private String userResponse;
 	private String watsonResponse;
 	private Date submitDate;
+	private int week;
 	
 	
 	public Answer() {
@@ -21,7 +22,7 @@ public class Answer implements Serializable{
 
 
 	public Answer(int answerID, int personID, int questionID, int surveyID, String userResponse, String watsonResponse,
-			Date submitDate) {
+			Date submitDate, int week) {
 		super();
 		this.answerID = answerID;
 		this.personID = personID;
@@ -30,6 +31,7 @@ public class Answer implements Serializable{
 		this.userResponse = userResponse;
 		this.watsonResponse = watsonResponse;
 		this.submitDate = submitDate;
+		this.week = week;
 	}
 
 
@@ -38,6 +40,18 @@ public class Answer implements Serializable{
 
 
 
+
+
+
+	public int getWeek() {
+		return week;
+	}
+
+
+
+	public void setWeek(int week) {
+		this.week = week;
+	}
 
 
 
