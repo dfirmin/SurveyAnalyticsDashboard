@@ -201,8 +201,15 @@ public class DController {
 	}
 	
 	@RequestMapping("/newdash")
-	public String newDashBoard(Model model) {
-		
-		return "newdashboard";
+	public String exampleQuery(Model model) {
+				 Configuration config = new Configuration().configure("hibernate.cfg.xml");
+				
+				 SessionFactory sessionFactory = config.buildSessionFactory();
+				
+				 Session session = sessionFactory.openSession();
+				 Transaction tx = session.beginTransaction();
+				 SQLQuery sql = session.createSQLQuery("SELECT * FROM Answer WHERE QuestionID ");
+				 List<Object> fullList = sql.list();
+		return "";
 	}
 }
