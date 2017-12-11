@@ -1,4 +1,4 @@
-package com.sad.dao;
+package com.sad.MikesStuff;
 
 import java.util.ArrayList;
 
@@ -9,8 +9,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.springframework.ui.Model;
-
-import com.sad.dto.Results;
 
 public class ResultsDaoImpl implements ResultsDao {
 
@@ -23,17 +21,6 @@ public class ResultsDaoImpl implements ResultsDao {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
-		/*
-		 * private int answerid;
-			private int personid;
-			private String firstname;
-			private String lastname;
-			private String cohortname;
-			private int questionid;
-			private int surveyid;
-			private String userresponse;
-			private String watsonresponse;
-		 */
 		
 		String hql = 
 				"SELECT t1.AnswerID as AnswerID,  \n" + 

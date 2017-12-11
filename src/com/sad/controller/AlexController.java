@@ -35,6 +35,7 @@ import com.sad.dao.UsersDaoImpl;
 import com.sad.dto.Answer;
 import com.sad.dto.Cohort;
 import com.sad.dto.Persons;
+import com.sad.dto.Survey;
 import com.sad.dto.SurveyQADto;
 import com.sad.dto.Users;
 
@@ -48,6 +49,7 @@ public class AlexController {
 	int userId = 0;
 	Model model1;
 	java.sql.Date weekOfDate;
+	int week = 0;
 
 	@RequestMapping("/getSurvey")
 	public String getSurvey(Model model) {
@@ -63,7 +65,7 @@ public class AlexController {
 		Transaction tx = session.beginTransaction();
 
 		surveyID = 1;
-
+     
 		// sql query to pull survey questions and answers
 		Query query = session.createSQLQuery(
 				"SELECT survey_qaid,Question.QuestionID, QuestionText, QuestionType, Offered_Answer.OfferedAnswerID, AnswerText, IsCustom FROM Question "
@@ -81,12 +83,19 @@ public class AlexController {
 		List<Cohort> cohorts = (List<Cohort>) query.list();
 		System.out.println(cohorts.toString());
 
+		query = session.createSQLQuery("select * from Survey where surveyId =" + surveyID + ";")
+				.addEntity(Survey.class);
+		List<Survey> surveyDto = (List<Survey>) query.list();
+
 		message = ("<form action='next' method='get'>");
 
 		ArrayList<ArrayList<String>> persons = new ArrayList<ArrayList<String>>();
 		// List<List<Persons>> personList = new ArrayList< List<Persons>>();
 
 		// select bootcamp dropdown
+		message += ("<img class='center-block img-responsive imgSize center' src='resources/grandcircuslogo.png'>");
+		message += ("<h1 class='surveyHeader'>" + surveyDto.get(0).getDescription() + "</h1>");
+
 		message += ("<label>Select Your Bootcamp</label>");
 		message += ("<select id='cohorts' onChange='selectedDrop(this);' name = 'cohorts' required><option selected='0'>Select a language</option>");
 
@@ -121,6 +130,8 @@ public class AlexController {
 		message += ("<option selected='0' >Select an option from above</option>");
 		message += ("</select ><br>");
 
+		int questionID  = 0;
+		int qIndex = 0;
 		// loop through each row in query table
 		for (int i = 0; i < results.size(); i++) {
 			/*
@@ -128,10 +139,12 @@ public class AlexController {
 			 * results.get(i).getQuestionType()+ results.get(i).getOfferedAnswerID()+
 			 * results.get(i).getAnswerText());
 			 */
-			int questionID = results.get(i).getQuestionID();
+			questionID = results.get(i).getQuestionID();
 
 			if (questionNum >= 8) {
-				String next = pageNum + 1 + ":" + questionNum+":"+(questionID-1);
+				String next = pageNum + 1 + ":" + questionNum + ":" + (qIndex);
+				message += ("<input hidden name = 'end' value='0'>");
+
 				message += ("<input hidden name = 'num' value='" + next + "'>");
 				message += ("<input type='submit' value='NEXT'></form>");
 				model.addAttribute("page" + pageNum, message);
@@ -139,8 +152,7 @@ public class AlexController {
 				message = "";
 				questionNum = 0;
 				message = ("<form action='next' method='post'>");
-			}
-
+			}  
 			// initial values
 			String questionType = results.get(i).getQuestionType();
 			boolean continueLoop = true;
@@ -204,7 +216,9 @@ public class AlexController {
 			case "drop-down":
 
 				if (questionNum > 5) {
-					String next = pageNum + 1 + ":" + questionNum+":"+(questionID-1);
+					String next = pageNum + 1 + ":" + questionNum + ":" + (qIndex);
+					message += ("<input hidden name = 'end' value='0'>");
+
 					message += ("<input hidden name = 'num' value='" + next + "'>");
 					message += ("<input type='submit' value='NEXT'></form>");
 					model.addAttribute("page" + pageNum, message);
@@ -242,9 +256,12 @@ public class AlexController {
 				break;
 
 			}
+			qIndex++;
 			questionNum++;
 		}
-		String next = pageNum + 1 + ":" + questionNum;
+		String next = pageNum + 1 + ":" + questionNum + ":" + (qIndex);
+
+		message += ("<input hidden name = 'end' value='1'>");
 		message += ("<input hidden name = 'num' value='" + next + "'>");
 		message += ("<input type='submit' value='SUBMIT'></form>");
 		tx.commit();
@@ -262,7 +279,7 @@ public class AlexController {
 		int pageNum = Integer.valueOf(n.split(":")[0]);
 		int qCount = Integer.valueOf(n.split(":")[1]);
 		System.out.println(n);
-		
+
 		System.out.println("Array:" + answers.toString());
 
 		if ((pageNum - 1) == 1) {
@@ -278,7 +295,121 @@ public class AlexController {
 			List<Cohort> cohort = (List<Cohort>) query.list();
 
 			String startDate = cohort.get(0).getStartDate();
-			weekOfDate = setDate(startDate);
+			String dateStr = setDate(startDate);
+			weekOfDate = java.sql.Date.valueOf(dateStr.split(":")[1]);
+			week = Integer.valueOf(dateStr.split(":")[0]);
+			userId = Integer.valueOf(request.getParameter("students"));
+		}
+
+		int qID = Integer.valueOf(n.split(":")[2]);
+		int[] watsonTopic = { 3, 7, 11, 15, 16, 19, 20, 22, 23 };
+		int[] watsonEmotion = { 1, 8, 12, 25 };
+
+		NaturalLanguageUnderstanding service = getNLUService();
+		int arrLength = answers.size();
+		for (int i = (qID-qCount); i < (qID); i++) {
+			System.out.println(i);
+			System.out.println("q:" + qCount);
+			int questionID = Integer.valueOf(questionIDs.get(i));
+
+			String watsonString = "";
+			System.out.println(questionIDs.get(i));
+			String answer = request.getParameter(questionIDs.get(i)).toString();
+			if (answer != null) {
+				System.out.println(answer);
+
+				if (!answer.equals("")) {
+					for (int j = 0; j < watsonTopic.length; j++) {
+						if (watsonTopic[j] == questionID) {
+							watsonString = WatsonTopic(answer, service);
+						}
+					}
+
+					for (int k = 0; k < watsonEmotion.length; k++) {
+						if (watsonEmotion[k] == Integer.valueOf(questionIDs.get(i))) {
+							watsonString = WatsonEmotion(answer, service);
+						}
+					}
+				}
+
+				Answer answerDto = new Answer(0, userId, questionID, surveyID, answer, watsonString, weekOfDate, week);
+				System.out.println(answerDto.toString());
+				answers.add(i, answerDto);
+			} else {
+				for (i = (arrLength - 1); i > (arrLength - 8); i--) {
+					System.out.println(i);
+					answers.remove(i);
+				}
+			}
+		}
+
+		int ended = Integer.valueOf(request.getParameter("end"));
+
+		if (ended == 1) {
+			AnswerDaoImpl transfer = new AnswerDaoImpl();
+
+			for (int i = 0; i < answers.size(); i++) {
+				transfer.addAnswer(answers.get(i));
+			}
+			return "success";
+		}
+
+		String page = "page" + pageNum;
+		model.addAttribute("survey", model1.asMap().get(page));
+
+		return "testSurvey";
+	}
+
+	@RequestMapping("/back")
+	public String lastPage(@RequestParam("num") int n, Model model) {
+		String pageNum = "page" + n;
+		model.addAttribute("survey", model1.asMap().get(pageNum));
+		return "testSurvey";
+	}
+
+	@RequestMapping("/submit")
+	public String submitToDB(@RequestParam("num") String n, Model model, HttpServletRequest request) {
+		/*
+		 * Configuration config = new Configuration().configure("hibernate.cfg.xml");
+		 * SessionFactory sessionFactory = config.buildSessionFactory(); Session session
+		 * = sessionFactory.openSession(); Transaction tx = session.beginTransaction();
+		 * System.out.println(request.getParameter("cohorts")); int cohortID =
+		 * Integer.valueOf(request.getParameter("cohorts"));
+		 * System.out.println(cohortID); Query query = session.createSQLQuery(
+		 * "select cohortID , cohortname, cohortSemester, startdate  from cohort where cohortID ="
+		 * + cohortID) .addEntity(Cohort.class); List<Cohort> cohort = (List<Cohort>)
+		 * query.list();
+		 * 
+		 * String startDate = cohort.get(0).getStartDate(); String dateStr =
+		 * setDate(startDate); java.sql.Date weekOfDate =
+		 * java.sql.Date.valueOf(dateStr.split(":")[1]); int week =
+		 * Integer.valueOf(dateStr.split(":")[0]);
+		 */
+
+		AnswerDaoImpl transfer = new AnswerDaoImpl();
+
+		int pageNum = Integer.valueOf(n.split(":")[0]);
+		int qCount = Integer.valueOf(n.split(":")[1]);
+		System.out.println(n);
+
+		System.out.println("Array:" + answers.toString());
+
+		if ((pageNum - 1) == 1) {
+			qCount -= 2;
+			Configuration config = new Configuration().configure("hibernate.cfg.xml");
+			SessionFactory sessionFactory = config.buildSessionFactory();
+			Session session = sessionFactory.openSession();
+			Transaction tx = session.beginTransaction();
+			int cohortID = Integer.valueOf(request.getParameter("cohorts"));
+			Query query = session.createSQLQuery(
+					"select cohortID , cohortname, cohortSemester, startdate  from Cohort where cohortID =" + cohortID)
+					.addEntity(Cohort.class);
+			List<Cohort> cohort = (List<Cohort>) query.list();
+
+			String startDate = cohort.get(0).getStartDate();
+			String dateStr = setDate(startDate);
+			weekOfDate = java.sql.Date.valueOf(dateStr.split(":")[1]);
+			week = Integer.valueOf(dateStr.split(":")[0]);
 			userId = Integer.valueOf(request.getParameter("students"));
 		}
 
@@ -313,89 +444,15 @@ public class AlexController {
 					}
 				}
 
-				Answer answerDto = new Answer(0, userId, questionID, surveyID, answer, watsonString, weekOfDate);
+				Answer answerDto = new Answer(0, userId, questionID, surveyID, answer, watsonString, weekOfDate, week);
 				System.out.println(answerDto.toString());
-				answers.add(i,answerDto);
-			} else {
-				for (i = (arrLength - 1); i > (arrLength - 8); i--) {
-					System.out.println(i);
-					answers.remove(i);
-				}
+				answers.add(i, answerDto);
 			}
 		}
 
 		String page = "page" + pageNum;
-		model.addAttribute("survey", model1.asMap().get(page));
-
-		return "testSurvey";
-	}
-
-	@RequestMapping("/back")
-	public String lastPage(@RequestParam("num") int n, Model model) {
-		String pageNum = "page" + n;
-		model.addAttribute("survey", model1.asMap().get(pageNum));
-		return "testSurvey";
-	}
-
-	@RequestMapping("/submit")
-	public String submitToDB(HttpServletRequest request, Model model) {
-		Configuration config = new Configuration().configure("hibernate.cfg.xml");
-		SessionFactory sessionFactory = config.buildSessionFactory();
-		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
-		System.out.println(request.getParameter("cohorts"));
-		int cohortID = Integer.valueOf(request.getParameter("cohorts"));
-		System.out.println(cohortID);
-		Query query = session.createSQLQuery(
-				"select cohortID , cohortname, cohortSemester, startdate  from cohort where cohortID =" + cohortID)
-				.addEntity(Cohort.class);
-		List<Cohort> cohort = (List<Cohort>) query.list();
-
-		String startDate = cohort.get(0).getStartDate();
-		java.sql.Date weekOfDate = setDate(startDate);
-		System.out.println(weekOfDate);
-		System.out.println(request.getParameter("students"));
-
-		int personID = Integer.valueOf(request.getParameter("students"));
-		System.out.println(personID);
-
-		int surveyID = Integer.valueOf(request.getParameter("surveyID"));
-		System.out.println(surveyID);
-
-		int[] watsonTopic = { 3, 7, 11, 15, 16, 19, 20, 22, 23 };
-		int[] watsonEmotion = { 1, 8, 12, 25 };
-
-		AnswerDaoImpl transfer = new AnswerDaoImpl();
-
-		NaturalLanguageUnderstanding service = getNLUService();
-
-		for (int i = 0; i < questionIDs.size(); i++) {
-
-			int questionID = Integer.valueOf(questionIDs.get(i));
-
-			String watsonString = "";
-			System.out.println(questionIDs.get(i));
-			String answer = request.getParameter(questionIDs.get(i)).toString();
-
-			System.out.println(answer);
-
-			if (!answer.equals("")) {
-				for (int j = 0; j < watsonTopic.length; j++) {
-					if (watsonTopic[j] == questionID) {
-						watsonString = WatsonTopic(answer, service);
-					}
-				}
-
-				for (int k = 0; k < watsonEmotion.length; k++) {
-					if (watsonEmotion[k] == Integer.valueOf(questionIDs.get(i))) {
-						watsonString = WatsonEmotion(answer, service);
-					}
-				}
-			}
-
-			Answer answerDto = new Answer(0, personID, questionID, surveyID, answer, watsonString, weekOfDate);
-			transfer.addAnswer(answerDto);
-
+		for (int i = 0; i < answers.size(); i++) {
+			transfer.addAnswer(answers.get(i));
 		}
 
 		return "success";
@@ -471,7 +528,7 @@ public class AlexController {
 	/*
 	 * Function returns lower limit week-of-date in relation to start date
 	 */
-	public java.sql.Date setDate(String str) {
+	public String setDate(String str) {
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDate startDate = LocalDate.parse(str, formatter);
@@ -479,16 +536,17 @@ public class AlexController {
 		LocalDate resultDate = startDate;
 		Long weeks = 1L;
 		boolean searching = true;
-
+		int count = 1;
 		while (searching) {
 
 			if (LocalDate.now().isBefore(resultDate.plusWeeks(weeks))) {
 				searching = false;
 			} else {
 				resultDate = resultDate.plusWeeks(weeks);
+				count++;
 			}
 		}
-		return java.sql.Date.valueOf(resultDate);
+		return count + ":" + String.valueOf(resultDate);
 	}
 
 }
