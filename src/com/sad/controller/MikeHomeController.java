@@ -13,14 +13,40 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.sad.dao.AnswerDaoImpl;
+import com.sad.dao.PersonsDaoImpl;
+import com.sad.dao.ResultsDao;
+import com.sad.dao.ResultsDaoImpl;
 import com.sad.dto.Answer;
 import com.sad.dto.Jobs_Applied;
+import com.sad.dto.Persons;
+import com.sad.dto.Results;
 import com.sad.dto.SummaryResult;
 import com.sad.dto.SurveyQADto;
+import com.sad.dao.ResultsDaoImpl;
 
 @Controller
 public class MikeHomeController {
+	
+	@RequestMapping("/w")
+	public String AnalyzeAndVisualize(Model model) {
+		/*
+		 * Persons personDto = new Persons(0,"DeAnte","Firmin","deantedfirmin@gmail.com","Clinton Twp",1);
+			PersonsDaoImpl newPersonDao = new PersonsDaoImpl();
+			newPersonDao.addPersons(personDto);
+		 * 
+		 */
+		
+		ResultsDaoImpl newResultsDao = new ResultsDaoImpl();
+		ArrayList<Results> list = newResultsDao.getAllResults();
+		
+		
+		
+		for (int i=0; i<list.size() ; i++) {
+			System.out.println(list.get(i).toString());
+		}
+		
+		return "visual";
+	}
 	
 	@RequestMapping("/v")
 	public String visualizeFeeling(Model model) {
