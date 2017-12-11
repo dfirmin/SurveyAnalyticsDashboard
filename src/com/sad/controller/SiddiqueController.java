@@ -43,7 +43,7 @@ public class SiddiqueController {
 		CohortDaoImpl dao = new CohortDaoImpl();// TODO replace with factory design pattern here
 
 		ArrayList<Cohort> listCohort = dao.getAllCohorts();// valueOf() is a factory design pattern here
-
+		
 		return new ModelAndView("cohort", "cohortID", listCohort);
 	}
 
@@ -72,15 +72,21 @@ public class SiddiqueController {
 	}
 
 	@RequestMapping("updatecohortform")
-	public String updateForm() {
-		
+	public String updateForm(@RequestParam("id") int id, Model model) {
+		model.addAttribute("cohortID", id);
 		return "updateCohort";
 	}
 
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
-	public ModelAndView update(@RequestParam("cohortName") String cohortName,
+	public ModelAndView update(@RequestParam("id") int id, @RequestParam("cohortName") String cohortName,
 			@RequestParam("cohortSemester") String cohortSemester, @RequestParam("startDate") String StartDate) {
-		Cohort cohortdto = new Cohort(0, cohortName, cohortSemester, StartDate);
+		String[] splitStartDate = StartDate.split("/");
+		int year = Integer.parseInt(splitStartDate[2]);
+		int month = Integer.parseInt(splitStartDate[0]);
+		int day = Integer.parseInt(splitStartDate[1]);
+		String formattedDate = year + "/" + month + "/" + day;
+
+		Cohort cohortdto = new Cohort(id, cohortName, cohortSemester, formattedDate);
 		CohortDaoImpl dao = new CohortDaoImpl();
 		dao.updateCohort(cohortdto);
 
@@ -89,12 +95,12 @@ public class SiddiqueController {
 	}
 
 	
-	@RequestMapping(value = "/deleteC", method = RequestMethod.GET)
-	public ModelAndView deleteCohort (Model model, @RequestParam("cohortID") int cohortID) {
+	@RequestMapping(value="/delete",method = RequestMethod.GET)
+	public ModelAndView delete (Model model, @RequestParam(value="id") int cohortID) {
 		Cohort cohort = new Cohort();
 		cohort.setCohortID(cohortID);
 		CohortDaoImpl newCohortDao = new CohortDaoImpl();
-		
+	
 		newCohortDao.deleteCohort(cohort);
 		ArrayList<Cohort> listCohort = newCohortDao.getAllCohorts(); 
 		return new ModelAndView("cohort", "cohortID", listCohort);
