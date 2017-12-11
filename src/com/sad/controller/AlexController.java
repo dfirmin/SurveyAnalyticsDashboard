@@ -65,7 +65,7 @@ public class AlexController {
 		Transaction tx = session.beginTransaction();
 
 		surveyID = 1;
-
+     
 		// sql query to pull survey questions and answers
 		Query query = session.createSQLQuery(
 				"SELECT survey_qaid,Question.QuestionID, QuestionText, QuestionType, Offered_Answer.OfferedAnswerID, AnswerText, IsCustom FROM Question "
@@ -152,8 +152,7 @@ public class AlexController {
 				message = "";
 				questionNum = 0;
 				message = ("<form action='next' method='post'>");
-			}
-
+			}  
 			// initial values
 			String questionType = results.get(i).getQuestionType();
 			boolean continueLoop = true;
