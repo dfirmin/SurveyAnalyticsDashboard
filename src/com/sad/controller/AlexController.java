@@ -1,7 +1,11 @@
 package com.sad.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -30,6 +34,7 @@ import com.sad.dao.AnswerDaoImpl;
 import com.sad.dao.UsersDaoImpl;
 import com.sad.dto.Answer;
 import com.sad.dto.Cohort;
+import com.sad.dto.Persons;
 import com.sad.dto.SurveyQADto;
 import com.sad.dto.Users;
 
@@ -37,50 +42,19 @@ import com.sad.dto.Users;
 public class AlexController {
 
 	ArrayList<String> questionIDs = new ArrayList<String>();
+	ArrayList<Answer> answers = new ArrayList<Answer>();
+	int surveyID = 1;
+	int cohortId = 0;
+	int userId = 0;
+	Model model1;
+	java.sql.Date weekOfDate;
 
-	@RequestMapping("/dashboard")
-	public String showDashboard() {
-		return "dashboard";
-	}
-	
-	@RequestMapping("/loginPage")
-	public String showLogin() {
-		return "loginPage";
-	}
-	
-	@RequestMapping(value = "/login", method=RequestMethod.POST)
-	public String login(@RequestParam("email") String email, @RequestParam("password") String password, Model model) {
-		UsersDaoImpl users = new UsersDaoImpl();
-		
-		ArrayList<Users> list = users.getAllUsers("email", email);
-		
-		String webPage = "loginPage";
-		
-		if(!list.isEmpty()) {
-			
-			String dbPassword = list.get(0).getPassword();
-			
-			
-			if(password.equals(dbPassword)) {
-				model.addAttribute("firstName", list.get(0).getFirstName() );
-				webPage = "dashboard";
-			}
-			else {
-				String alert = "<script>alert('Password is incorrect. Try again.')</script>";
-				model.addAttribute("alert", alert );
-			}
-		}
-		else {
-			String alert = "<script>alert('Username does not exist. Try again.')</script>";
-			model.addAttribute("alert", alert );	
-		}
-		
-		
-		return webPage;
-	}
-	
 	@RequestMapping("/getSurvey")
 	public String getSurvey(Model model) {
+		int questionNum = 0;
+		int pageNum = 1;
+		String message = "";
+		answers.clear();
 
 		// initialize database connection
 		Configuration config = new Configuration().configure("hibernate.cfg.xml");
@@ -88,36 +62,62 @@ public class AlexController {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 
-		int surveyID = 1;
+		surveyID = 1;
 
 		// sql query to pull survey questions and answers
 		Query query = session.createSQLQuery(
-				"SELECT survey_qaid,Question.QuestionID, QuestionText, QuestionType, Offered_Answer.OfferedAnswerID, AnswerText FROM Question\n"
+				"SELECT survey_qaid,Question.QuestionID, QuestionText, QuestionType, Offered_Answer.OfferedAnswerID, AnswerText, IsCustom FROM Question "
 						+ "inner JOIN Survey_QA " + "ON Question.QuestionID = Survey_QA.QuestionID "
 						+ "inner JOIN Offered_Answer "
 						+ "ON Offered_Answer.OfferedAnswerID = Survey_QA.OfferedAnswerID "
-						+ "WHERE Survey_QA.SurveyID =" + surveyID + " Order by questionid;" + "")
+						+ "WHERE Survey_QA.SurveyID =" + surveyID
+						+ " Order by questionid,  survey_qaid, OfferedAnswerID ;" + "")
 				.addEntity(SurveyQADto.class);
 		List<SurveyQADto> results = (List<SurveyQADto>) query.list();
-		
-		query = session.createSQLQuery("select max(cohortID), cohortname, Max(startdate) from cohort group by cohortname").addEntity(Cohort.class);
-		List<Cohort> cohorts = (List<Cohort>) query.list();
 
-		String message = ("<form action='submit' method='get'><input hidden name = 'surveyID' value='" + surveyID
-				+ "'>");
+		query = session.createSQLQuery(
+				"select max(cohortID) as cohortId, cohortname, Max(cohortSemester) as cohortSemester, Max(startdate) as startDate from Cohort group by cohortname order by cohortid")
+				.addEntity(Cohort.class);
+		List<Cohort> cohorts = (List<Cohort>) query.list();
+		System.out.println(cohorts.toString());
+
+		message = ("<form action='next' method='get'>");
+
+		ArrayList<ArrayList<String>> persons = new ArrayList<ArrayList<String>>();
+		// List<List<Persons>> personList = new ArrayList< List<Persons>>();
 
 		// select bootcamp dropdown
 		message += ("<label>Select Your Bootcamp</label>");
-		message += ("<select id='cohorts' name = 'cohorts' required><option selected='0'>Select a language</option>");
-		
+		message += ("<select id='cohorts' onChange='selectedDrop(this);' name = 'cohorts' required><option selected='0'>Select a language</option>");
+
 		for (int i = 0; i < cohorts.size(); i++) {
-			message += ("<option value='"+cohorts.get(i).getCohortID()+"'>"+cohorts.get(i).getCohortName() +"</option>");	
+			message += ("<option value='" + cohorts.get(i).getCohortID() + "'>" + cohorts.get(i).getCohortName()
+					+ "</option>");
+
+			query = session.createSQLQuery("select * from Persons where cohortId =" + cohorts.get(i).getCohortID() + "")
+					.addEntity(Persons.class);
+			List<Persons> personsInCohort = (List<Persons>) query.list();
+
+			ArrayList<String> personStrings = new ArrayList<String>();
+			for (int j = 0; j < personsInCohort.size(); j++) {
+				Persons person = new Persons();
+				person = personsInCohort.get(j);
+				personStrings.add("'" + String.valueOf(person.getPersonID()) + ":" + person.getFirstName() + ""
+						+ person.getLastName() + "'");
+			}
+			persons.add(personStrings);
 		}
+
+		System.out.println(persons.toString());
+		model.addAttribute("persons", persons);
+
 		message += ("</select ><br>");
 
+		questionNum++;
+		questionNum++;
 		// select person name dropdown
 		message += ("<label>Select Your Name</label>");
-		message += ("<select id='students' name = 'userId' required disabled>");
+		message += ("<select id='students' name = 'students' required >");
 		message += ("<option selected='0' >Select an option from above</option>");
 		message += ("</select ><br>");
 
@@ -128,9 +128,20 @@ public class AlexController {
 			 * results.get(i).getQuestionType()+ results.get(i).getOfferedAnswerID()+
 			 * results.get(i).getAnswerText());
 			 */
+			int questionID = results.get(i).getQuestionID();
+
+			if (questionNum >= 8) {
+				String next = pageNum + 1 + ":" + questionNum+":"+(questionID-1);
+				message += ("<input hidden name = 'num' value='" + next + "'>");
+				message += ("<input type='submit' value='NEXT'></form>");
+				model.addAttribute("page" + pageNum, message);
+				pageNum++;
+				message = "";
+				questionNum = 0;
+				message = ("<form action='next' method='post'>");
+			}
 
 			// initial values
-			int questionID = results.get(i).getQuestionID();
 			String questionType = results.get(i).getQuestionType();
 			boolean continueLoop = true;
 
@@ -146,8 +157,18 @@ public class AlexController {
 				// loop through rows to catch each answer for radio button, advancing row index
 				// as long as questionIDs match
 				while (continueLoop) {
-					message += ("<input type='radio' name ='" + questionID + "' value='"
-							+ results.get(i).getAnswerText() + "' required>" + results.get(i).getAnswerText() + "<br>");
+					if (results.get(i).getIsCustom() == true) {
+
+						message += ("<input id='rb" + questionID
+								+ "' type='radio' onChange='customRadio(this);' name ='" + questionID + "' value='"
+								+ results.get(i).getAnswerText() + "' required>" + results.get(i).getAnswerText());
+						message += ("<input id='" + questionID + "'type='text' value='' disabled>");
+					} else {
+						message += ("<input type='radio' name ='" + questionID + "' value='"
+								+ results.get(i).getAnswerText() + "' required>" + results.get(i).getAnswerText());
+					}
+					message += ("<br>");
+
 					i++;
 					if (results.size() == i || !(questionID == results.get(i).getQuestionID())) {
 						continueLoop = false;
@@ -167,7 +188,7 @@ public class AlexController {
 				i++;
 				String answer2 = results.get(i).getAnswerText();
 
-				// split answer string to seperate values, string is formatted as "1:Minimum
+				// split answer string to separate values, string is formatted as "1:Minimum
 				// value"
 				String[] arr1 = answer1.split(":");
 				String[] arr2 = answer2.split(":");
@@ -175,12 +196,24 @@ public class AlexController {
 				// add slider input to html form
 				message += ("<input name ='" + questionID + "' type='range' min='" + arr1[0] + "' max='" + arr2[0]
 						+ "' value='5' list='tickmarks'>");
-				message += ("<datalist id='tickmarks'><option value='0' label='" + arr1[1]
-						+ "'><option value='1'><option value='2'><option value='3'><option value='4'><option value='5' ><option value='6'><option value='7'><option value='8'><option value='9'><option value='10' label='"
+				message += ("<datalist id='tickmarks'><option value='1' label='" + arr1[1]
+						+ "'><option value='2'><option value='3'><option value='4'><option value='5' ><option value='6'><option value='7'><option value='8'><option value='9'><option value='10' label='"
 						+ arr2[1] + "'></datalist><br>");
 				break;
 
 			case "drop-down":
+
+				if (questionNum > 5) {
+					String next = pageNum + 1 + ":" + questionNum+":"+(questionID-1);
+					message += ("<input hidden name = 'num' value='" + next + "'>");
+					message += ("<input type='submit' value='NEXT'></form>");
+					model.addAttribute("page" + pageNum, message);
+					pageNum++;
+					message = "";
+					questionNum = 0;
+					message = ("<form action='next' method='post'>");
+				}
+
 				questionIDs.add(String.valueOf(questionID));
 				message += ("<label>" + results.get(i).getQuestionText() + "</label><br>");
 				message += ("<select name ='" + questionID + "''>");
@@ -209,21 +242,125 @@ public class AlexController {
 				break;
 
 			}
+			questionNum++;
 		}
+		String next = pageNum + 1 + ":" + questionNum;
+		message += ("<input hidden name = 'num' value='" + next + "'>");
 		message += ("<input type='submit' value='SUBMIT'></form>");
 		tx.commit();
 
-		model.addAttribute("results", message);
+		model.addAttribute("page" + pageNum, message);
+		model1 = model;
+		model.addAttribute("survey", model.asMap().get("page1"));
 		session.close();
 
 		return "testSurvey";
 	}
 
+	@RequestMapping("/next")
+	public String nextPage(@RequestParam("num") String n, Model model, HttpServletRequest request) {
+		int pageNum = Integer.valueOf(n.split(":")[0]);
+		int qCount = Integer.valueOf(n.split(":")[1]);
+		System.out.println(n);
+		
+		System.out.println("Array:" + answers.toString());
+
+		if ((pageNum - 1) == 1) {
+			qCount -= 2;
+			Configuration config = new Configuration().configure("hibernate.cfg.xml");
+			SessionFactory sessionFactory = config.buildSessionFactory();
+			Session session = sessionFactory.openSession();
+			Transaction tx = session.beginTransaction();
+			int cohortID = Integer.valueOf(request.getParameter("cohorts"));
+			Query query = session.createSQLQuery(
+					"select cohortID , cohortname, cohortSemester, startdate  from Cohort where cohortID =" + cohortID)
+					.addEntity(Cohort.class);
+			List<Cohort> cohort = (List<Cohort>) query.list();
+
+			String startDate = cohort.get(0).getStartDate();
+			weekOfDate = setDate(startDate);
+			userId = Integer.valueOf(request.getParameter("students"));
+		}
+
+		int qID = Integer.valueOf(n.split(":")[2]) - qCount;
+		int[] watsonTopic = { 3, 7, 11, 15, 16, 19, 20, 22, 23 };
+		int[] watsonEmotion = { 1, 8, 12, 25 };
+
+		NaturalLanguageUnderstanding service = getNLUService();
+		int arrLength = answers.size();
+		for (int i = qID; i < (qCount); i++) {
+			System.out.println(i);
+			System.out.println("q:" + qCount);
+			int questionID = Integer.valueOf(questionIDs.get(i));
+
+			String watsonString = "";
+			System.out.println(questionIDs.get(i));
+			String answer = request.getParameter(questionIDs.get(i)).toString();
+			if (answer != null) {
+				System.out.println(answer);
+
+				if (!answer.equals("")) {
+					for (int j = 0; j < watsonTopic.length; j++) {
+						if (watsonTopic[j] == questionID) {
+							watsonString = WatsonTopic(answer, service);
+						}
+					}
+
+					for (int k = 0; k < watsonEmotion.length; k++) {
+						if (watsonEmotion[k] == Integer.valueOf(questionIDs.get(i))) {
+							watsonString = WatsonEmotion(answer, service);
+						}
+					}
+				}
+
+				Answer answerDto = new Answer(0, userId, questionID, surveyID, answer, watsonString, weekOfDate);
+				System.out.println(answerDto.toString());
+				answers.add(i,answerDto);
+			} else {
+				for (i = (arrLength - 1); i > (arrLength - 8); i--) {
+					System.out.println(i);
+					answers.remove(i);
+				}
+			}
+		}
+
+		String page = "page" + pageNum;
+		model.addAttribute("survey", model1.asMap().get(page));
+
+		return "testSurvey";
+	}
+
+	@RequestMapping("/back")
+	public String lastPage(@RequestParam("num") int n, Model model) {
+		String pageNum = "page" + n;
+		model.addAttribute("survey", model1.asMap().get(pageNum));
+		return "testSurvey";
+	}
+
 	@RequestMapping("/submit")
 	public String submitToDB(HttpServletRequest request, Model model) {
-		System.out.println(request.getParameter("cohort"));
-		int personID = Integer.valueOf(request.getParameter("userId"));
+		Configuration config = new Configuration().configure("hibernate.cfg.xml");
+		SessionFactory sessionFactory = config.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		System.out.println(request.getParameter("cohorts"));
+		int cohortID = Integer.valueOf(request.getParameter("cohorts"));
+		System.out.println(cohortID);
+		Query query = session.createSQLQuery(
+				"select cohortID , cohortname, cohortSemester, startdate  from cohort where cohortID =" + cohortID)
+				.addEntity(Cohort.class);
+		List<Cohort> cohort = (List<Cohort>) query.list();
+
+		String startDate = cohort.get(0).getStartDate();
+		java.sql.Date weekOfDate = setDate(startDate);
+		System.out.println(weekOfDate);
+		System.out.println(request.getParameter("students"));
+
+		int personID = Integer.valueOf(request.getParameter("students"));
+		System.out.println(personID);
+
 		int surveyID = Integer.valueOf(request.getParameter("surveyID"));
+		System.out.println(surveyID);
 
 		int[] watsonTopic = { 3, 7, 11, 15, 16, 19, 20, 22, 23 };
 		int[] watsonEmotion = { 1, 8, 12, 25 };
@@ -240,8 +377,6 @@ public class AlexController {
 			System.out.println(questionIDs.get(i));
 			String answer = request.getParameter(questionIDs.get(i)).toString();
 
-			
-
 			System.out.println(answer);
 
 			if (!answer.equals("")) {
@@ -257,8 +392,8 @@ public class AlexController {
 					}
 				}
 			}
-			
-			Answer answerDto = new Answer(0, personID, questionID, surveyID, answer, watsonString, null);
+
+			Answer answerDto = new Answer(0, personID, questionID, surveyID, answer, watsonString, weekOfDate);
 			transfer.addAnswer(answerDto);
 
 		}
@@ -295,8 +430,6 @@ public class AlexController {
 		return jsonEmotionString(results2.toString());
 	}
 
-
-
 	public String jsonKeywordString(String jsonStr) {
 		JSONObject jsonObj = new JSONObject(jsonStr);
 		JSONArray arr = jsonObj.getJSONArray("keywords");
@@ -318,60 +451,44 @@ public class AlexController {
 		JSONObject emoObj = jsonObj.getJSONObject("emotion").getJSONObject("document").getJSONObject("emotion");
 
 		Iterator<String> keys = emoObj.keys();
-		
+
 		Double maxVal = 0.0;
 		String emotion = "";
 		while (keys.hasNext()) {
-	        String key = keys.next();
+			String key = keys.next();
 			Double val = emoObj.getDouble(key);
-		    
+
 			if (maxVal < val) {
-		    		maxVal = val;
-		    		emotion = key;
-		    }
-		        
+				maxVal = val;
+				emotion = key;
+			}
+
 		}
-		
 
 		return emotion + ":" + maxVal;
 	}
-	
-	
+
 	/*
 	 * Function returns lower limit week-of-date in relation to start date
 	 */
-	public LocalDate setDate() {
-		
-		/* 	LocalDate => SQL Date
+	public java.sql.Date setDate(String str) {
 
-			LocalDate locald = LocalDate.of(1967, 06, 22);
-			Date date = Date.valueOf(locald); // Magic happens here!
-			r.setDateOfBirth(date);
-			
-		
-			SQL Date => LocalDate
-			
-			Date date = r.getDate();
-			LocalDate localD = date.toLocalDate();
-			
-		 */
-		
-		LocalDate startDate = LocalDate.of(2017, 12, 04);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDate startDate = LocalDate.parse(str, formatter);
+
 		LocalDate resultDate = startDate;
 		Long weeks = 1L;
 		boolean searching = true;
-		
-		while(searching) {
-			
-			if(LocalDate.now().isBefore(resultDate.plusWeeks(weeks))) {
+
+		while (searching) {
+
+			if (LocalDate.now().isBefore(resultDate.plusWeeks(weeks))) {
 				searching = false;
-			}
-			else {
+			} else {
 				resultDate = resultDate.plusWeeks(weeks);
 			}
 		}
-
-		return resultDate;
+		return java.sql.Date.valueOf(resultDate);
 	}
 
 }

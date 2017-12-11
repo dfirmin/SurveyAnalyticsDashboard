@@ -9,11 +9,22 @@ public class SurveyQADto implements Serializable{
 	private String questionType;
 	private int offeredAnswerID;
 	private String answerText;
+	private Boolean isCustom;
+
+	
 
 	public SurveyQADto() {
 
 	}
 
+	
+	public Boolean getIsCustom() {
+		return isCustom;
+	}
+
+	public void setIsCustom(Boolean isCustom) {
+		this.isCustom = isCustom;
+	}
 	public int getSurveyQAID() {
 		return surveyQAID;
 	}

@@ -42,7 +42,7 @@ public class DController {
 
 			return new ModelAndView("deantetest");
 		}
-	@RequestMapping("/studenttest")
+	@RequestMapping("/student")
 	public ModelAndView studentTest(Model model) {
 		
 		//Persons personDto = new Persons(0,"DeAnte","Firmin","deantedfirmin@gmail.com","Clinton Twp",1);
@@ -52,7 +52,7 @@ public class DController {
 		
 		//System.out.println(list);
 
-		return new ModelAndView("studenttest","list",list);
+		return new ModelAndView("student","list",list);
 	}
 	
 	 @RequestMapping(value = "/deleteperson", method = RequestMethod.GET)
@@ -63,7 +63,7 @@ public class DController {
 		
 		newPersonDao.deletePersons(person);
 		ArrayList<Persons> list = newPersonDao.getAllPersons();
-		return new ModelAndView("studenttest","list",list);
+		return new ModelAndView("student","list",list);
 	}
 	//takes you to addupdate person page
 		 @RequestMapping("/addupdateperson")
@@ -96,7 +96,7 @@ public class DController {
 			
 			ArrayList<Persons> list = newPersonDao.getAllPersons();
 
-			return new ModelAndView("studenttest","list",list);
+			return new ModelAndView("student","list",list);
 		}
 	
 	 
@@ -125,18 +125,15 @@ public class DController {
 		 
 		 ArrayList<Persons> list = newPersonDao.getAllPersons();
 		 
-		 return new ModelAndView("studenttest","list",list);
+		 return new ModelAndView("student","list",list);
 	
 	}
-//		@RequestMapping("/submitprofile")
-//		public ModelAndView test2(@RequestParam ("firstName") String name) {
-//			Persons personDto = new Persons(name);
-//			PersonsDaoImpl personDao = new PersonsDaoImpl();
-//			
-//			personDao.addPersons(personDto);
-//			
-//			return new ModelAndView("deantetest");
-//			
-	//
+
+	 
+	 @RequestMapping("/thedashboard")
+	 public ModelAndView dashboardIndex() {
+		 
+		 return new ModelAndView("thedashboard");
+	 }
 	 }
 

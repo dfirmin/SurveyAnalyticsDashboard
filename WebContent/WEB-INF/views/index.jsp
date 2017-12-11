@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
 <!DOCTYPE html>
 <html>
 <head>
+<link href="resources/style.css" type="text/css" rel="stylesheet">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <link rel='stylesheet' href='webjars/bootstrap/3.2.0/css/bootstrap.min.css'>
@@ -14,10 +16,10 @@
 
       <!-- Main jumbotron for a primary marketing message or call to action -->
       <div class="jumbotron">
-        <div class="container">
+        <div class="container main-container">       
           <h1 class="display-3">We are SAD: Survey Analytics Dashboard<h1>
           <p>You won't know glad, till you get SAD.</p>
-          <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more »</a></p>
+          
         </div>
       </div>
 
