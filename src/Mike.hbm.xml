@@ -79,4 +79,19 @@
 		</property>
 	</class>
 	
+	<class name="com.sad.MikesStuff.HowConfident" table="HowConfident" schema="MikeDB">
+		<id name="answerid">
+			<column name="Pid" sql-type="int(11)" length="11"></column>
+		</id>
+		<property name="userresponse">
+			<column name="UserResponse" sql-type="int(11)" length="11"></column>
+		</property>
+		<property name="week">
+			<column name="Week" sql-type="int(11)" length="11"></column>
+		</property>
+		<property name="cohortid">
+			<column name="CohortID" sql-type="float(4)" length="4"></column>
+		</property>
+	</class>
+	
 </hibernate-mapping>		
