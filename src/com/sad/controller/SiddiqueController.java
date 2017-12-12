@@ -85,7 +85,7 @@ public class SiddiqueController {
 		int month = Integer.parseInt(splitStartDate[0]);
 		int day = Integer.parseInt(splitStartDate[1]);
 		String formattedDate = year + "/" + month + "/" + day;
-
+		
 		Cohort cohortdto = new Cohort(id, cohortName, cohortSemester, formattedDate);
 		CohortDaoImpl dao = new CohortDaoImpl();
 		dao.updateCohort(cohortdto);
