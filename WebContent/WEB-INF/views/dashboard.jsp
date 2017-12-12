@@ -64,16 +64,19 @@
 			<div class="row">
 				<div class="col-md-2 sideMenu left">
 					<div class="list-group">
-						<a href="dashboard" class="list-group-item main-color-bg"> <span
+						<a href="dashboard" class=" main-color-bg menu-item"> <span
 							class="glyphicon glyphicon-cog" aria-hidden="true"></span>
 							Dashboard
-						</a> <a href="survey" class="list-group-item"><span
+						</a> 
+						<a href="survey" class="menu-item"><span
 							class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
-							Surveys <span class="badge"></span></a> <a href="cohort"
-							class="list-group-item"><span
+							Surveys <span class="badge"></span></a> 
+							<a href="cohort"
+							class=" menu-item "><span
 							class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-							Cohorts <span class="badge"></span></a> <a href="student"
-							class="list-group-item"><span
+							Cohorts <span class="badge"></span></a> 
+							<a href="student"
+							class=" menu-item"><span
 							class="glyphicon glyphicon-user" aria-hidden="true"></span>
 							Students <span class="badge"></span></a>
 					</div>
@@ -93,10 +96,12 @@
  
  				<div class="row">
  					<div class="main-pane">
-							<h1>DASHBOARD</h1>
+ 					<div class="inner-div">
+							<h1 class="pageTitle">DASHBOARD</h1>
 							<!-- Chart section -->
 							<div id="jobs_applied"></div>
 							<div id="confovertime"></div>
+					</div>
 					</div>
 </div>
 
