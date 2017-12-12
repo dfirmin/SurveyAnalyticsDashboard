@@ -1,5 +1,9 @@
 package com.sad.controller;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.mysql.jdbc.Statement;
 import com.sad.dao.AnswerDaoImpl;
 import com.sad.dao.CohortDaoImpl;
 import com.sad.dao.PersonsDaoImpl;
@@ -30,20 +35,6 @@ import com.sad.dto.Question;
 
 @Controller
 public class DController {
-
-	@RequestMapping("/deantetest")
-	public ModelAndView index(Model model) {
-
-		Persons personDto = new Persons(0, "DeAnte", "Firmin", "deantedfirmin@gmail.com", "Clinton Twp", 1);
-		PersonsDaoImpl newPersonDao = new PersonsDaoImpl();
-		newPersonDao.addPersons(personDto);
-
-		Answer answerDto = new Answer(0, 1, 1, 1, null, null, null);
-		AnswerDaoImpl newAnswerDao = new AnswerDaoImpl();
-		newAnswerDao.addAnswer(answerDto);
-
-		return new ModelAndView("deantetest");
-	}
 
 	@RequestMapping("/student")
 	public ModelAndView studentTest(Model model) {
@@ -199,17 +190,158 @@ public class DController {
 		return new ModelAndView("student", "list", list);
 
 	}
-	
-	@RequestMapping("/newdash")
-	public String exampleQuery(Model model) {
-				 Configuration config = new Configuration().configure("hibernate.cfg.xml");
-				
-				 SessionFactory sessionFactory = config.buildSessionFactory();
-				
-				 Session session = sessionFactory.openSession();
-				 Transaction tx = session.beginTransaction();
-				 SQLQuery sql = session.createSQLQuery("SELECT * FROM Answer WHERE QuestionID ");
-				 List<Object> fullList = sql.list();
-		return "";
+
+	@RequestMapping("/question3")
+	public String exampleQuery3(Model model) throws ClassNotFoundException {
+		String myDriver = "com.mysql.jdbc.Driver";
+		Class.forName(myDriver);
+		Connection conn = null;
+		try {
+
+			conn = DriverManager.getConnection(
+					"jdbc:mysql://surveydb.cukvcoyfuo0c.us-east-2.rds.amazonaws.com/SurveyDB", "survey",
+					"Surveydatabase01");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String query = ("SELECT AnswerID, WatsonResponse, CohortID FROM Answer \n" + "INNER JOIN \n" + "Persons \n"
+				+ "ON Answer.PersonID = Persons.PersonID \n" + "WHERE SurveyID = 1 && QuestionID = 3;");
+		// create the java statement
+		Statement st = null;
+		try {
+			st = (Statement) conn.createStatement();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// execute the query, and get a java resultset
+		try {
+			ResultSet rs = st.executeQuery(query);
+			while (rs.next()) {
+				int answerID = rs.getInt("AnswerID");
+				String watsonResponse = rs.getString("WatsonResponse");
+				int cohortID = rs.getInt("CohortID");
+
+				// print the results
+				System.out.println(answerID + " " + watsonResponse + " " + cohortID);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return "deantetest";
 	}
+	
+	
+	@RequestMapping("/question7")
+	public String exampleQuery7(Model model) throws ClassNotFoundException {
+		String myDriver = "com.mysql.jdbc.Driver";
+		Class.forName(myDriver);
+		Connection conn = null;
+		try {
+
+			conn = DriverManager.getConnection(
+					"jdbc:mysql://surveydb.cukvcoyfuo0c.us-east-2.rds.amazonaws.com/SurveyDB", "survey",
+					"Surveydatabase01");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String query = ("SELECT AnswerID, WatsonResponse, CohortID FROM Answer \n" + "INNER JOIN \n" + "Persons \n"
+				+ "ON Answer.PersonID = Persons.PersonID \n" + "WHERE SurveyID = 1 && QuestionID = 7;");
+		// create the java statement
+		Statement st = null;
+		try {
+			st = (Statement) conn.createStatement();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// execute the query, and get a java resultset
+		try {
+			ResultSet rs = st.executeQuery(query);
+			while (rs.next()) {
+				int answerID = rs.getInt("AnswerID");
+				String watsonResponse = rs.getString("WatsonResponse");
+				int cohortID = rs.getInt("CohortID");
+
+				// print the results
+				System.out.println(answerID + " " + watsonResponse + " " + cohortID);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return "deantetest";
+	}
+	
+	@RequestMapping("/question1")
+	public String exampleQuery1(Model model) throws ClassNotFoundException {
+		String myDriver = "com.mysql.jdbc.Driver";
+		Class.forName(myDriver);
+		Connection conn = null;
+		try {
+
+			conn = DriverManager.getConnection(
+					"jdbc:mysql://surveydb.cukvcoyfuo0c.us-east-2.rds.amazonaws.com/SurveyDB", "survey",
+					"Surveydatabase01");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String query1 = ("SELECT SUM(NumberofStudents) AS Sum FROM(SELECT WatsonResponse, COUNT(*) AS NumberofStudents\n" + 
+				"FROM Answer\n" + 
+				"WHERE QuestionID = 1 && SurveyID = 1\n" + 
+				"GROUP BY WatsonResponse) As T;");
+		String query2 = ("SELECT WatsonResponse, COUNT(*) AS NumberofStudents\n" + 
+				"FROM Answer\n" + 
+				"WHERE QuestionID = 1 && SurveyID = 1\n" + 
+				"GROUP BY WatsonResponse;");
+		// create the java statement
+		Statement st = null;
+		try {
+			st = (Statement) conn.createStatement();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// execute the query, and get a java resultset
+		try {
+			ResultSet rs1 = st.executeQuery(query1);
+			int sum = 0;
+			while(rs1.next()) {
+				sum += rs1.getInt("Sum");
+			}
+			System.out.println("The sum is " + sum);
+			ResultSet rs2 = st.executeQuery(query2);
+			String googlechart = "[['Emotion', 'Number of Students']";
+			while (rs2.next()) {
+				String watsonResponse = rs2.getString("WatsonResponse");
+				int numberOfStudents = rs2.getInt("NumberofStudents");
+				double avg = (double)numberOfStudents / sum;
+				double percentage = avg * 100;
+				System.out.println("The average is " + avg);
+				System.out.println("The percentage is " + percentage);
+				googlechart+= ",['" + watsonResponse + "',"+ percentage+"]";
+
+				
+			}
+			googlechart+= "]";
+			System.out.println(googlechart);
+			
+			model.addAttribute("chartData", googlechart);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return "deantetest";
+	}
+
 }
