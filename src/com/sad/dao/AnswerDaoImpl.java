@@ -77,5 +77,24 @@ public class AnswerDaoImpl implements AnswerDao {
 		
 
 	}
+	
+	@Override
+	public void addAnswer(ArrayList<Answer> answerArr) {
+		Configuration config = new Configuration().configure("hibernate.cfg.xml");
+
+		SessionFactory sessionFactory = config.buildSessionFactory();
+
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+
+		for (int i=0; i<answerArr.size(); i++) {
+			session.save(answerArr.get(i));
+		}
+		
+		session.flush();
+	    session.clear();
+		tx.commit();
+		session.close();
+	}
 
 }
