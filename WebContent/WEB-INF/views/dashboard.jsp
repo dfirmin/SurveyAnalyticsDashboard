@@ -22,11 +22,15 @@
 <script type="text/javascript">
 	var getConf = ${getConf};
 	var getJobsApp = ${getJobsApp};
+	var chartData = ${chartData};
+	
 	console.log(getConf);
 	console.log(getJobsApp);
 	google.charts.load('current', {
 		'packages' : [ 'corechart' ]
 	});
+	google.charts.load('current', {'packages':['bar']});
+	google.charts.setOnLoadCallback(watsonBarTest);
 	google.charts.setOnLoadCallback(confOverTime);
 	google.charts.setOnLoadCallback(jobs_applied);
 	google.charts.setOnLoadCallback(indepth_topics);

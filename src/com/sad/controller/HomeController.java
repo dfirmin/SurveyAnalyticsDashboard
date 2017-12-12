@@ -36,7 +36,12 @@ public class HomeController {
 		model.addAttribute("profileName", "Hello, " + user.getFirstName());
 		
 		DController dControl = new DController();
-		dControl.emotionChart();
+		try {
+			dControl.emotionChart(model);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		MikeHomeController mikecontroller = new MikeHomeController();
 		mikecontroller.visualizeFeeling(model);
 		
