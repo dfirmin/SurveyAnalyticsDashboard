@@ -500,7 +500,7 @@ public class AlexController {
 		}
 		return result;
 	}
-
+  
 	public String jsonEmotionString(String jsonStr) {
 
 		JSONObject jsonObj = new JSONObject(jsonStr);
@@ -521,10 +521,10 @@ public class AlexController {
 			}
 
 		}
-
-		return emotion + ":" + maxVal;
-	}
-
+ 
+		return emotion;
+	}   
+ 
 	/*
 	 * Function returns lower limit week-of-date in relation to start date
 	 */
@@ -544,7 +544,7 @@ public class AlexController {
 			} else {
 				resultDate = resultDate.plusWeeks(weeks);
 				count++;
-			}
+	   		}
 		}
 		return count + ":" + String.valueOf(resultDate);
 	}
