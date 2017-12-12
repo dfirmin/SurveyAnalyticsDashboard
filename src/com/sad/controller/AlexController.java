@@ -38,6 +38,7 @@ import com.sad.dto.Persons;
 import com.sad.dto.Survey;
 import com.sad.dto.SurveyQADto;
 import com.sad.dto.Users;
+import com.sad.info.Credentials;
 
 @Controller
 public class AlexController {
@@ -452,14 +453,15 @@ public class AlexController {
 		for (int i = 0; i < answers.size(); i++) {
 			transfer.addAnswer(answers.get(i));
 		}
-
 		return "success";
 	}
+	
 
 	public NaturalLanguageUnderstanding getNLUService() {
+		Credentials watson = new Credentials();
 		NaturalLanguageUnderstanding service = new NaturalLanguageUnderstanding(
-				NaturalLanguageUnderstanding.VERSION_DATE_2017_02_27, "16e04451-f41c-4ff2-9d71-2b82a2885591",
-				"gE4g5KcU6B0h");
+				NaturalLanguageUnderstanding.VERSION_DATE_2017_02_27, watson.getWatsonUsername(),
+				watson.getWatsonPassword());
 		return service;
 	}
 
