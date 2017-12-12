@@ -22,16 +22,18 @@ import com.sad.dto.Persons;
 import com.sad.dto.SurveyQADto;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-/*import com.google.visualization.datasource.base.TypeMismatchException;
+import com.google.visualization.datasource.base.TypeMismatchException;
 import com.google.visualization.datasource.datatable.ColumnDescription;
 import com.google.visualization.datasource.datatable.DataTable;
 import com.google.visualization.datasource.datatable.TableRow;
 import com.google.visualization.datasource.datatable.value.ValueType;
-import com.google.visualization.datasource.render.JsonRenderer;*/
+import com.google.visualization.datasource.render.JsonRenderer;
 import com.sad.MikesStuff.HowConfident;
 import com.sad.MikesStuff.HowConfidentDaoImpl;
 import com.sad.MikesStuff.Jobs_Applied;
 import com.sad.MikesStuff.Jobs_AppliedDaoImpl;
+import com.sad.MikesStuff.ProgramManagement;
+import com.sad.MikesStuff.ProgramManagementDaoImpl;
 import com.sad.MikesStuff.QOptions;
 import com.sad.MikesStuff.QOptionsDaoImpl;
 import com.sad.MikesStuff.Results;
@@ -57,9 +59,44 @@ public class MikeHomeController {
 		confidenceChart(model);
 		jobs_applied(model);
 		howConfident(model);
+		instructor(model);
+		//materialPace(model);
+		//helfulness(model);
+		//conduciveLearning(model);
+		
+		
 		//OPTION 1
 		
 		return "visual";
+	}
+	
+	public static void instructor(Model model) {
+		ArrayList<ProgramManagement> resultList = new ProgramManagementDaoImpl().getAllPM();
+		
+		String[] emotion_options = new String[]{"JOY", "ANGER", "DISGUST", "SADNESS", "FEAR"};
+		//String js = "[['Joy', 'Anger', 'Disgust', 'Sadness', 'Fear'],";
+		String js = "[['Emotion', 'Count'],";
+		
+		for (int i=0; i<emotion_options.length;i++) {
+			int count = 0;
+			js += "['" + emotion_options[i];
+			for (int r=0; r<resultList.size(); r++) {
+				if (resultList.get(r).getWatsonresponse().contains(emotion_options[i])) {
+					count += 1;
+				}
+			}
+			js += "'," + count + "]";
+			if (i != emotion_options.length-1) {
+				js += ",";
+			}
+		}
+		
+		js += "]";
+		
+		System.out.println("Found: " + js);
+		
+		model.addAttribute("Instructor_el", js);
+		
 	}
 	
 	public static void howConfident(Model model) {
