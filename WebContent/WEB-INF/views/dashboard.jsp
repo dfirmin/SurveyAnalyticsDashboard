@@ -6,19 +6,27 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Dashboard</title>
 <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+
+<link
+	href="https://fonts.googleapis.com/css?family=Barlow+Condensed:400,500|Roboto:400,700"
+	rel="stylesheet">
 <link rel='stylesheet'
 	href='webjars/bootstrap/3.2.0/css/bootstrap.min.css'>
+<link href="resources/css/style.css" type="text/css" rel="stylesheet">
+
 <script type="text/javascript"
 	src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="resources/js/confovertime.js"></script>
 <script src="resources/js/jobs_applied.js"></script>
 <script src="resources/js/indepth_topics.js"></script>
 <script type="text/javascript">
-	var getConf = ${getConf };
-	var getJobsApp = ${getJobsApp };
+	var getConf = ${getConf};
+	var getJobsApp = ${getJobsApp};
 	console.log(getConf);
 	console.log(getJobsApp);
-	google.charts.load('current', {'packages':['corechart']});
+	google.charts.load('current', {
+		'packages' : [ 'corechart' ]
+	});
 	google.charts.setOnLoadCallback(confOverTime);
 	google.charts.setOnLoadCallback(jobs_applied);
 	google.charts.setOnLoadCallback(indepth_topics);
@@ -27,30 +35,34 @@
 <body>
 
 
-	<header id="header">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-10">
-					<h1>
-						<img src="resources/sad_logo.png" height="50px" width="88px"><small>Grand Circus</small>
-					</h1>
-				</div>
-			</div>
-		</div>
-	</header>
+	<nav class="top navbar navbar-expand-lg navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-header">
 
-	<section id="breadcrumb">
-		<div class="container">
-			<ol class="breadcrumb">
-				<li class="">Dashboard</li>
-			</ol>
+				<a class="navbar-brand" href="#"><img
+					style="height: 50px; width: 88px" src="resources/sad_logo.png">
+					<h1 class="logoHeader">SURVEY ANALYTICS DASHBOARD</h1> </a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+
+				<ul
+					class="nav navbar-nav navbar-right mr-sm                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ">
+					<li class="nav-item"><a href="loginPage">Profile</a></li>
+				</ul>
+
+			</div>
+			<!--/.nav-collapse -->
 		</div>
-	</section>
+		<!--/.container-fluid -->
+	</nav>
+
+ 
+ 
 
 	<section id="main">
-		<div class="container">
+		<div class="container container-db">
 			<div class="row">
-				<div class="col-md-3">
+				<div class="col-md-2 sideMenu left">
 					<div class="list-group">
 						<a href="dashboard" class="list-group-item main-color-bg"> <span
 							class="glyphicon glyphicon-cog" aria-hidden="true"></span>
@@ -68,16 +80,29 @@
 
 
 				</div>
-				<div class="col-md-9">
-					<!-- Chart section -->
-					<div id="jobs_applied"></div>
-					<div id="confovertime"></div>
+				<div class="col-md-10 content">
 
+					<!-- <section id="breadcrumb">
+						<div class="container ">
+							<ol class="breadcrumb">
+								<li class="">Dashboard</li>
+							</ol>
+						</div>
+					</section>
+ -->
+ 
+ 				<div class="row">
+ 					<div class="main-pane">
+							<h1>DASHBOARD</h1>
+							<!-- Chart section -->
+							<div id="jobs_applied"></div>
+							<div id="confovertime"></div>
+					</div>
+</div>
 
-
-
-				</div>
+				
 			</div>
+		</div>
 		</div>
 	</section>
 
@@ -94,6 +119,7 @@
 	<script src="resources/js/jobs_applied.js"></script>
 	<script src="resources/js/indepth_topics.js"></script>
 	<script type="text/javascript">
- 
-</body>
-</html>
+		</body>
+		
+		</html>
+	
