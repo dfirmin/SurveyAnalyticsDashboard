@@ -10,6 +10,8 @@ public interface AnswerDao {
 	
 
 	void addAnswer(Answer answer);
+	
+	void addAnswer(ArrayList<Answer> answers);
 
 	void deleteAnswer(Answer answer);
 
