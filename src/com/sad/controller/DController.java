@@ -280,8 +280,8 @@ public class DController {
 		return "deantetest";
 	}
 	
-	@RequestMapping("/question1")
-	public String exampleQuery1(Model model) throws ClassNotFoundException {
+	//@RequestMapping("/question1")
+	public static void emotionChart(Model model) throws ClassNotFoundException {
 		String myDriver = "com.mysql.jdbc.Driver";
 		Class.forName(myDriver);
 		Connection conn = null;
@@ -341,7 +341,7 @@ public class DController {
 			e.printStackTrace();
 		}
 
-		return "deantetest";
+		//return "deantetest";
 	}
 
 }
