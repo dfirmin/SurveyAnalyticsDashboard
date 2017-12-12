@@ -96,6 +96,7 @@ h1 {
   height: 100vh;
   /* percent relative to viewport height */
   float: left;
+  overflow-y: scroll;
   overflow: scroll;
 }
 
