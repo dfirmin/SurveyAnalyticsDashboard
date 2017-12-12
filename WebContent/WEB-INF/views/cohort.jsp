@@ -17,7 +17,7 @@ th {
 
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Classes</title>
+<title>Cohorts</title>
 <meta name="viewport" content="initial-scale=1, maximum-scale=1">
 <link
     href="https://fonts.googleapis.com/css?family=Barlow+Condensed:400,500|Roboto:400,700"
@@ -25,23 +25,7 @@ th {
 <link rel='stylesheet'
     href='webjars/bootstrap/3.2.0/css/bootstrap.min.css'>
 <link href="resources/css/style.css" type="text/css" rel="stylesheet">
-<script type="text/javascript"
-    src="https://www.gstatic.com/charts/loader.js"></script>
-<script src="resources/js/confovertime.js"></script>
-<script src="resources/js/jobs_applied.js"></script>
-<script src="resources/js/indepth_topics.js"></script>
-<script type="text/javascript">
-    var getConf = ${getConf};
-    var getJobsApp = ${getJobsApp};
-    console.log(getConf);
-    console.log(getJobsApp);
-    google.charts.load('current', {
-        'packages' : [ 'corechart' ]
-    });
-    google.charts.setOnLoadCallback(confOverTime);
-    google.charts.setOnLoadCallback(jobs_applied);
-    google.charts.setOnLoadCallback(indepth_topics);
-</script>
+
 </head>
 <body>
     <nav class="top navbar navbar-expand-lg navbar-default">
@@ -87,9 +71,9 @@ th {
 						<a href="addCohort">Add Cohort</a> <br> <br> <br>
 						<table class="table-striped table-bordered table-hover" cellspacing="10">
 						<tr>
-								<th style="text-align: center">Class</th>
-								<th style="text-align: center">Semester</th>
-								<th style="text-align: center">Start Date</th>
+								<th>Class</th>
+								<th>Semester</th>
+								<th>Start Date</th>
 							</tr>
 							<c:forEach var="myVar" items="${cohortID}" varStatus="status">
 								<tr>
@@ -112,12 +96,6 @@ th {
 			</div>
 		</div>
 	</section>
- 
-    <script type="text/javascript"
-        src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="resources/js/confovertime.js"></script>
-    <script src="resources/js/jobs_applied.js"></script>
-    <script src="resources/js/indepth_topics.js"></script>
     
         </body>
         
