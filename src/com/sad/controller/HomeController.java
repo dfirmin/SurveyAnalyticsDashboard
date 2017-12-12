@@ -26,7 +26,7 @@ public class HomeController {
 	}
 	@RequestMapping("/dashboard")
 	public String showDashboard(HttpSession session,Model model) {
-		
+			
 		if (session.getAttribute("user") == null) {
 			
 			return "loginPage";
@@ -37,7 +37,7 @@ public class HomeController {
 		
 		DController dControl = new DController();
 		try {
-			dControl.emotionChart(model);
+			DController.emotionChart(model);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

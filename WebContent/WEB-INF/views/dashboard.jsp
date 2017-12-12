@@ -19,6 +19,8 @@
 <script src="resources/js/confovertime.js"></script>
 <script src="resources/js/jobs_applied.js"></script>
 <script src="resources/js/indepth_topics.js"></script>
+<script src="resources/js/watsontest.js"></script>
+
 <script type="text/javascript">
 	var getConf = ${getConf};
 	var getJobsApp = ${getJobsApp};
@@ -105,6 +107,7 @@
 							<!-- Chart section -->
 							<div id="jobs_applied"></div>
 							<div id="confovertime"></div>
+							<div id="watsonTestChart"></div>
 					</div>
 					</div>
 </div>
