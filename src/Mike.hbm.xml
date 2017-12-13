@@ -109,4 +109,19 @@
 		</property>
 	</class>
 	
+	<class name="com.sad.MikesStuff.WhatConf" table="WhatConf" schema="MikeDB">
+		<id name="pid">
+			<column name="Pid" sql-type="int(11)" length="11"></column>
+		</id>
+		<property name="cohortid">
+			<column name="CohortID" sql-type="int(11)" length="11"></column>
+		</property>
+		<property name="watsonresponse">
+			<column name="UserResponse" sql-type="varchar(255)" length="255"></column>
+		</property>
+		<property name="count">
+			<column name="count" sql-type="int(11)" length="11"></column>
+		</property>
+	</class>
+	
 </hibernate-mapping>		
