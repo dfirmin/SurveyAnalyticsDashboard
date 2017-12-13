@@ -10,14 +10,14 @@ import org.hibernate.cfg.Configuration;
 import org.springframework.ui.Model;
 
 import com.sad.dto.Answer;
+import com.sad.util.HibernateUtil;
 
 public class AnswerDaoImpl implements AnswerDao {
-
+	private static SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	
 	@Override
 	public ArrayList<Answer> getAllAnswers() {
-		Configuration config = new Configuration().configure("hibernate.cfg.xml");
-
-		SessionFactory sessionFactory = config.buildSessionFactory();
+	
 
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
@@ -31,11 +31,9 @@ public class AnswerDaoImpl implements AnswerDao {
 
 	@Override
 	public void updateAnswer(Answer answer) {
-		Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
+		
 
-		SessionFactory sessionFact = cfg.buildSessionFactory();
-
-		Session codes = sessionFact.openSession();
+		Session codes = sessionFactory.openSession();
 
 		codes.beginTransaction();
 
@@ -47,11 +45,8 @@ public class AnswerDaoImpl implements AnswerDao {
 
 	@Override
 	public void deleteAnswer(Answer answer) {
-		Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
-
-		SessionFactory sessionFact = cfg.buildSessionFactory();
-
-		Session session = sessionFact.openSession();
+		
+		Session session = sessionFactory.openSession();
 
 		session.beginTransaction();
 
@@ -64,10 +59,7 @@ public class AnswerDaoImpl implements AnswerDao {
 
 	@Override
 	public void addAnswer(Answer newAnswer) {
-		Configuration config = new Configuration().configure("hibernate.cfg.xml");
-
-		SessionFactory sessionFactory = config.buildSessionFactory();
-
+	
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 
@@ -80,10 +72,7 @@ public class AnswerDaoImpl implements AnswerDao {
 	
 	@Override
 	public void addAnswer(ArrayList<Answer> answerArr) {
-		Configuration config = new Configuration().configure("hibernate.cfg.xml");
-
-		SessionFactory sessionFactory = config.buildSessionFactory();
-
+		
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 

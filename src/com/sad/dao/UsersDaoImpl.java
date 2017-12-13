@@ -12,14 +12,15 @@ import org.hibernate.criterion.Restrictions;
 
 import com.sad.dto.Survey;
 import com.sad.dto.Users;
+import com.sad.util.HibernateUtil;
 
 public class UsersDaoImpl implements UsersDao {
+	
+	private static SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
 	@Override
 	public ArrayList<Users> getAllUsers() {
-		Configuration config = new Configuration().configure("hibernate.cfg.xml");
-
-		SessionFactory sessionFactory = config.buildSessionFactory();
+		
 
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
@@ -32,9 +33,7 @@ public class UsersDaoImpl implements UsersDao {
 	
 	@Override
 	public ArrayList<Users> getAllUsers(String column, String str) {
-		Configuration config = new Configuration().configure("hibernate.cfg.xml");
-
-		SessionFactory sessionFactory = config.buildSessionFactory();
+		
 
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
@@ -49,11 +48,9 @@ public class UsersDaoImpl implements UsersDao {
 
 	@Override
 	public void updateUsers(Users user) {
-		Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
+		
 
-		SessionFactory sessionFact = cfg.buildSessionFactory();
-
-		Session codes = sessionFact.openSession();
+		Session codes = sessionFactory.openSession();
 
 		codes.beginTransaction();
 
@@ -65,11 +62,9 @@ public class UsersDaoImpl implements UsersDao {
 
 	@Override
 	public void deleteUsers(Users user) {
-		Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
+		
 
-		SessionFactory sessionFact = cfg.buildSessionFactory();
-
-		Session session = sessionFact.openSession();
+		Session session = sessionFactory.openSession();
 
 		session.beginTransaction();
 
@@ -81,9 +76,7 @@ public class UsersDaoImpl implements UsersDao {
 
 	@Override
 	public void addUsers(Users newUser) {
-		Configuration config = new Configuration().configure("hibernate.cfg.xml");
-
-		SessionFactory sessionFactory = config.buildSessionFactory();
+		
 
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();

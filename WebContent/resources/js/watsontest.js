@@ -2,8 +2,8 @@ function watsonBarTest() {
 	var data = google.visualization.arrayToDataTable(chartData);
 
 	var options = {
-		title : 'Watson Test',
-		width : 700,
+		title : 'Watson Emotion Chart',
+		//width : 900,
 		legend : {
 			position : 'none'
 		},
@@ -11,13 +11,7 @@ function watsonBarTest() {
 			title : 'Watson Test',
 			subtitle : 'popularity by percentage'
 		},
-		hAxis : {
-			viewWindowMode: 'explicit',
-			viewWindow : {
-				min : 0,
-				max : 100
-			}
-		},
+		
 		bars : 'horizontal', // Required for Material Bar Charts.
 		axes : {
 			x : {
@@ -29,7 +23,7 @@ function watsonBarTest() {
 			}
 		},
 		bar : {
-			groupWidth : "50%"
+			groupWidth : "90%"
 		}
 	};
 

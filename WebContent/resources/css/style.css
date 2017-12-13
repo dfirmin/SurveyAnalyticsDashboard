@@ -65,6 +65,7 @@ h1 {
 .main-pane {
   margin: 3%;
   background-color: #fff;
+  min-height: 90vh;
 }
 
 .inner-div {
