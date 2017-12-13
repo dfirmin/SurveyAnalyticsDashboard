@@ -20,8 +20,7 @@ google.charts.load('current', {'packages':['corechart']});
 
         var options = {
               title: 'Number of Jobs Applied',
-              width:500,
-              height:400	  
+              is3D: true
             };
 
         var chart = new google.visualization.PieChart(document.getElementById('jobs_applied'));

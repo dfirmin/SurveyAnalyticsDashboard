@@ -5,45 +5,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.sad.dao.PersonsDaoImpl;
-import com.sad.dto.Answer;
-import com.sad.dto.Cohort;
-import com.sad.dto.Offered_Answer;
-import com.sad.dto.Persons;
-import com.sad.dto.SurveyQADto;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.visualization.datasource.base.TypeMismatchException;
-import com.google.visualization.datasource.datatable.ColumnDescription;
-import com.google.visualization.datasource.datatable.DataTable;
-import com.google.visualization.datasource.datatable.TableRow;
-import com.google.visualization.datasource.datatable.value.ValueType;
-import com.google.visualization.datasource.render.JsonRenderer;
 import com.sad.MikesStuff.HowConfident;
 import com.sad.MikesStuff.HowConfidentDaoImpl;
 import com.sad.MikesStuff.Jobs_Applied;
 import com.sad.MikesStuff.Jobs_AppliedDaoImpl;
 import com.sad.MikesStuff.ProgramManagement;
 import com.sad.MikesStuff.ProgramManagementDaoImpl;
-import com.sad.MikesStuff.QOptions;
-import com.sad.MikesStuff.QOptionsDaoImpl;
-import com.sad.MikesStuff.Results;
-import com.sad.MikesStuff.ResultsDao;
-import com.sad.MikesStuff.ResultsDaoImpl;
 import com.sad.MikesStuff.SummaryResult;
 import com.sad.MikesStuff.SummaryResultDaoImpl;
-import com.sad.dao.CohortDaoImpl;
-import com.sad.dao.Offered_AnswerDaoImpl;
-import org.json.simple.JSONArray;
 
 @Controller
 public class MikeHomeController {
@@ -60,6 +33,7 @@ public class MikeHomeController {
 		jobs_applied(model);
 		howConfident(model);
 		instructor(model);
+		moreConf(model);
 		//materialPace(model);
 		//helfulness(model);
 		//conduciveLearning(model);
@@ -70,27 +44,45 @@ public class MikeHomeController {
 		return "visual";
 	}
 	
+	public static void moreConf(Model model) {
+		
+	}
+	
 	public static void instructor(Model model) {
 		ArrayList<ProgramManagement> resultList = new ProgramManagementDaoImpl().getAllPM();
 		
 		String[] emotion_options = new String[]{"JOY", "ANGER", "DISGUST", "SADNESS", "FEAR"};
-		//String js = "[['Joy', 'Anger', 'Disgust', 'Sadness', 'Fear'],";
-		String js = "[['Emotion', 'Count'],";
+		String[] instructor_list = new String[]{"ANTONELLA", "MAURICE", "PETER", "KAMAL", "ADAM", "J-C"};
+		String js = "[['Emotion', 'Joy', 'Anger', 'Disgust', 'Sadness', 'Fear'],";
 		
-		for (int i=0; i<emotion_options.length;i++) {
-			int count = 0;
-			js += "['" + emotion_options[i];
-			for (int r=0; r<resultList.size(); r++) {
-				if (resultList.get(r).getWatsonresponse().contains(emotion_options[i])) {
-					count += 1;
+		for (int i=0; i<instructor_list.length; i++) {
+			js += "['" + instructor_list[i] + "',";
+			int getQID = 0;
+			if(i==0 || i==2 || i==4) {
+				getQID = 5;
+			}
+			else {
+				getQID = 9;
+			}
+			for (int e=0; e<emotion_options.length;e++) {
+				int count = 0;
+				for (int r=0; r<resultList.size();r++) {
+					if (resultList.get(r).getQuestionid()==getQID && resultList.get(r).getUserresponse().contains(instructor_list[i])) {
+						if (resultList.get(r+3).getWatsonresponse().contains(emotion_options[e])) {
+							count+=1;
+						}
+					}
+				}
+				js += count;
+				if (e != emotion_options.length-1) {
+					js += ",";
 				}
 			}
-			js += "'," + count + "]";
-			if (i != emotion_options.length-1) {
-				js += ",";
+			js+="]";
+			if (i != instructor_list.length-1) {
+				js +=",";
 			}
 		}
-		
 		js += "]";
 		
 		System.out.println("Found: " + js);
@@ -126,70 +118,6 @@ public class MikeHomeController {
 		System.out.println(js_statement);
 		
 		model.addAttribute("getHowConf", js_statement);
-		/*
-		for (int i = 0; i<resultList.size();i++) {
-			System.out.println(resultList.get(i).toString());
-		}
-		
-		String js_statement = "[";
-		
-		
-		for (int r=0; r<resultList.size(); r++) {
-			js_statement += "[" + resultList.get(r).getWeek() +"," +
-								resultList.get(r).getUserresponse() + "," + 
-								resultList.get(r).getCohortid() + "]";
-			
-			if (r != resultList.size()-1) {
-				js_statement += ",";
-			}
-			else {
-				js_statement += "]";
-			}
-		}
-		model.addAttribute("getHowConf", js_statement);
-		*/
-		
-		
-		
-		
-		/*
-		var data = new google.visualization.DataTable();
-        data.addColumn('number', 'Student ID');
-        data.addColumn('number', 'Hours Studied');
-        data.addColumn('number', 'Final');
-
-        data.addRows([
-          [0, 0, 67, 5],  [1, 1, 88, 5],   [2, 2, 77, 5],
-          [3, 3, 93, 5],  [4, 4, 85, 5],   [5, 5, 91, 5],
-          [6, 6, 71, 5],  [7, 7, 78, 5],   [8, 8, 93, 5],
-          [9, 9, 80, 5],  [10, 10, 82, 5], [11, 0, 75, 5],
-          [12, 5, 80, 5], [13, 3, 90, 5],  [14, 1, 72, 5],
-          [15, 5, 75, 5], [16, 6, 68, 5],  [17, 7, 98, 5],
-          [18, 3, 82, 5], [19, 9, 94, 5],  [20, 2, 79, 5],
-          [21, 2, 95, 5], [22, 2, 86, 5],  [23, 3, 67, 5],
-          [24, 4, 60, 5], [25, 2, 80, 5],  [26, 6, 92, 5],
-          [27, 2, 81, 5], [28, 8, 79, 5],  [29, 9, 83, 5]
-        ]);
-
-        var materialOptions = {
-          chart: {
-            title: 'Students\' Final Grades',
-            subtitle: 'based on hours studied'
-          },
-          width: 800,
-          height: 500,
-          series: {
-            0: {axis: 'hours studied'},
-            1: {axis: 'final grade'}
-          },
-          axes: {
-            y: {
-              'hours studied': {label: 'Hours Studied'},
-              'final grade': {label: 'Final Exam Grade'}
-            }
-          }
-        };
-        */
 	}
 	
 public static void jobs_applied(Model model) {
