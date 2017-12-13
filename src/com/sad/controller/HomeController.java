@@ -52,8 +52,68 @@ public class HomeController {
 	}
 	
 	@RequestMapping("/profilepage")
-	public String showProfile() {
+	public String showProfile(HttpSession session, Model model) {
+		if (session.getAttribute("user") == null) {
+			showDashboard(session, model);
+			return "loginPage";
+		}
+		Users user = (Users)session.getAttribute("user");
+		
+		String message = ("<h1 class='pageTitle'>PROFILE</h1>");
+		message += ("<h2>"+user.getFirstName()+" "+user.getLastName()+"</h2>");
+		message += ("<p>"+user.getEmail()+"</p>");
+		message += ("<a href='editprofile'>Edit Profile</a>");
+		
+		model.addAttribute("profile", message);
+		
 		return "profilepage";
+	}
+	
+	@RequestMapping("/editprofile")
+	public String editProfile(HttpSession session, Model model) {
+		if (session.getAttribute("user") == null) {
+			showDashboard(session, model);
+			return "loginPage";
+		}
+		Users user = (Users)session.getAttribute("user");
+		
+		String message = ("<h1 class='pageTitle'>EDIT PROFILE</h1>");
+		message += ("<form action='updateUser' method='post'>");
+		message += ("<input type='text' name='firstName' placeholder='"+user.getFirstName()+"'><br> ");
+		message += ("<input type='text' name='lastName' placeholder='"+user.getLastName()+"'><br> ");
+		message += ("<input type='email' name='email' placeholder='"+user.getEmail()+"'><br> ");
+		message += ("<input type='password' pattern='.{6,}' title='Six or more characters.' id='password' name='password' placeholder='New Password'><br> ");
+		message += ("<input type='password' id='confirm_password' name='password2' placeholder='Confirm Password'><br> ");
+		message += ("<input type='submit' value='UPDATE'></form>");
+
+		
+
+
+		message += ("<p>"+user.getEmail()+"</p>");
+		message += ("<a href='editprofile'>Edit Profile</a>");
+		
+		model.addAttribute("editprofile", message);
+		
+		return "editprofile";
+	}
+	@RequestMapping("/updateUser")
+	public String updateUser(HttpSession session, Model model, @RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName, @RequestParam("email") String email, @RequestParam("password") String password) {
+		if (session.getAttribute("user") == null) {
+			showDashboard(session, model);
+			return "loginPage";
+		}
+		Users user = (Users)session.getAttribute("user");
+		user.setEmail(email);
+		user.setFirstName(firstName);
+		user.setLastName(lastName);
+		user.setPassword(password);
+
+		UsersDaoImpl transfer = new UsersDaoImpl();
+		transfer.updateUsers(user);
+		
+		session.setAttribute("user", user);
+		
+		return "profilePage";
 	}
 
 	@RequestMapping("/loginPage")

@@ -349,7 +349,9 @@ public class AlexController {
 
 		if (ended == 1) {
 			AnswerDaoImpl transfer = new AnswerDaoImpl();
-			transfer.addAnswer(answers);
+			for(int i=0; i < answers.size(); i++) {
+			transfer.addAnswer(answers.get(i));
+			}
 			return "success";
 		}
 
