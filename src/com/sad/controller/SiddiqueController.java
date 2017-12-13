@@ -122,6 +122,10 @@ public class SiddiqueController {
 
 		return "updateCohort";
 	}
+	
+	//This allows you to update a specific cohort by semester and start date
+	@RequestMapping("addSection")
+	public String updateSection(@RequestParam())
 
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
 	public ModelAndView update(@RequestParam("id") int id, @RequestParam("cohortName") String cohortName,
