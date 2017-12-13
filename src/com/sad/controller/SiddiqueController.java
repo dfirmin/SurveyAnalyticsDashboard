@@ -101,6 +101,8 @@ public class SiddiqueController {
 		return new ModelAndView("cohort", "cohortID", listCohort);
 	}
 
+	//This allows you update based upon cohort
+	//It displays the cohortName and cohortID on the update cohort page
 	@RequestMapping("updatecohortform")
 	public String updateForm(@RequestParam("id") int id, @RequestParam("cohortName") String cohortName, Model model) {
 		model.addAttribute("cohortID", id);

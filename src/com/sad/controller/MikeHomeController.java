@@ -27,7 +27,7 @@ public class MikeHomeController {
 		return "index";
 	}
 	@RequestMapping("/v")
-	public String visualizeFeeling(Model model) {
+	public static String visualizeFeeling(Model model) {
 		
 		confidenceChart(model);
 		jobs_applied(model);

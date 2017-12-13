@@ -1,12 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Dashboard</title>
-<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+<style>
+table {
+	border: 1px solid black;
+	width: 100%;
+	text-align: center;
+}
 
+th {
+	color: black;
+}
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Cohorts</title>
+<meta name="viewport" content="initial-scale=1, maximum-scale=1">
 <link
 	href="https://fonts.googleapis.com/css?family=Barlow+Condensed:400,500|Roboto:400,700"
 	rel="stylesheet">
@@ -14,95 +25,85 @@
 	href='webjars/bootstrap/3.2.0/css/bootstrap.min.css'>
 <link href="resources/css/style.css" type="text/css" rel="stylesheet">
 
-<script type="text/javascript"
-	src="https://www.gstatic.com/charts/loader.js"></script>
-<script src="resources/js/confovertime.js"></script>
-<script src="resources/js/jobs_applied.js"></script>
-<script src="resources/js/indepth_topics.js"></script>
-<script src="resources/js/watsontest.js"></script>
-
-<script type="text/javascript">
-	var getConf = ${getConf};
-	var getJobsApp = ${getJobsApp};
-	var chartData = ${chartData};
-	
-	console.log(getConf);
-	console.log(getJobsApp);
-	google.charts.load('current', {
-		'packages' : [ 'corechart' ]
-	});
-	google.charts.load('current', {'packages':['bar']});
-	google.charts.setOnLoadCallback(watsonBarTest);
-	google.charts.setOnLoadCallback(confOverTime);
-	google.charts.setOnLoadCallback(jobs_applied);
-	google.charts.setOnLoadCallback(indepth_topics);
-</script>
 </head>
 <body>
-
-
 	<nav class="top navbar navbar-expand-lg navbar-default">
 		<div class="container-fluid">
 			<div class="navbar-header">
-
 				<a class="navbar-brand" href="#"><img
 					style="height: 50px; width: 88px" src="resources/sad_logo.png">
 					<h1 class="logoHeader">SURVEY ANALYTICS DASHBOARD</h1> </a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
-
 				<ul
 					class="nav navbar-nav navbar-right mr-sm                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ">
 					<li class="nav-item"><a href="loginPage">Profile</a></li>
 				</ul>
-
 			</div>
 			<!--/.nav-collapse -->
 		</div>
 		<!--/.container-fluid -->
 	</nav>
 
-
-
-
 	<section id="main">
 		<div class="container container-db">
 			<div class="row">
 				<div class="col-md-2 sideMenu left">
 					<div class="list-group">
-						<a href="dashboard" class=" main-color-bg menu-item"> <span
+						<a href="dashboard" class="list-group-item main-color-bg"> <span
 							class="glyphicon glyphicon-cog" aria-hidden="true"></span>
 							Dashboard
-						</a> <a href="survey" class="menu-item"><span
+						</a> <a href="survey" class="list-group-item"><span
 							class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
 							Surveys <span class="badge"></span></a> <a href="cohort"
-							class=" menu-item "><span class="glyphicon glyphicon-pencil"
-							aria-hidden="true"></span> Cohorts <span class="badge"></span></a> <a
-							href="student" class=" menu-item"><span
+							class="list-group-item"><span
+							class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+							Cohorts <span class="badge"></span></a> <a href="student"
+							class="list-group-item"><span
 							class="glyphicon glyphicon-user" aria-hidden="true"></span>
 							Students <span class="badge"></span></a>
 					</div>
-
-
 				</div>
-				<div class="col-md-10 content">
+				<div class="col-md-10">
 
-					<!-- <section id="breadcrumb">
-						<div class="container ">
-							<ol class="breadcrumb">
-								<li class="">Dashboard</li>
-							</ol>
-						</div>
-					</section>
- -->
+					<div>
+						<table class="table-striped table-bordered table-hover">
+							<a href="#">Add Question</a>
+							<tr>
+								<th></th>
+								<th>SurveyQA ID</th>
+								<th>Question ID</th>
+								<th>Question Text</th>
+								<th>Question Type</th>
+								<th>Offered Answer ID</th>
+								<th>Answer Text</th>
+								<th>isCustom?</th>
+							</tr>
 
-					<div class="row">
-						<div class="main-pane">
-							<div class="inner-div">
-								<h1 class="pageTitle">DASHBOARD</h1>
-							</div>
-							<a href="modifySurvey">Survey 1</a>
-						</div>
+							<tbody>
+
+								<c:forEach var="myVar" items="${surveyQuestions}">
+									<tr>
+										<td></td>
+										<td>${myVar.surveyQAID}</td>
+										<td>${myVar.questionID}</td>
+										<td>${myVar.questionText}</td>
+										<td>${myVar.questionType}</td>
+										<td>${myVar.offeredAnswerID}</td>
+										<td>${myVar.answerText}</td>
+										<td>${myVar.isCustom}</td>
+
+										<td><a href="deleteperson?id=${myVar.surveyQAID}">
+												Delete </a></td>
+										<td><a href="addupdateperson?id=${myVar.surveyQAID}">
+												Update </a></td>
+
+
+									</tr>
+
+								</c:forEach>
+							</tbody>
+						</table>
 					</div>
 
 
@@ -111,18 +112,28 @@
 		</div>
 	</section>
 
-	<!--<div id="interviews"></div>
-	<div id="indepth_topics"></div>
-	<div id="what_make_conf"></div>
-	<div id="material_pace"></div>
-	<div id="conducive_learning"></div>-->
+</body>
+
+</html>
 
 
-	<script type="text/javascript"
-		src="https://www.gstatic.com/charts/loader.js"></script>
-	<script src="resources/js/confovertime.js"></script>
-	<script src="resources/js/jobs_applied.js"></script>
-	<script src="resources/js/indepth_topics.js"></script>
-	<script type="text/javascript">
 
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
