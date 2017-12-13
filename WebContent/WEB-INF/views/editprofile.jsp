@@ -87,6 +87,7 @@
 			</div>
 		</div>
 	</section>
+	<script type="text/javascript" src="webjars/jquery/2.1.1/jquery.min.js"></script>
 <script>
 var password = document.getElementById("password"), confirm_password = document
 .getElementById("confirm_password");
@@ -98,6 +99,25 @@ confirm_password.setCustomValidity("Passwords Don't Match");
 confirm_password.setCustomValidity('');
 }
 }
+
+$('form').submit(function(){
+
+    var input = $('#firstName')
+    var entry = input.get('placeholder');
+    if(input == ''){
+         $('#firstName').val =  entry;
+    }
+		input = $('#lastName')
+    entry = input.get('placeholder');
+    if(input == ''){
+         $('#lastName').val =  entry;
+    }
+		input = $('#email')
+    entry = input.get('placeholder');
+    if(input == ''){
+         $('#email').val =  entry;
+    }
+});
 
 password.onkeyup = validatePassword;
 confirm_password.onkeyup = validatePassword;

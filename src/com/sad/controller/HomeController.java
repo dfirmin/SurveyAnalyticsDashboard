@@ -22,8 +22,6 @@ public class HomeController {
 	
 	@RequestMapping(value= {"/","/index"})
 	public String helloWorld() {
-		String password = BCrypt.hashpw("admin", BCrypt.gensalt(15));
-		System.out.println("pw:"+password);
 		return "index";
 	}
 	@RequestMapping("/dashboard")
@@ -79,19 +77,13 @@ public class HomeController {
 		
 		String message = ("<h1 class='pageTitle'>EDIT PROFILE</h1>");
 		message += ("<form action='updateUser' method='post'>");
-		message += ("<input type='text' name='firstName' placeholder='"+user.getFirstName()+"'><br> ");
-		message += ("<input type='text' name='lastName' placeholder='"+user.getLastName()+"'><br> ");
-		message += ("<input type='email' name='email' placeholder='"+user.getEmail()+"'><br> ");
-		message += ("<input type='password' pattern='.{6,}' title='Six or more characters.' id='password' name='password' placeholder='New Password'><br> ");
+		message += ("<input type='text' name='firstName' id='firstName' placeholder='"+user.getFirstName()+"'><br> ");
+		message += ("<input type='text' name='lastName' id='lastName' placeholder='"+user.getLastName()+"'><br> ");
+		message += ("<input type='email' name='email' id='email' placeholder='"+user.getEmail()+"'><br> ");
+		message += ("<input type='password' pattern='.{5,}' title='Six or more characters.' id='password' name='password' placeholder='New Password'><br> ");
 		message += ("<input type='password' id='confirm_password' name='password2' placeholder='Confirm Password'><br> ");
 		message += ("<input type='submit' value='UPDATE'></form>");
 
-		
-
-
-		message += ("<p>"+user.getEmail()+"</p>");
-		message += ("<a href='editprofile'>Edit Profile</a>");
-		
 		model.addAttribute("editprofile", message);
 		
 		return "editprofile";
@@ -102,6 +94,10 @@ public class HomeController {
 			showDashboard(session, model);
 			return "loginPage";
 		}
+		
+		password = BCrypt.hashpw(password, BCrypt.gensalt(15));
+
+		
 		Users user = (Users)session.getAttribute("user");
 		user.setEmail(email);
 		user.setFirstName(firstName);
@@ -113,7 +109,10 @@ public class HomeController {
 		
 		session.setAttribute("user", user);
 		
-		return "profilePage";
+		showProfile( session, model);
+		
+		
+		return "profilepage";
 	}
 
 	@RequestMapping("/loginPage")
