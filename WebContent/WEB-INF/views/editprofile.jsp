@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Dashboard</title>
+<title>Profile Page</title>
 <meta name="viewport" content="initial-scale=1, maximum-scale=1">
 
 <link
@@ -12,32 +12,10 @@
 	rel="stylesheet">
 <link rel='stylesheet'
 	href='webjars/bootstrap/3.2.0/css/bootstrap.min.css'>
-	
+
 <link href="resources/css/style.css" type="text/css" rel="stylesheet">
 
-<script type="text/javascript"
-	src="https://www.gstatic.com/charts/loader.js"></script>
-<script src="resources/js/confovertime.js"></script>
-<script src="resources/js/jobs_applied.js"></script>
-<script src="resources/js/indepth_topics.js"></script>
-<script src="resources/js/watsontest.js"></script>
 
-<script type="text/javascript">
-	var getConf = ${getConf};
-	var getJobsApp = ${getJobsApp};
-	var chartData = ${chartData};
-	
-	console.log(getConf);
-	console.log(getJobsApp);
-	google.charts.load('current', {
-		'packages' : [ 'corechart' ]
-	});
-	google.charts.load('current', {'packages':['bar']});
-	google.charts.setOnLoadCallback(watsonBarTest);
-	google.charts.setOnLoadCallback(confOverTime);
-	google.charts.setOnLoadCallback(jobs_applied);
-	google.charts.setOnLoadCallback(indepth_topics);
-</script>
 </head>
 <body>
 
@@ -54,13 +32,16 @@
 
 				<ul
 					class="nav navbar-nav navbar-right mr-sm                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ">
-					<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="profilepage" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${ profileName }<span class="caret"></span></a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="logout">Log Out</a>
-                    
-                  </div>
-                 </li>
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle" href="profilepage"
+						id="navbarDropdownMenuLink" data-toggle="dropdown"
+						aria-haspopup="true" aria-expanded="false">${ profileName }<span
+							class="caret"></span></a>
+						<div class="dropdown-menu"
+							aria-labelledby="navbarDropdownMenuLink">
+							<a class="dropdown-item" href="logout">Log Out</a>
+
+						</div></li>
 				</ul>
 
 			</div>
@@ -69,8 +50,8 @@
 		<!--/.container-fluid -->
 	</nav>
 
- 
- 
+
+
 
 	<section id="main">
 		<div class="container container-db">
@@ -80,16 +61,12 @@
 						<a href="dashboard" class=" main-color-bg menu-item"> <span
 							class="glyphicon glyphicon-cog" aria-hidden="true"></span>
 							Dashboard
-						</a> 
-						<a href="survey" class="menu-item"><span
+						</a> <a href="survey" class="menu-item"><span
 							class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
-							Surveys <span class="badge"></span></a> 
-							<a href="cohort"
-							class=" menu-item "><span
-							class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-							Cohorts <span class="badge"></span></a> 
-							<a href="student"
-							class=" menu-item"><span
+							Surveys <span class="badge"></span></a> <a href="cohort"
+							class=" menu-item "><span class="glyphicon glyphicon-pencil"
+							aria-hidden="true"></span> Cohorts <span class="badge"></span></a> <a
+							href="student" class=" menu-item"><span
 							class="glyphicon glyphicon-user" aria-hidden="true"></span>
 							Students <span class="badge"></span></a>
 					</div>
@@ -97,57 +74,54 @@
 
 				</div>
 				<div class="col-md-10 content">
-
-					<!-- <section id="breadcrumb">
-						<div class="container ">
-							<ol class="breadcrumb">
-								<li class="">Dashboard</li>
-							</ol>
+					<div class="row">
+						<div class="main-pane">
+							<div class="inner-div">
+								${ editprofile }
+							</div>
 						</div>
-					</section>
- -->
- 
- 				<div class="row">
- 					<div class="main-pane">
- 					<div class="inner-div">
-							<h1 class="pageTitle">DASHBOARD</h1>
-							<!-- Chart section -->
-							<div id="jobs_applied"></div>
-							<div id="confovertime"></div>
-							<div id="watsonTestChart"></div>
 					</div>
-					</div>
-</div>
 
-				
+
+				</div>
 			</div>
 		</div>
-		</div>
 	</section>
+	<script type="text/javascript" src="webjars/jquery/2.1.1/jquery.min.js"></script>
+<script>
+var password = document.getElementById("password"), confirm_password = document
+.getElementById("confirm_password");
 
-	<!--<div id="interviews"></div>
-	<div id="indepth_topics"></div>
-	<div id="what_make_conf"></div>
-	<div id="material_pace"></div>
-	<div id="conducive_learning"></div>-->
+function validatePassword() {
+if (password.value != confirm_password.value) {
+confirm_password.setCustomValidity("Passwords Don't Match");
+} else {
+confirm_password.setCustomValidity('');
+}
+}
 
+$('form').submit(function(){
 
-	<script type="text/javascript"
-		src="https://www.gstatic.com/charts/loader.js"></script>
-	<script src="resources/js/confovertime.js"></script>
-	<script src="resources/js/jobs_applied.js"></script>
-	<script src="resources/js/indepth_topics.js"></script>
-	          <script type="text/javascript" src="webjars/jquery/2.1.1/jquery.min.js"></script>
-	
-	<script type="text/javascript"></script>
-	<script>
-	$('ul.nav li.dropdown').hover(function() {
-		  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
-		}, function() {
-		  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
-		});
-	</script>
-		</body>
-		
-		</html>
-	
+    var input = $('#firstName')
+    var entry = input.get('placeholder');
+    if(input == ''){
+         $('#firstName').val =  entry;
+    }
+		input = $('#lastName')
+    entry = input.get('placeholder');
+    if(input == ''){
+         $('#lastName').val =  entry;
+    }
+		input = $('#email')
+    entry = input.get('placeholder');
+    if(input == ''){
+         $('#email').val =  entry;
+    }
+});
+
+password.onkeyup = validatePassword;
+confirm_password.onkeyup = validatePassword;
+</script>
+</body>
+
+</html>

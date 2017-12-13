@@ -21,3 +21,6 @@ target/
 hibernate.cfg.xml
 /bin/
 /.metadata/
+
+#WatsonCredentials
+Credentials.java

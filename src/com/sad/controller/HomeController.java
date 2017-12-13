@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,9 +20,8 @@ import com.sad.dto.Users;
 @Controller
 public class HomeController {
 	
-	@RequestMapping("/")
+	@RequestMapping(value= {"/","/index"})
 	public String helloWorld() {
-		
 		return "index";
 	}
 	@RequestMapping("/dashboard")
@@ -48,14 +48,91 @@ public class HomeController {
 		return "dashboard";
 		}
 	}
+	
+	@RequestMapping("/profilepage")
+	public String showProfile(HttpSession session, Model model) {
+		if (session.getAttribute("user") == null) {
+			showDashboard(session, model);
+			return "loginPage";
+		}
+		Users user = (Users)session.getAttribute("user");
+		
+		String message = ("<h1 class='pageTitle'>PROFILE</h1>");
+		message += ("<h2>"+user.getFirstName()+" "+user.getLastName()+"</h2>");
+		message += ("<p>"+user.getEmail()+"</p>");
+		message += ("<a href='editprofile'>Edit Profile</a>");
+		
+		model.addAttribute("profile", message);
+		
+		return "profilepage";
+	}
+	
+	@RequestMapping("/editprofile")
+	public String editProfile(HttpSession session, Model model) {
+		if (session.getAttribute("user") == null) {
+			showDashboard(session, model);
+			return "loginPage";
+		}
+		Users user = (Users)session.getAttribute("user");
+		
+		String message = ("<h1 class='pageTitle'>EDIT PROFILE</h1>");
+		message += ("<form action='updateUser' method='post'>");
+		message += ("<input type='text' name='firstName' id='firstName' placeholder='"+user.getFirstName()+"'><br> ");
+		message += ("<input type='text' name='lastName' id='lastName' placeholder='"+user.getLastName()+"'><br> ");
+		message += ("<input type='email' name='email' id='email' placeholder='"+user.getEmail()+"'><br> ");
+		message += ("<input type='password' pattern='.{5,}' title='Six or more characters.' id='password' name='password' placeholder='New Password'><br> ");
+		message += ("<input type='password' id='confirm_password' name='password2' placeholder='Confirm Password'><br> ");
+		message += ("<input type='submit' value='UPDATE'></form>");
+
+		model.addAttribute("editprofile", message);
+		
+		return "editprofile";
+	}
+	@RequestMapping("/updateUser")
+	public String updateUser(HttpSession session, Model model, @RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName, @RequestParam("email") String email, @RequestParam("password") String password) {
+		if (session.getAttribute("user") == null) {
+			showDashboard(session, model);
+			return "loginPage";
+		}
+		
+		password = BCrypt.hashpw(password, BCrypt.gensalt(15));
+
+		
+		Users user = (Users)session.getAttribute("user");
+		user.setEmail(email);
+		user.setFirstName(firstName);
+		user.setLastName(lastName);
+		user.setPassword(password);
+
+		UsersDaoImpl transfer = new UsersDaoImpl();
+		transfer.updateUsers(user);
+		
+		session.setAttribute("user", user);
+		
+		showProfile( session, model);
+		
+		
+		return "profilepage";
+	}
 
 	@RequestMapping("/loginPage")
 	public String showLogin() {
 		return "loginPage";
 	}
+	
+	@RequestMapping("/logout")
+	public String logoutUser(HttpSession session) {
+		session.removeAttribute("user");
+		return "index";
+	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(HttpSession session, @RequestParam("email") String email, @RequestParam("password") String password, Model model) {
+		
+		if (session.getAttribute("user") != null) {
+			showDashboard(session, model);
+			return "dashboard";
+		}
 		UsersDaoImpl users = new UsersDaoImpl();
 
 		ArrayList<Users> list = users.getAllUsers("email", email);
@@ -66,10 +143,11 @@ public class HomeController {
 
 			String dbPassword = list.get(0).getPassword();
 
-			if (password.equals(dbPassword)) {
+			if (BCrypt.checkpw(password, dbPassword)) {
 				model.addAttribute("firstName", list.get(0).getFirstName());
 				session.setAttribute("user", list.get(0));
-				webPage = "dashboard";
+				showDashboard(session, model);
+				return "dashboard";
 			} else {
 				String alert = "<script>alert('Password is incorrect. Try again.')</script>";
 				model.addAttribute("alert", alert);
