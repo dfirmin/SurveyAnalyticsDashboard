@@ -10,15 +10,14 @@ import org.hibernate.cfg.Configuration;
 
 import com.sad.dto.Offered_Answer;
 import com.sad.dto.Persons;
+import com.sad.util.HibernateUtil;
 
 public class PersonsDaoImpl implements PersonsDao {
-
+	
+	private static SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	
 	@Override
 	public ArrayList<Persons> getAllPersons() {
-		Configuration config = new Configuration().configure("hibernate.cfg.xml");
-
-		SessionFactory sessionFactory = config.buildSessionFactory();
-
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		Criteria crit = session.createCriteria(Persons.class);
@@ -30,11 +29,8 @@ public class PersonsDaoImpl implements PersonsDao {
 
 	@Override
 	public void updatePersons(Persons person) {
-		Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
 
-		SessionFactory sessionFact = cfg.buildSessionFactory();
-
-		Session codes = sessionFact.openSession();
+		Session codes = sessionFactory.openSession();
 
 		codes.beginTransaction();
 
@@ -46,11 +42,8 @@ public class PersonsDaoImpl implements PersonsDao {
 
 	@Override
 	public void deletePersons(Persons person) {
-		Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
-
-		SessionFactory sessionFact = cfg.buildSessionFactory();
-
-		Session session = sessionFact.openSession();
+		
+		Session session = sessionFactory.openSession();
 
 		session.beginTransaction();
 
@@ -63,9 +56,6 @@ public class PersonsDaoImpl implements PersonsDao {
 
 	@Override
 	public void addPersons(Persons newPerson) {
-		Configuration config = new Configuration().configure("hibernate.cfg.xml");
-
-		SessionFactory sessionFactory = config.buildSessionFactory();
 
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();

@@ -10,15 +10,12 @@ import org.hibernate.cfg.Configuration;
 
 import com.sad.dto.Answer;
 import com.sad.dto.Cohort;
+import com.sad.util.HibernateUtil;
 
 public class CohortDaoImpl implements CohortDao {
-
+	private static SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 	@Override
 	public ArrayList<Cohort> getAllCohorts() {
-		Configuration config = new Configuration().configure("hibernate.cfg.xml");
-
-		SessionFactory sessionFactory = config.buildSessionFactory();
-
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		Criteria crit = session.createCriteria(Cohort.class);
@@ -30,11 +27,8 @@ public class CohortDaoImpl implements CohortDao {
 
 	@Override
 	public void updateCohort(Cohort cohort) {
-		Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
 
-		SessionFactory sessionFact = cfg.buildSessionFactory();
-
-		Session codes = sessionFact.openSession();
+		Session codes = sessionFactory.openSession();
 
 		codes.beginTransaction();
 
@@ -46,11 +40,8 @@ public class CohortDaoImpl implements CohortDao {
 
 	@Override
 	public void deleteCohort(Cohort cohort) {
-		Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
-
-		SessionFactory sessionFact = cfg.buildSessionFactory();
-
-		Session session = sessionFact.openSession();
+	
+		Session session = sessionFactory.openSession();
 
 		session.beginTransaction();
 
@@ -63,10 +54,7 @@ public class CohortDaoImpl implements CohortDao {
 
 	@Override
 	public void addCohort(Cohort cohort) {
-		Configuration config = new Configuration().configure("hibernate.cfg.xml");
-
-		SessionFactory sessionFactory = config.buildSessionFactory();
-
+	
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
