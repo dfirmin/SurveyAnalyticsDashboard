@@ -83,7 +83,7 @@ th {
 									<td>${myVar.cohortSemester}</td>
 									<td>${myVar.startDate}</td>
 									<td><a href="delete?id=${myVar.cohortID}"> Delete </a></td>
-									<td><a href="updatecohortform?id=${myVar.cohortID}">
+									<td><a href="updatecohortform?id=${myVar.cohortID}&cohortName=${myVar.cohortName}">
 											Update </a></td>
 								</tr>
 							</c:forEach>

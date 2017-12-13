@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+        <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,7 +31,7 @@
 		Course Name: 
 		<br>
 		 <input
-			type="text" name="cohortName" required> <br> 
+			type="text" name="cohortName" value="${cohortName}" required> <br> 
 			Semester: <br>
 			 <input
 			type="text" name="cohortSemester" required><br> 
@@ -40,5 +41,26 @@
 		<input type="submit" value="Update Class">
 
 	</form>
+	
+							<table class="table-striped table-bordered table-hover" cellspacing="10">
+						<tr>
+								<th>Class</th>
+								<th>Semester</th>
+								<th>Start Date</th>
+							</tr>
+							<c:forEach var="myVar" items="${cohortList}" varStatus="status">
+								<tr>
+							
+									<td>${myVar.cohortName}</td>
+									<td>${myVar.cohortSemester}</td>
+									<td>${myVar.startDate}</td>
+									<!--  <td><a href="delete?id=${myVar.cohortID}"> Delete </a></td>
+									<td><a href="updatecohortform?id=${myVar.cohortID}&cohortName=${myVar.cohortName}">
+											Update </a></td>-->
+								</tr>
+							</c:forEach>
+			
+						</table>
+	
 </body>
 </html>
