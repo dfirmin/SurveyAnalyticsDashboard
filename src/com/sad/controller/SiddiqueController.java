@@ -3,9 +3,17 @@ package com.sad.controller;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,8 +44,30 @@ public class SiddiqueController {
 
 	}
 
-	// display the list of classes
+	//display the list of classes
+	@SuppressWarnings("deprecation")
 	@RequestMapping("/cohort")
+	public ModelAndView getACohort() {
+		Configuration config = new Configuration().configure("hibernate.cfg.xml");
+        SessionFactory sessionFactory = config.buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        Criteria crit = session.createCriteria(Cohort.class);
+        //crit.setProjection(Projections.distinct(Projections.property("cohortName")));
+        crit.add(Restrictions.eq("cohortName","Java"));
+        @SuppressWarnings("unchecked")
+		ArrayList<Cohort> list = (ArrayList<Cohort>) crit.list();
+        System.out.println(list.get(0).getCohortName() + " " + list.get(1).getCohortName());
+        CohortDaoImpl dao = new CohortDaoImpl();
+        
+        list = dao.getAllCohorts();
+        
+        return new ModelAndView("cohort", "cohortID", list);
+	}
+	
+	
+	// display the list of classes
+	/*@RequestMapping("/cohort")
 	public ModelAndView getAllCohorts() {
 
 		CohortDaoImpl dao = new CohortDaoImpl();// TODO replace with factory design pattern here
@@ -45,7 +75,7 @@ public class SiddiqueController {
 		ArrayList<Cohort> listCohort = dao.getAllCohorts();// valueOf() is a factory design pattern here
 		
 		return new ModelAndView("cohort", "cohortID", listCohort);
-	}
+	}*/
 
 	@RequestMapping("/addCohort")
 	public String addCohort() {
@@ -72,8 +102,22 @@ public class SiddiqueController {
 	}
 
 	@RequestMapping("updatecohortform")
-	public String updateForm(@RequestParam("id") int id, Model model) {
+	public String updateForm(@RequestParam("id") int id, @RequestParam("cohortName") String cohortName, Model model) {
 		model.addAttribute("cohortID", id);
+		model.addAttribute("cohortName", cohortName);
+		
+		Configuration config = new Configuration().configure("hibernate.cfg.xml");
+        SessionFactory sessionFactory = config.buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        Criteria crit = session.createCriteria(Cohort.class);
+    
+        crit.add(Restrictions.eq("cohortName",cohortName));
+        @SuppressWarnings("unchecked")
+		ArrayList<Cohort> list = (ArrayList<Cohort>) crit.list();
+
+        model.addAttribute("cohortList", list);
+
 		return "updateCohort";
 	}
 

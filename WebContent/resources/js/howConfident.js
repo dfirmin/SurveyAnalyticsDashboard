@@ -19,7 +19,7 @@ function howConfident() {
           vAxis: {minValue: 0}
         };
 
-        var chart = new google.visualization.AreaChart(document.getElementById('howConfID'));
+        var chart = new google.visualization.LineChart(document.getElementById('howConfID'));
         chart.draw(data, options);
       }
 
