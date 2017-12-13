@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Dashboard</title>
+<title>Profile Page</title>
 <meta name="viewport" content="initial-scale=1, maximum-scale=1">
 
 <link
@@ -12,31 +12,10 @@
 	rel="stylesheet">
 <link rel='stylesheet'
 	href='webjars/bootstrap/3.2.0/css/bootstrap.min.css'>
+
 <link href="resources/css/style.css" type="text/css" rel="stylesheet">
 
-<script type="text/javascript"
-	src="https://www.gstatic.com/charts/loader.js"></script>
-<script src="resources/js/confovertime.js"></script>
-<script src="resources/js/jobs_applied.js"></script>
-<script src="resources/js/indepth_topics.js"></script>
-<script src="resources/js/watsontest.js"></script>
 
-<script type="text/javascript">
-	var getConf = ${getConf};
-	var getJobsApp = ${getJobsApp};
-	var chartData = ${chartData};
-	
-	console.log(getConf);
-	console.log(getJobsApp);
-	google.charts.load('current', {
-		'packages' : [ 'corechart' ]
-	});
-	google.charts.load('current', {'packages':['bar']});
-	google.charts.setOnLoadCallback(watsonBarTest);
-	google.charts.setOnLoadCallback(confOverTime);
-	google.charts.setOnLoadCallback(jobs_applied);
-	google.charts.setOnLoadCallback(indepth_topics);
-</script>
 </head>
 <body>
 
@@ -53,7 +32,16 @@
 
 				<ul
 					class="nav navbar-nav navbar-right mr-sm                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ">
-					<li class="nav-item"><a href="loginPage">Profile</a></li>
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle" href="profilepage"
+						id="navbarDropdownMenuLink" data-toggle="dropdown"
+						aria-haspopup="true" aria-expanded="false">${ profileName }<span
+							class="caret"></span></a>
+						<div class="dropdown-menu"
+							aria-labelledby="navbarDropdownMenuLink">
+							<a class="dropdown-item" href="logout">Log Out</a>
+
+						</div></li>
 				</ul>
 
 			</div>
@@ -86,22 +74,11 @@
 
 				</div>
 				<div class="col-md-10 content">
-
-					<!-- <section id="breadcrumb">
-						<div class="container ">
-							<ol class="breadcrumb">
-								<li class="">Dashboard</li>
-							</ol>
-						</div>
-					</section>
- -->
-
 					<div class="row">
 						<div class="main-pane">
 							<div class="inner-div">
-								<h1 class="pageTitle">DASHBOARD</h1>
+								${ profile }
 							</div>
-							<a href="modifySurvey">Survey 1</a>
 						</div>
 					</div>
 
@@ -111,18 +88,6 @@
 		</div>
 	</section>
 
-	<!--<div id="interviews"></div>
-	<div id="indepth_topics"></div>
-	<div id="what_make_conf"></div>
-	<div id="material_pace"></div>
-	<div id="conducive_learning"></div>-->
+</body>
 
-
-	<script type="text/javascript"
-		src="https://www.gstatic.com/charts/loader.js"></script>
-	<script src="resources/js/confovertime.js"></script>
-	<script src="resources/js/jobs_applied.js"></script>
-	<script src="resources/js/indepth_topics.js"></script>
-	<script type="text/javascript">
-
-	
+</html>

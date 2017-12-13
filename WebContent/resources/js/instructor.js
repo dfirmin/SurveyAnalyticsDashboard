@@ -7,7 +7,8 @@ function drawInstrEmo() {
           chart: {
             title: 'Count How Each Student Feel About Teacher'
           },
-          bars: 'horizontal' // Required for Material Bar Charts.
+          bars: 'horizontal',
+          isStacked: true
         };
 
         var chart = new google.charts.Bar(document.getElementById('instruEmotions'));

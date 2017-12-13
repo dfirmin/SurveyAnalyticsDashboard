@@ -23,14 +23,10 @@ public class ProgramManagementDaoImpl implements ProgramManagementDao {
 				"            MikeDB.Answer.UserResponse as UserResponse,\n" + 
 				"            MikeDB.Answer.WatsonResponse as WatsonResponse\n" + 
 				"from MikeDB.Answer\n" + 
-				"where MikeDB.Answer.QuestionID between 5 and 8\n" + 
+				"where MikeDB.Answer.QuestionID between 5 and 12\n" + 
 				"order by MikeDB.Answer.AnswerID;";
 		Query query = session.createSQLQuery(hql).addEntity(ProgramManagement.class);
 		ArrayList<ProgramManagement> resultList = (ArrayList<ProgramManagement>) query.list();
-		
-		for (int i = 0; i<resultList.size(); i++) {
-			System.out.println(resultList.get(i));
-		}
 		
 		tx.commit();
 		session.close();

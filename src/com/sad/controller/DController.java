@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
+import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -32,6 +33,7 @@ import com.sad.dto.Answer;
 import com.sad.dto.Cohort;
 import com.sad.dto.Persons;
 import com.sad.dto.Question;
+import com.sad.dto.SurveyQADto;
 
 @Controller
 public class DController {
@@ -191,96 +193,8 @@ public class DController {
 
 	}
 
-	@RequestMapping("/question3")
-	public String exampleQuery3(Model model) throws ClassNotFoundException {
-		String myDriver = "com.mysql.jdbc.Driver";
-		Class.forName(myDriver);
-		Connection conn = null;
-		try {
-
-			conn = DriverManager.getConnection(
-					"jdbc:mysql://surveydb.cukvcoyfuo0c.us-east-2.rds.amazonaws.com/SurveyDB", "survey",
-					"Surveydatabase01");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String query = ("SELECT AnswerID, WatsonResponse, CohortID FROM Answer \n" + "INNER JOIN \n" + "Persons \n"
-				+ "ON Answer.PersonID = Persons.PersonID \n" + "WHERE SurveyID = 1 && QuestionID = 3;");
-		// create the java statement
-		Statement st = null;
-		try {
-			st = (Statement) conn.createStatement();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		// execute the query, and get a java resultset
-		try {
-			ResultSet rs = st.executeQuery(query);
-			while (rs.next()) {
-				int answerID = rs.getInt("AnswerID");
-				String watsonResponse = rs.getString("WatsonResponse");
-				int cohortID = rs.getInt("CohortID");
-
-				// print the results
-				System.out.println(answerID + " " + watsonResponse + " " + cohortID);
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return "deantetest";
-	}
 	
 	
-	@RequestMapping("/question7")
-	public String exampleQuery7(Model model) throws ClassNotFoundException {
-		String myDriver = "com.mysql.jdbc.Driver";
-		Class.forName(myDriver);
-		Connection conn = null;
-		try {
-
-			conn = DriverManager.getConnection(
-					"jdbc:mysql://surveydb.cukvcoyfuo0c.us-east-2.rds.amazonaws.com/SurveyDB", "survey",
-					"Surveydatabase01");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String query = ("SELECT AnswerID, WatsonResponse, CohortID FROM Answer \n" + "INNER JOIN \n" + "Persons \n"
-				+ "ON Answer.PersonID = Persons.PersonID \n" + "WHERE SurveyID = 1 && QuestionID = 7;");
-		// create the java statement
-		Statement st = null;
-		try {
-			st = (Statement) conn.createStatement();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		// execute the query, and get a java resultset
-		try {
-			ResultSet rs = st.executeQuery(query);
-			while (rs.next()) {
-				int answerID = rs.getInt("AnswerID");
-				String watsonResponse = rs.getString("WatsonResponse");
-				int cohortID = rs.getInt("CohortID");
-
-				// print the results
-				System.out.println(answerID + " " + watsonResponse + " " + cohortID);
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return "deantetest";
-	}
-	
-	//@RequestMapping("/question1")
 	public static void emotionChart(Model model) throws ClassNotFoundException {
 		String myDriver = "com.mysql.jdbc.Driver";
 		Class.forName(myDriver);
@@ -341,7 +255,28 @@ public class DController {
 			e.printStackTrace();
 		}
 
-		//return "deantetest";
 	}
 
+	
+	@RequestMapping("/modifySurvey")
+	public String modifySurveyPage(Model model) {
+		Configuration config = new Configuration().configure("hibernate.cfg.xml");
+		SessionFactory sessionFactory = config.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+   
+		// sql query to pull survey questions and answers
+		Query query = session.createSQLQuery(
+				"SELECT survey_qaid,Question.QuestionID, QuestionText, QuestionType, Offered_Answer.OfferedAnswerID, AnswerText, IsCustom FROM Question "
+						+ "inner JOIN Survey_QA " + "ON Question.QuestionID = Survey_QA.QuestionID "
+						+ "inner JOIN Offered_Answer "
+						+ "ON Offered_Answer.OfferedAnswerID = Survey_QA.OfferedAnswerID "
+						+ "WHERE Survey_QA.SurveyID =" + 1
+						+ " Order by questionid,  survey_qaid, OfferedAnswerID ;" + "")
+				.addEntity(SurveyQADto.class);
+		List<SurveyQADto> results = (List<SurveyQADto>) query.list();
+		model.addAttribute("surveyQuestions", results);
+		return "modifySurvey";
+	}
+	
 }

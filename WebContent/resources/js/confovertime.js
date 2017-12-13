@@ -27,7 +27,8 @@
         var options = {
         					title:"Average Students' Confidence Over Time",
                        	//width:600,
-        					isStacked: 'percent'
+        					isStacked: 'percent',
+        					is3D: true
         				};
 
         // Instantiate and draw our chart, passing in some options.
