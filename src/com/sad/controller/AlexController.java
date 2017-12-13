@@ -38,6 +38,7 @@ import com.sad.dto.Persons;
 import com.sad.dto.Survey;
 import com.sad.dto.SurveyQADto;
 import com.sad.dto.Users;
+import com.sad.info.Credentials;
 
 @Controller
 public class AlexController {
@@ -93,8 +94,9 @@ public class AlexController {
 		// List<List<Persons>> personList = new ArrayList< List<Persons>>();
 
 		// select bootcamp dropdown
-		message += ("<img class='center-block img-responsive imgSize center' src='resources/grandcircuslogo.png'>");
+		message += ("<img class='center-block imgSize center' src='resources/grandcircuslogo.png'>");
 		message += ("<h1 class='surveyHeader'>" + surveyDto.get(0).getDescription() + "</h1>");
+		message += ("<p class='center'>Feedback is a gift!</p>");
 
 		message += ("<label>Select Your Bootcamp</label>");
 		message += ("<select id='cohorts' onChange='selectedDrop(this);' name = 'cohorts' required><option selected='0'>Select a language</option>");
@@ -335,22 +337,19 @@ public class AlexController {
 				Answer answerDto = new Answer(0, userId, questionID, surveyID, answer, watsonString, weekOfDate, week);
 				System.out.println(answerDto.toString());
 				answers.add(i, answerDto);
-			} else {
+			}/* else {
 				for (i = (arrLength - 1); i > (arrLength - 8); i--) {
 					System.out.println(i);
 					answers.remove(i);
 				}
-			}
+			}*/
 		}
 
 		int ended = Integer.valueOf(request.getParameter("end"));
 
 		if (ended == 1) {
 			AnswerDaoImpl transfer = new AnswerDaoImpl();
-
-			for (int i = 0; i < answers.size(); i++) {
-				transfer.addAnswer(answers.get(i));
-			}
+			transfer.addAnswer(answers);
 			return "success";
 		}
 
@@ -454,14 +453,15 @@ public class AlexController {
 		for (int i = 0; i < answers.size(); i++) {
 			transfer.addAnswer(answers.get(i));
 		}
-
 		return "success";
 	}
+	
 
 	public NaturalLanguageUnderstanding getNLUService() {
+		Credentials watson = new Credentials();
 		NaturalLanguageUnderstanding service = new NaturalLanguageUnderstanding(
-				NaturalLanguageUnderstanding.VERSION_DATE_2017_02_27, "16e04451-f41c-4ff2-9d71-2b82a2885591",
-				"gE4g5KcU6B0h");
+				NaturalLanguageUnderstanding.VERSION_DATE_2017_02_27, watson.getWatsonUsername(),
+				watson.getWatsonPassword());
 		return service;
 	}
 

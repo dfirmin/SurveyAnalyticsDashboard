@@ -12,6 +12,7 @@
 	rel="stylesheet">
 <link rel='stylesheet'
 	href='webjars/bootstrap/3.2.0/css/bootstrap.min.css'>
+	
 <link href="resources/css/style.css" type="text/css" rel="stylesheet">
 
 <script type="text/javascript"
@@ -19,14 +20,20 @@
 <script src="resources/js/confovertime.js"></script>
 <script src="resources/js/jobs_applied.js"></script>
 <script src="resources/js/indepth_topics.js"></script>
+<script src="resources/js/watsontest.js"></script>
+
 <script type="text/javascript">
 	var getConf = ${getConf};
 	var getJobsApp = ${getJobsApp};
+	var chartData = ${chartData};
+	
 	console.log(getConf);
 	console.log(getJobsApp);
 	google.charts.load('current', {
 		'packages' : [ 'corechart' ]
 	});
+	google.charts.load('current', {'packages':['bar']});
+	google.charts.setOnLoadCallback(watsonBarTest);
 	google.charts.setOnLoadCallback(confOverTime);
 	google.charts.setOnLoadCallback(jobs_applied);
 	google.charts.setOnLoadCallback(indepth_topics);
@@ -47,7 +54,13 @@
 
 				<ul
 					class="nav navbar-nav navbar-right mr-sm                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ">
-					<li class="nav-item"><a href="loginPage">Profile</a></li>
+					<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="profilepage" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${ profileName }<span class="caret"></span></a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="logout">Log Out</a>
+                    
+                  </div>
+                 </li>
 				</ul>
 
 			</div>
@@ -101,6 +114,7 @@
 							<!-- Chart section -->
 							<div id="jobs_applied"></div>
 							<div id="confovertime"></div>
+							<div id="watsonTestChart"></div>
 					</div>
 					</div>
 </div>
@@ -123,7 +137,16 @@
 	<script src="resources/js/confovertime.js"></script>
 	<script src="resources/js/jobs_applied.js"></script>
 	<script src="resources/js/indepth_topics.js"></script>
-	<script type="text/javascript">
+	          <script type="text/javascript" src="webjars/jquery/2.1.1/jquery.min.js"></script>
+	
+	<script type="text/javascript"></script>
+	<script>
+	$('ul.nav li.dropdown').hover(function() {
+		  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
+		}, function() {
+		  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
+		});
+	</script>
 		</body>
 		
 		</html>

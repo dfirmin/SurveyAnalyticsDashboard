@@ -94,4 +94,19 @@
 		</property>
 	</class>
 	
+	<class name="com.sad.MikesStuff.ProgramManagement" table="ProgramManagement" schema="MikeDB">
+		<id name="answerid">
+			<column name="AnswerID" sql-type="int(11)" length="11"></column>
+		</id>
+		<property name="questionid">
+			<column name="QuestionID" sql-type="int(11)" length="11"></column>
+		</property>
+		<property name="userresponse">
+			<column name="UserResponse" sql-type="varchar(255)" length="255"></column>
+		</property>
+		<property name="watsonresponse">
+			<column name="WatsonResponse" sql-type="varchar(255)" length="255"></column>
+		</property>
+	</class>
+	
 </hibernate-mapping>		
