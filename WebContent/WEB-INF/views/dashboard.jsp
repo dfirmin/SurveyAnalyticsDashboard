@@ -112,9 +112,24 @@
  					<div class="inner-div">
 							<h1 class="pageTitle">DASHBOARD</h1>
 							<!-- Chart section -->
-							<div id="jobs_applied"></div>
-							<div id="confovertime"></div>
+							
+							
+							<div class="row">
+							<div class="col-md-12 content">
+														<div id="confovertime"></div>
+							</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6 ">
+															<div id="jobs_applied"></div>
+								
+								</div>
+								<div class="col-md-6 ">
 							<div id="watsonTestChart"></div>
+								
+								</div>
+							</div>
+							
 					</div>
 					</div>
 </div>
@@ -142,9 +157,9 @@
 	<script type="text/javascript"></script>
 	<script>
 	$('ul.nav li.dropdown').hover(function() {
-		  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
+		  $(this).find('.dropdown-menu').stop(true, true).delay(50).fadeIn(100);
 		}, function() {
-		  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
+		  $(this).find('.dropdown-menu').stop(true, true).delay(50).fadeOut(100);
 		});
 	</script>
 		</body>
