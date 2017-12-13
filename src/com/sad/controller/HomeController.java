@@ -138,7 +138,7 @@ public class HomeController {
 		ArrayList<Users> list = users.getAllUsers("email", email);
 
 		String webPage = "loginPage";
-
+     
 		if (!list.isEmpty()) {
 
 			String dbPassword = list.get(0).getPassword();

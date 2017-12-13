@@ -102,21 +102,27 @@ confirm_password.setCustomValidity('');
 
 $('form').submit(function(){
 
-    var input = $('#firstName')
-    var entry = input.get('placeholder');
-    if(input == ''){
-         $('#firstName').val =  entry;
-    }
-		input = $('#lastName')
-    entry = input.get('placeholder');
-    if(input == ''){
-         $('#lastName').val =  entry;
-    }
-		input = $('#email')
-    entry = input.get('placeholder');
-    if(input == ''){
-         $('#email').val =  entry;
-    }
+	var input = document.getElementById("firstName");
+	var entry = input.placeholder;
+	console.log(entry);
+
+	if(input.value == ''){
+			 document.getElementById("firstName").value =  entry;
+	}
+	input = document.getElementById("lastName");
+	entry = input.placeholder;
+	console.log(entry);
+
+	if(input.value == ''){
+			 document.getElementById("lastName").value =  entry;
+	}
+	input = document.getElementById("email");
+	entry = input.placeholder;
+	console.log(entry);
+
+	if(input.value == ''){
+			document.getElementById("email").value =  entry;
+	}
 });
 
 password.onkeyup = validatePassword;
