@@ -122,27 +122,44 @@ public class SiddiqueController {
 
 		return "updateCohort";
 	}
+	@RequestMapping("/addSemester")
+	public String addSemester(@RequestParam("id") int id, @RequestParam("cohortName") String cohortName, Model model) {
+		model.addAttribute("cohortID", id);
+		model.addAttribute("cohortName", cohortName);
+		return "addSection";
+	}
 	
 	//This allows you to update a specific cohort by semester and start date
-	@RequestMapping(value= "addSection", method = RequestMethod.GET)
-	public ModelAndView updateSection(@RequestParam("cohortSemester") String cohortSem, @RequestParam("startDate") String sDate, Model model) {
-		model.addAttribute("cohortSemester", cohortSem);
-		model.addAttribute("startDate", sDate);
+	@RequestMapping(value= "/addNewSection", method = RequestMethod.GET)
+	public ModelAndView updateSection(@RequestParam("cohortName") String cohortName,
+			@RequestParam("cohortSemester") String cohortSemester, @RequestParam("startDate") String StartDate, Model model) {
+
+		String[] splitStartDate = StartDate.split("/");
+		int year = Integer.parseInt(splitStartDate[2]);
+		int month = Integer.parseInt(splitStartDate[0]);
+		int day = Integer.parseInt(splitStartDate[1]);
+		String formattedDate = year + "/" + month + "/" + day;
+
+		Cohort cohortdto = new Cohort(0, cohortName, cohortSemester, formattedDate);
+		CohortDaoImpl dao = new CohortDaoImpl();
+		dao.addCohort(cohortdto);
+
+		ArrayList<Cohort> listCohort = dao.getAllCohorts();
+		
 		
 		Configuration config = new Configuration().configure("hibernate.cfg.xml");
-		SessionFactory sessionFactory = config.buildSessionFactory();
-		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
-		Criteria crit = session.createCriteria(Cohort.class);
-		crit.add(Restrictions.eq("cohortSemester", cohortSem));
-		crit.add(Restrictions.eq("startDate", sDate));
-	
+        SessionFactory sessionFactory = config.buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        Criteria crit = session.createCriteria(Cohort.class);
+    
+        crit.add(Restrictions.eq("cohortName",cohortName));
+        @SuppressWarnings("unchecked")
 		ArrayList<Cohort> list = (ArrayList<Cohort>) crit.list();
-		
-		model.addAttribute("cohortList", list);
-		return new ModelAndView ("updateCohort", "cohortID", list);
-	}
 
+        model.addAttribute("cohortList", list);
+		return new ModelAndView("updateCohort", "cohortID", listCohort);
+	}
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
 	public ModelAndView update(@RequestParam("id") int id, @RequestParam("cohortName") String cohortName,
 			@RequestParam("cohortSemester") String cohortSemester, @RequestParam("startDate") String StartDate) {
