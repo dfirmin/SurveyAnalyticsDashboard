@@ -12,26 +12,16 @@
         // Create the data table.
         var data = new google.visualization.arrayToDataTable(
         		getConf
-        	/*
-        [	
-        		['Week', 'Java', '.NET', 'Front End'],
-            ['1', 1000, 400, 200],
-            ['2', 1170, 460, 250],
-            ['3', 660, 1120, 300],
-            ['4', 1030, 540, 350]
-        ]
-        */
         );
 
         // Set chart options
         var options = {
-        					title:"Average Students' Confidence Over Time",
-                       	//width:600,
+        					title:"Percentage of Each Student's Feelings Per Cohort",
         					isStacked: 'percent',
-        					is3D: true
+        					legend: { position: 'bottom' }
         				};
 
         // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.ColumnChart(document.getElementById('confovertime'));
+        var chart = new google.visualization.AreaChart(document.getElementById('confovertime'));
         chart.draw(data, options);
       }

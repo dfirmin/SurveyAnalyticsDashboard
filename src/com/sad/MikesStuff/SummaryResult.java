@@ -13,10 +13,20 @@ public class SummaryResult implements Serializable{
 	
 	private int pID;
 	private String userResponse;
-	private int cohortID;
 	private int counter;
+	private int week;
 	
 	
+	public int getWeek() {
+		return week;
+	}
+
+
+	public void setWeek(int week) {
+		this.week = week;
+	}
+
+
 	public SummaryResult() {
 		
 	}
@@ -42,16 +52,6 @@ public class SummaryResult implements Serializable{
 	}
 
 
-	public int getCohortID() {
-		return cohortID;
-	}
-
-
-	public void setCohortID(int cohortID) {
-		this.cohortID = cohortID;
-	}
-
-
 	public int getCounter() {
 		return counter;
 	}
@@ -64,8 +64,8 @@ public class SummaryResult implements Serializable{
 
 	@Override
 	public String toString() {
-		return "SummaryResult [pID=" + pID + ", userResponse=" + userResponse + ", cohortID=" + cohortID + ", counter="
-				+ counter + "]";
+		return "SummaryResult [pID=" + pID + ", userResponse=" + userResponse + ", counter=" + counter + ", week="
+				+ week + "]";
 	}
 
 
