@@ -12,12 +12,12 @@ function watsonBarTest() {
 			subtitle : ''
 		},
 		
-		bars : 'horizontal', // Required for Material Bar Charts.
+		bars : 'vertical', // Required for Material Bar Charts.
 		axes : {
 			x : {
 				0 : {
-					side : 'top',
-					label : 'Percentage of Students'
+					side : 'bottom',
+					label : ''
 				}
 			// Top x-axis.
 			}
@@ -26,6 +26,8 @@ function watsonBarTest() {
 			groupWidth : "90%"
 		}
 	};
+	
+	
 
 	var chart = new google.charts.Bar(document
 			.getElementById('watsonTestChart'));

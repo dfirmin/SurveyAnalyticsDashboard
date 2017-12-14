@@ -11,6 +11,9 @@ google.charts.load('current', {'packages':['corechart']});
               legend: { position: 'bottom' },
            
             };
+    	  	
+    	  	
+    	  	
 
         var chart = new google.visualization.PieChart(document.getElementById('jobs_applied'));
 

@@ -44,6 +44,7 @@
 	
 	google.charts.load('current', {'packages':['bar']});
 	google.charts.load('current', {'packages':['corechart']});
+	google.charts.load('current', {'packages':['corechart']});
 	
 	google.charts.setOnLoadCallback(watsonBarTest);
 	google.charts.setOnLoadCallback(confOverTime);
@@ -145,6 +146,7 @@
 									<div class="row">
 										
 										<div class = "col-xs-12"><div id="what_make_conf"></div></div>
+										
 									</div>
 								</div>
 						</div>
@@ -153,8 +155,17 @@
 
 				</div>
 			</div>
+			<br>
+		
 		</div>
+		
 	</section>
+	
+	<br>
+		<br>
+		<br>
+		<br>
+		<br>
 
 
 
