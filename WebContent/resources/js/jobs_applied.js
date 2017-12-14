@@ -4,23 +4,12 @@ google.charts.load('current', {'packages':['corechart']});
 */
       function jobs_applied() {
 
-    	  	var data = google.visualization.arrayToDataTable(
-    	  		getJobsApp
-    	  		/*
-    	  		[
-              ['Number of Jobs Applied', 'Count'],
-              ['0-5',     11],
-              ['5-10',      2],
-              ['10-20',  2],
-              ['Watch TV', 2],
-              ['Sleep',    7]
-            ]
-            
-            */);
+    	  	var data = google.visualization.arrayToDataTable(getJobsApp)
 
         var options = {
               title: 'Number of Jobs Applied',
-              is3D: true
+              is3D: true,
+              legend: { position: 'bottom' }
             };
 
         var chart = new google.visualization.PieChart(document.getElementById('jobs_applied'));

@@ -5,10 +5,11 @@ function howConfident() {
         );
 
         var options = {
-          title: 'Company Performance',
+          title: 'How Confident Students Feel Per Week',
           hAxis: {title: 'Week',  titleTextStyle: {color: '#333'}},
           vAxis: {minValue: 0},
-          is3D: true
+          is3D: true,
+          legend: { position: 'bottom' }
         };
 
         var chart = new google.visualization.LineChart(document.getElementById('howConfID'));

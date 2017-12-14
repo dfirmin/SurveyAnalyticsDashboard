@@ -5,10 +5,15 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.Criteria;
@@ -35,6 +40,7 @@ import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.Fe
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.KeywordsOptions;
 import com.sad.dao.AnswerDaoImpl;
 import com.sad.dao.CohortDaoImpl;
+import com.sad.dao.SurveyDaoImpl;
 import com.sad.dao.UsersDaoImpl;
 import com.sad.dto.Answer;
 import com.sad.dto.Cohort;
@@ -44,11 +50,12 @@ import com.sad.dto.SurveyQADto;
 import com.sad.dto.Users;
 import com.sad.info.Credentials;
 import com.sad.util.HibernateUtil;
+import com.sad.util.JavaMail;
 
 @Controller
 public class AlexController {
 
-	private static SessionFactory sessionFactory = HibernateUtil.getSessionFactory(); 
+	private static SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 	ArrayList<String> questionIDs = new ArrayList<String>();
 	ArrayList<Answer> answers = new ArrayList<Answer>();
 	int surveyID = 1;
@@ -70,7 +77,7 @@ public class AlexController {
 		Transaction tx = session.beginTransaction();
 
 		surveyID = 1;
-     
+
 		// sql query to pull survey questions and answers
 		Query query = session.createSQLQuery(
 				"SELECT survey_qaid,Question.QuestionID, QuestionText, QuestionType, Offered_Answer.OfferedAnswerID, AnswerText, IsCustom FROM Question "
@@ -136,7 +143,7 @@ public class AlexController {
 		message += ("<option selected='0' >Select an option from above</option>");
 		message += ("</select ><br>");
 
-		int questionID  = 0;
+		int questionID = 0;
 		int qIndex = 0;
 		// loop through each row in query table
 		for (int i = 0; i < results.size(); i++) {
@@ -152,13 +159,13 @@ public class AlexController {
 				message += ("<input hidden name = 'end' value='0'>");
 
 				message += ("<input hidden name = 'num' value='" + next + "'>");
-				message += ("<input type='submit' value='NEXT'></form>");
+				message += ("<input class='background-teal'  type='submit' value='NEXT'></form>");
 				model.addAttribute("page" + pageNum, message);
 				pageNum++;
 				message = "";
 				questionNum = 0;
 				message = ("<form action='next' method='post'>");
-			}  
+			}
 			// initial values
 			String questionType = results.get(i).getQuestionType();
 			boolean continueLoop = true;
@@ -269,7 +276,7 @@ public class AlexController {
 
 		message += ("<input hidden name = 'end' value='1'>");
 		message += ("<input hidden name = 'num' value='" + next + "'>");
-		message += ("<input type='submit' value='SUBMIT'></form>");
+		message += ("<input class='background-orange' type='submit' value='SUBMIT'></form>");
 		tx.commit();
 
 		model.addAttribute("page" + pageNum, message);
@@ -304,14 +311,14 @@ public class AlexController {
 			week = Integer.valueOf(dateStr.split(":")[0]);
 			userId = Integer.valueOf(request.getParameter("students"));
 		}
-		
+
 		int qID = Integer.valueOf(n.split(":")[2]);
 		int[] watsonTopic = { 3, 7, 11, 15, 22, 23 };
 		int[] watsonEmotion = { 8, 12, 25 };
 
 		NaturalLanguageUnderstanding service = getNLUService();
 		int arrLength = answers.size();
-		for (int i = (qID-qCount); i < (qID); i++) {
+		for (int i = (qID - qCount); i < (qID); i++) {
 			System.out.println(i);
 			System.out.println("q:" + qCount);
 			int questionID = Integer.valueOf(questionIDs.get(i));
@@ -339,20 +346,18 @@ public class AlexController {
 				Answer answerDto = new Answer(0, userId, questionID, surveyID, answer, watsonString, weekOfDate, week);
 				System.out.println(answerDto.toString());
 				answers.add(i, answerDto);
-			}/* else {
-				for (i = (arrLength - 1); i > (arrLength - 8); i--) {
-					System.out.println(i);
-					answers.remove(i);
-				}
-			}*/
+			} /*
+				 * else { for (i = (arrLength - 1); i > (arrLength - 8); i--) {
+				 * System.out.println(i); answers.remove(i); } }
+				 */
 		}
 
 		int ended = Integer.valueOf(request.getParameter("end"));
 
 		if (ended == 1) {
 			AnswerDaoImpl transfer = new AnswerDaoImpl();
-			for(int i=0; i < answers.size(); i++) {
-			transfer.addAnswer(answers.get(i));
+			for (int i = 0; i < answers.size(); i++) {
+				transfer.addAnswer(answers.get(i));
 			}
 			return "success";
 		}
@@ -459,7 +464,6 @@ public class AlexController {
 		}
 		return "success";
 	}
-	
 
 	public NaturalLanguageUnderstanding getNLUService() {
 		Credentials watson = new Credentials();
@@ -509,7 +513,7 @@ public class AlexController {
 		result = result.toUpperCase();
 		return result;
 	}
-  
+
 	public String jsonEmotionString(String jsonStr) {
 
 		JSONObject jsonObj = new JSONObject(jsonStr);
@@ -530,12 +534,12 @@ public class AlexController {
 			}
 
 		}
-		
+
 		emotion = emotion.toUpperCase();
- 
+
 		return emotion;
-	}   
- 
+	}
+
 	/*
 	 * Function returns lower limit week-of-date in relation to start date
 	 */
@@ -555,58 +559,173 @@ public class AlexController {
 			} else {
 				resultDate = resultDate.plusWeeks(weeks);
 				count++;
-	   		}
+			}
 		}
 		return count + ":" + String.valueOf(resultDate);
 	}
-	
+
 	@RequestMapping("/surveyprefs")
-	public String surveyPrefs(@RequestParam("id") String id, Model model) {
-		
-		model.addAttribute("surveyId", id);
-		
-        Session session = sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
-        Criteria crit = session.createCriteria(Survey.class);
-    
-        crit.add(Restrictions.eq("SurveyID", id));
+	public String surveyPrefs(Model model) {
+
+		// model.addAttribute("surveyId", id);
+
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		Criteria crit = session.createCriteria(Survey.class);
+
+		crit.add(Restrictions.eq("surveyID", 1));
 		ArrayList<Survey> list = (ArrayList<Survey>) crit.list();
-		Survey survey = (Survey) list.get(0);
-				
+		Survey survey = list.get(0);
+
 		crit = session.createCriteria(Cohort.class);
-		crit.addOrder(Order.desc("StartDate"));
-		ArrayList<Cohort> cohortList = (ArrayList<Cohort>) crit.list();
-		
-		
+		crit.addOrder(Order.desc("startDate")).setMaxResults(50);
+		ArrayList<Cohort> cohortList = (ArrayList<Cohort>) crit.addOrder(Order.desc("startDate")).setMaxResults(50)
+				.list();
+
+		System.out.println(cohortList);
+		System.out.println(survey);
+		System.out.println(survey.getCohorts());
+
 		String[] surveyCohortIds = survey.getCohorts().split(",");
 		ArrayList<Cohort> surveyCohorts = new ArrayList<Cohort>();
-		
-		
-		String message = ("<form action='updateSurvey' method='post'>");
-		message += ("<input type='text' placeholder='"+survey.getDescription()+"'><br>");
-		
-		message += ("<select id='cohorts' name = 'cohorts'><option value='' disabled selected>Select Section to Add</option>");
-		
-		for (int i=0; i< cohortList.size(); i++) {
-			message += ("<option value='"+cohortList.get(i).getCohortID()+"' disabled selected>'"+cohortList.get(i).getCohortName()+"'</option>");
-			for(int j=0; i < surveyCohortIds.length; i++) {
-				int cohortId = Integer.valueOf(surveyCohortIds[i]);
-				if (cohortList.get(i).getCohortID() == cohortId) {
-					surveyCohorts.add(cohortList.get(i));
-				}	
-			}	
-		}
-		message += ("</select><br>");
-		
-		
-		
 
-		
-		
-		
-        model.addAttribute("cohortList", list);
-		
-		return "survey";
+		for (int i = 0; i < surveyCohortIds.length; i++) {
+			System.out.println("a: " + surveyCohortIds[i]);
+		}
+		for (int i = 0; i < cohortList.size(); i++) {
+			System.out.println("b: " + cohortList.get(i));
+		}
+
+		String message = ("<form id='updateSurvey' action='updateSurvey' method='post'></form>");
+		message = ("<form id='addsurveycohort' action='addsurveycohort' method='post'></form>");
+
+		message += ("<input type='text' placeholder='" + survey.getDescription() + "'form='updateSurvey'><br>");
+
+		message += ("<select id='cohorts' name = 'cohorts' form='addsurveycohort'><option value='' disabled selected>Select Section to Add</option>");
+
+		String cohortsStr = "";
+
+		for (int i = 0; i < cohortList.size(); i++) {
+			message += ("<option value='" + cohortList.get(i).getCohortID() + "' >" + cohortList.get(i).getCohortName()
+					+ " - " + cohortList.get(i).getCohortSemester() + "</option>");
+			for (int j = 0; j < surveyCohortIds.length; j++) {
+				String cohortId = surveyCohortIds[j];
+				if (String.valueOf(cohortList.get(i).getCohortID()).equalsIgnoreCase(cohortId)) {
+					surveyCohorts.add(cohortList.get(i));
+
+					cohortsStr += surveyCohortIds[j] + ",";
+
+				}
+			}
+
+		}
+		message += ("</select><input name='cohortStr' type='hidden' form='addsurveycohort' value='" + cohortsStr
+				+ "'><input type='submit' value='ADD' form='addsurveycohort'><br>");
+
+		message += ("<table>");
+		for (int i = 0; i < surveyCohorts.size(); i++) {
+
+			message += ("<tr>");
+			message += ("<td>" + surveyCohorts.get(i).getCohortName() + "</td>");
+			message += ("<td>" + surveyCohorts.get(i).getCohortSemester() + "</td>");
+			message += ("<td><a href='deletesurveycohort?id=" + surveyCohorts.get(i).getCohortID() + "&cohortStr="
+					+ cohortsStr + "'>X</a></td>");
+			message += ("</tr>");
+
+		}
+
+		message += ("</table>");
+
+		message += ("<a href='sendsurvey?cohortStr="+cohortsStr+"' >Send Survey</a>");
+
+		model.addAttribute("preferences", message);
+
+		return "surveyprefs";
+	}
+
+	@RequestMapping("/deletesurveycohort")
+	public String delete(@RequestParam("id") String id, @RequestParam("cohortStr") String cohortStr, Model model) {
+		String[] arr = cohortStr.split(",");
+		ArrayList<String> arr2 = new ArrayList<String>();
+
+		for (int i = 0; i < arr.length; i++) {
+			if (!id.equalsIgnoreCase(arr[i])) {
+				arr2.add(arr[i]);
+			}
+		}
+
+		cohortStr = "";
+		for (int i = 0; i < arr2.size(); i++) {
+			if (i < (arr2.size() - 1)) {
+				cohortStr += arr2.get(i) + ",";
+			} else {
+				cohortStr += arr2.get(i);
+			}
+		}
+
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		Criteria crit = session.createCriteria(Survey.class);
+
+		crit.add(Restrictions.eq("surveyID", 1));
+		ArrayList<Survey> list = (ArrayList<Survey>) crit.list();
+		Survey survey = list.get(0);
+
+		survey.setCohorts(cohortStr);
+		SurveyDaoImpl transfer = new SurveyDaoImpl();
+		transfer.updateSurvey(survey);
+
+		surveyPrefs(model);
+
+		return "surveyprefs";
+	}
+
+	@RequestMapping("/addsurveycohort")
+	public String addSurveyCohort(@RequestParam("cohortStr") String cohortStr, @RequestParam("cohorts") String cohort,
+			Model model) {
+
+		cohortStr = cohortStr + "," + cohort;
+		System.out.println(cohortStr);
+
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		Criteria crit = session.createCriteria(Survey.class);
+
+		crit.add(Restrictions.eq("surveyID", 1));
+		ArrayList<Survey> list = (ArrayList<Survey>) crit.list();
+		Survey survey = list.get(0);
+
+		survey.setCohorts(cohortStr);
+		SurveyDaoImpl transfer = new SurveyDaoImpl();
+		transfer.updateSurvey(survey);
+
+		surveyPrefs(model);
+		return "surveyprefs";
+	}
+
+	@RequestMapping("/sendsurvey")
+	public String sendSurvey(@RequestParam("cohortStr") String cohortStr) throws AddressException, MessagingException {
+
+		String[] arr = cohortStr.split(",");
+
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		Criteria crit = session.createCriteria(Persons.class);
+
+		for (int i = 0; i < arr.length; i++) {
+			crit.add(Restrictions.like("cohortID", Integer.valueOf(arr[i])));
+		}
+
+		ArrayList<Persons> list = (ArrayList<Persons>) crit.list();
+
+		JavaMail mail = new JavaMail();
+
+		for (int i = 0; i < list.size(); i++) {
+			System.out.println(list.get(i).getEmail());
+			mail.generateMailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(list.get(i).getEmail()));
+		}
+		mail.generateAndSendEmail();
+		return "success";
 	}
 
 }

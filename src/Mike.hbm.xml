@@ -53,14 +53,14 @@
 		<id name="pID">
 			<column name="Pid" sql-type="int(11)" length="11"></column>
 		</id>
-		<property name="cohortID">
-			<column name="CohortID" sql-type="int(11)" length="11"></column>
-		</property>
 		<property name="userResponse">
 			<column name="UserResponse" sql-type="varchar(255)" length="255"></column>
 		</property>
 		<property name="counter">
 			<column name="counter" sql-type="int(11)" length="11"></column>
+		</property>
+		<property name="week">
+			<column name="Week" sql-type="int(11)" length="11"></column>
 		</property>
 	</class>
 	
@@ -118,6 +118,18 @@
 		</property>
 		<property name="count">
 			<column name="count" sql-type="int(11)" length="11"></column>
+		</property>
+	</class>
+	
+	<class name="com.sad.MikesStuff.Effective" table="Effective" schema="SurveyDB">
+		<id name="answerid">
+			<column name="AnswerID" sql-type="int(11)" length="11"></column>
+		</id>
+		<property name="week">
+			<column name="Week" sql-type="int(11)" length="11"></column>
+		</property>
+		<property name="userresponse">
+			<column name="UserResponse" sql-type="varchar(255)" length="255"></column>
 		</property>
 	</class>
 	

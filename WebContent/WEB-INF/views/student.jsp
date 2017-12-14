@@ -124,7 +124,7 @@
 									<select id="cohortSelect" name="cohort">
 										<option value="All">All</option>
 										<c:forEach var="cohort" items="${listcohorts}">
-											<option value="${cohort.cohortName}">${cohort.cohortName}</option>
+											<option value="${cohort}">${cohort}</option>
 										</c:forEach>
 									</select> <input type="submit" value="Search">
 								</form>

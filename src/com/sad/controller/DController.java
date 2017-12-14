@@ -17,7 +17,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,9 +37,11 @@ import com.sad.dto.Cohort;
 import com.sad.dto.Persons;
 import com.sad.dto.Question;
 import com.sad.dto.SurveyQADto;
+import com.sad.util.HibernateUtil;
 
 @Controller
 public class DController {
+	
 
 	@RequestMapping("/student")
 	public ModelAndView studentTest(Model model) {
@@ -132,24 +137,20 @@ public class DController {
 	}
 
 	public ModelAndView cohortDropDownList(Model model) {
-		Cohort cohortDto = new Cohort();
-		CohortDaoImpl cohortDao = new CohortDaoImpl();
-		ArrayList<Cohort> cohortList = cohortDao.getAllCohorts();
+//		Cohort cohortDto = new Cohort();
+//		CohortDaoImpl cohortDao = new CohortDaoImpl();
+//		ArrayList<Cohort> cohortList = cohortDao.getAllCohorts();
+//		model.addAttribute("listcohorts", cohortList);
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction tx = session.beginTransaction();
+		Criteria crit = session.createCriteria(Cohort.class);
+		Projection projection = Projections.distinct(Projections.property("cohortName"));
+        crit.setProjection(projection);
+        ArrayList<Cohort> cohortList = (ArrayList<Cohort>) crit.list();
+        
+        	model.addAttribute("listcohorts", cohortList);
 
-		model.addAttribute("listcohorts", cohortList);
-
-		// Configuration config = new Configuration().configure("hibernate.cfg.xml");
-		//
-		// SessionFactory sessionFactory = config.buildSessionFactory();
-		//
-		// Session session = sessionFactory.openSession();
-		// Transaction tx = session.beginTransaction();
-		// SQLQuery sql = session.createSQLQuery("SELECT FirstName, LastName, Email,
-		// Location, CohortName, CohortSemester FROM Persons\n" +
-		// "INNER JOIN Cohort\n" +
-		// "ON Cohort.CohortID = Persons.CohortID;");
-		// List<Object> fullList = sql.list();
-		// model.addAttribute("pcohortList", fullList);
+		
 		return new ModelAndView("student");
 
 	}
@@ -159,9 +160,10 @@ public class DController {
 		cohortDropDownList(model);
 		String selection = request.getParameter("cohort");
 		System.out.println(selection);
-		Configuration config = new Configuration().configure("hibernate.cfg.xml");
-		SessionFactory sessionFactory = config.buildSessionFactory();
-		Session session = sessionFactory.openSession();
+//		Configuration config = new Configuration().configure("hibernate.cfg.xml");
+//		SessionFactory sessionFactory = config.buildSessionFactory();
+//		Session session = sessionFactory.openSession();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = session.beginTransaction();
 		Criteria crit;
 		ArrayList<Persons> list = null;
