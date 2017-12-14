@@ -4,12 +4,16 @@ import java.util.ArrayList;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
+import com.sad.util.HibernateUtil;
 
 public class DAOIMPL implements DAO {
 	
 	@Override
 	public ArrayList<Effective> getEE() {
-		Session session = HC.configureHib();
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		String hql = "select AnswerID, Week, UserResponse\n" + 
 				"		from Answer\n" + 
 				"		where QuestionID = 5 or QuestionID = 6 or QuestionID = 9 or QuestionID = 10\n" + 
@@ -22,7 +26,7 @@ public class DAOIMPL implements DAO {
 	
 	@Override
 	public ArrayList<WhatConf> getTT() {
-		Session session = HC.configureHib();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		String hql = "Select (@s \\:= @s + 1) as Pid,  t1.WatsonResponse as WatsonResponse, t1.count as count\n" + 
 				"	from\n" + 
 				"    (select WatsonResponse as WatsonResponse, count(WatsonResponse) as count\n" + 
@@ -38,7 +42,7 @@ public class DAOIMPL implements DAO {
 	
 	@Override
 	public ArrayList<WhatConf> getHowConf() {
-		Session session = HC.configureHib();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		String hql = "Select (@s \\:= @s + 1) as Pid,  t1.WatsonResponse as WatsonResponse, t1.count as count\n" + 
 				"	from\n" + 
 				"    (select WatsonResponse as WatsonResponse, count(WatsonResponse) as count\n" + 
@@ -54,7 +58,7 @@ public class DAOIMPL implements DAO {
 	
 	@Override
 	public ArrayList<SummaryResult> getSummaryResults() {
-		Session session = HC.configureHib();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		String hql = "select (@cnt \\:= @cnt + 1) as Pid, t2.Week as Week, t2.userResponse as userResponse, t2.counter as counter from\n" + 
 				"							(select t1.Week as Week, t1.userresponse as userResponse, count(Userresponse) as counter from\n" + 
 				"									(select Answer.PersonID as PersonID, Answer.Week as Week, Answer.UserResponse as userResponse \n" + 
@@ -77,7 +81,7 @@ public class DAOIMPL implements DAO {
 	
 	@Override
 	public ArrayList<Results> getAllResults() {
-		Session session = HC.configureHib();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		String hql = 
 				"SELECT t1.AnswerID as AnswerID,  \n" + 
 				"				t1.PersonID as PersonID,  \n" + 
@@ -107,7 +111,7 @@ public class DAOIMPL implements DAO {
 	
 	@Override
 	public ArrayList<QOptions> getAllOptions() {
-		Session session = HC.configureHib();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		
 		String hql = 
 				"select 	Survey_QA.Survey_QAID as SurveyQAID,\n" + 
@@ -127,7 +131,7 @@ public class DAOIMPL implements DAO {
 	
 	@Override
 	public ArrayList<ProgramManagement> getAllPM(){
-		Session session = HC.configureHib();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		String hql = "Select Answer.AnswerID as AnswerID, \n" + 
 				"			Answer.QuestionID as QuestionID, \n" + 
 				"            Answer.UserResponse as UserResponse,\n" + 
@@ -143,7 +147,7 @@ public class DAOIMPL implements DAO {
 	
 	@Override
 	public ArrayList<Jobs_Applied> getJobsApplied(){
-		Session session = HC.configureHib();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		String hql = "select UserResponse, count(UserResponse) from Answer where questionid = 26 group by userresponse";
 		Query query = session.createSQLQuery(hql).addEntity(Jobs_Applied.class);
 		//query.setParameter("userresponse", 1);
@@ -155,7 +159,7 @@ public class DAOIMPL implements DAO {
 	
 	@Override
 	public ArrayList<HowConfident> getAllConf(){
-		Session session = HC.configureHib();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		String hql = "  select (@cnt \\:= @cnt + 1) as Pid, \n" + 
 				"			t1.UserResponse as UserResponse,\n" + 
 				"			t1.Week as Week,\n" + 
@@ -177,7 +181,7 @@ public class DAOIMPL implements DAO {
 	
 	@Override
 	public ArrayList<HowConfident> getAllMatPace(){
-		Session session = HC.configureHib();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		String hql = "  select (@cnt \\:= @cnt + 1) as Pid, \n" + 
 				"			t1.UserResponse as UserResponse,\n" + 
 				"			t1.Week as Week,\n" + 
