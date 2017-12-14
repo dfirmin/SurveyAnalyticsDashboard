@@ -2,23 +2,18 @@ package com.sad.controller;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.sad.MikesStuff.DAOIMPL;
+import com.sad.MikesStuff.Effective;
 import com.sad.MikesStuff.HowConfident;
-import com.sad.MikesStuff.HowConfidentDaoImpl;
 import com.sad.MikesStuff.Jobs_Applied;
-import com.sad.MikesStuff.Jobs_AppliedDaoImpl;
 import com.sad.MikesStuff.ProgramManagement;
-import com.sad.MikesStuff.ProgramManagementDaoImpl;
 import com.sad.MikesStuff.SummaryResult;
-import com.sad.MikesStuff.SummaryResultDaoImpl;
 import com.sad.MikesStuff.WhatConf;
-import com.sad.MikesStuff.WhatConfDaoImpl;
 
 @Controller
 public class MikeHomeController {
@@ -36,7 +31,9 @@ public class MikeHomeController {
 		howConfident(model);
 		instructor(model);
 		moreConf(model);
-		//materialPace(model);
+		materialPace(model);
+		TT(model);
+		Effectiveness(model);
 		//helfulness(model);
 		//conduciveLearning(model);
 		
@@ -46,8 +43,83 @@ public class MikeHomeController {
 		return "visual";
 	}
 	
+	public static void Effectiveness(Model model) {
+		ArrayList<Effective> resultList = new DAOIMPL().getEE();
+		String[] instructor_list = new String[]{"ANTONELLA", "MAURICE", "PETER", "KAMAL", "ADAM", "J-C"};
+		int[] week_list = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+		
+		String js = "[['Week','ANTONELLA', 'MAURICE', 'PETER', 'KAMAL', 'ADAM', 'J-C'],";
+		for (int i=0; i<week_list.length; i++) {
+			double count = 0;
+			double sum = 0;
+			js += "['Week " + week_list[i] +"',";
+			for (int t=0; t<instructor_list.length; t++) {
+				for (int r=0; r<resultList.size(); r++) {
+					if (resultList.get(r).getUserresponse().contains(instructor_list[t]) && (resultList.get(r).getWeek()==week_list[i])) {
+						sum += Integer.parseInt(resultList.get(r+1).getUserresponse());
+						count += 1;
+					}
+				}
+				js += sum/count;
+				if (t != instructor_list.length-1) {
+					js += ",";
+				}
+			}
+			js += "]";
+			if (i != week_list.length-1) {
+				js += ",";
+			}
+		}
+		js += "]";
+		System.out.println(js);
+		model.addAttribute("E_el", js);
+	}
+	public static void TT(Model model) {
+		ArrayList<WhatConf> resultList = new DAOIMPL().getTT();
+		
+		String js = "[['Key Teaching Techniques','Count'],";
+		for (int i=0; i<resultList.size(); i++) {
+			js += "['" + resultList.get(i).getWatsonresponse() + "'," + resultList.get(i).getCount() + "]";
+			
+			if (i != resultList.size()-1) {
+				js +=",";
+			}
+		}
+		js+= "]";
+		
+		System.out.println(js);
+		
+		model.addAttribute("TT_el", js);
+	}
+	
+	public static void materialPace(Model model) {
+		
+		ArrayList<HowConfident> resultList = new DAOIMPL().getAllMatPace();
+		
+		String js_statement = "[['Week', 'Java Avg', '.NET avg', 'Front End avg'],";
+		
+		for (int i=0; i<resultList.size(); i++) {
+			if (resultList.get(i).getCohortid()==1) {
+				js_statement += "[" + resultList.get(i).getWeek() + "," + resultList.get(i).getUserresponse() + ",";
+			}
+			else if (resultList.get(i).getCohortid()==2) {
+				js_statement += resultList.get(i).getUserresponse() + ",";
+			}
+			else if (resultList.get(i).getCohortid()==3) {
+				js_statement += resultList.get(i).getUserresponse() + "]";
+				if (i != resultList.size() -1) {
+					js_statement += ",";
+				}
+			}
+		}
+		
+		js_statement += "]";
+		System.out.println(js_statement);
+		model.addAttribute("matPace", js_statement);
+	}
+	
 	public static void moreConf(Model model) {
-		ArrayList<WhatConf> resultList = new WhatConfDaoImpl().getHowConf();
+		ArrayList<WhatConf> resultList = new DAOIMPL().getHowConf();
 		
 		String js = "[['Students Responses','Count'],";
 		for (int i=0; i<resultList.size(); i++) {
@@ -65,7 +137,7 @@ public class MikeHomeController {
 	}
 	
 	public static void instructor(Model model) {
-		ArrayList<ProgramManagement> resultList = new ProgramManagementDaoImpl().getAllPM();
+		ArrayList<ProgramManagement> resultList = new DAOIMPL().getAllPM();
 		
 		String[] emotion_options = new String[]{"JOY", "ANGER", "DISGUST", "SADNESS", "FEAR"};
 		String[] instructor_list = new String[]{"ANTONELLA", "MAURICE", "PETER", "KAMAL", "ADAM", "J-C"};
@@ -109,7 +181,7 @@ public class MikeHomeController {
 	
 	public static void howConfident(Model model) {
 		
-		ArrayList<HowConfident> resultList = new HowConfidentDaoImpl().getAllConf();
+		ArrayList<HowConfident> resultList = new DAOIMPL().getAllConf();
 		
 		String js_statement = "[['Week', 'Java Avg', '.NET avg', 'Front End avg'],";
 		
@@ -126,7 +198,6 @@ public class MikeHomeController {
 					js_statement += ",";
 				}
 			}
-			
 		}
 		
 		js_statement += "]";
@@ -138,7 +209,7 @@ public class MikeHomeController {
 	
 public static void jobs_applied(Model model) {
 		
-		ArrayList<Jobs_Applied> resultList = new Jobs_AppliedDaoImpl().getJobsApplied();
+		ArrayList<Jobs_Applied> resultList = new DAOIMPL().getJobsApplied();
 		String js_statement = "[['Number of Jobs Applied', 'Count'],";
 		
 		for (int j=0; j<resultList.size(); j++) {
@@ -157,85 +228,39 @@ public static void jobs_applied(Model model) {
 	
 	public static void confidenceChart(Model model) {
 			
-			ArrayList<SummaryResult> resultList = new SummaryResultDaoImpl().getSummaryResults();
+			ArrayList<SummaryResult> resultList = new DAOIMPL().getSummaryResults();
 
-			String js_statement = "[['Confidence','Great! Excited for the rest of bootcamp.', 'A little confused, but confident I will get it soon!', 'Totally Confused', 'Other'],";
+			String js = "[['Week', 'Great', 'Little', 'Totally', 'Other'],";
 			
-			//Loop through ones for Java
-			int java_great = 0;
-			int net_great = 0;
-			int front_great = 0;
-			
-			int java_little = 0;
-			int net_little = 0;
-			int front_little = 0;
-			
-			int java_total = 0;
-			int net_total = 0;
-			int front_total = 0;
-			
-			int java_other = 0;
-			int net_other = 0;
-			int front_other = 0;
-			
-			for (int j=0; j<resultList.size(); j++) {
-				if ((resultList.get(j).getUserResponse().contains("Great!")) && (resultList.get(j).getCohortID() == 1)) {
-					java_great = resultList.get(j).getCounter();
-					System.out.println(java_great);
+			int weekfound = 0;
+			int score = 0;
+			for (int r = 0; r<resultList.size(); r++) {
+				
+				if (resultList.get(r).getWeek() != weekfound) {
+					weekfound += 1;
+					score = 0;
+					js += "['Week " + weekfound + "',";
 				}
-				else if ((resultList.get(j).getUserResponse().contains("little")) && (resultList.get(j).getCohortID() == 1)) {
-					java_little = resultList.get(j).getCounter();
-					System.out.println(java_little);
+				
+				js += resultList.get(r).getCounter();
+				score += 1;
+				
+				if (score == 4) {
+					js += "]";
+					score = 0;
+					if (r != resultList.size()-1) {
+						js += ",";
+					}
 				}
-				else if ((resultList.get(j).getUserResponse().contains("Totally")) && (resultList.get(j).getCohortID() == 1)) {
-					java_total = resultList.get(j).getCounter();	
-					System.out.println(java_total);
+				else {
+					js += ",";
 				}
-				else if ((resultList.get(j).getUserResponse().contains("Other")) && (resultList.get(j).getCohortID() == 1)) {
-					java_other = resultList.get(j).getCounter();
-					System.out.println(java_other);
-				}
-				else if ((resultList.get(j).getUserResponse().contains("Great!")) && (resultList.get(j).getCohortID() == 2)) {
-					net_great = resultList.get(j).getCounter();
-					System.out.println(net_great);
-				}
-				else if ((resultList.get(j).getUserResponse().contains("little")) && (resultList.get(j).getCohortID() == 2)) {
-					net_little = resultList.get(j).getCounter();
-					System.out.println(net_little);
-				}
-				else if ((resultList.get(j).getUserResponse().contains("Totally")) && (resultList.get(j).getCohortID() == 2)) {
-					net_total = resultList.get(j).getCounter();
-					System.out.println(net_total);
-				}
-				else if ((resultList.get(j).getUserResponse().contains("Other")) && (resultList.get(j).getCohortID() == 2)) {
-					net_other = resultList.get(j).getCounter();
-					System.out.println(net_other);
-				}
-				else if ((resultList.get(j).getUserResponse().contains("Great!")) && (resultList.get(j).getCohortID() == 3)) {
-					front_great = resultList.get(j).getCounter();
-					System.out.println(front_great);
-				}
-				else if ((resultList.get(j).getUserResponse().contains("little")) && (resultList.get(j).getCohortID() == 3)) {
-					front_little = resultList.get(j).getCounter();
-					System.out.println(front_little);
-				}
-				else if ((resultList.get(j).getUserResponse().contains("Totally")) && (resultList.get(j).getCohortID() == 3)) {
-					front_total = resultList.get(j).getCounter();
-					System.out.println(front_total);
-				}
-				else if ((resultList.get(j).getUserResponse().contains("Other")) && (resultList.get(j).getCohortID() == 3)) {
-					front_other = resultList.get(j).getCounter();
-					System.out.println(front_other);
-				}
+				
 			}
+			js += "]";
+			System.out.println(js);
 			
-			js_statement += "[ 'Java'," + java_great + "," + java_little + ","+ java_total + "," + java_other + "],";
-			js_statement += "[ '.NET'," + net_great + "," + net_little + ","+ net_total + "," + net_other +  "],";
-			js_statement += "[ 'Front End'," + front_great + "," + front_little + ","+ front_total + "," + front_other +  "]]";
-			
-			System.out.println(js_statement);
-			
-			model.addAttribute("getConf", js_statement);
+			model.addAttribute("getConf", js);
 			
 		}
 }
