@@ -11,11 +11,13 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Restrictions;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -31,6 +33,7 @@ import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.Em
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.Features;
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.KeywordsOptions;
 import com.sad.dao.AnswerDaoImpl;
+import com.sad.dao.CohortDaoImpl;
 import com.sad.dao.UsersDaoImpl;
 import com.sad.dto.Answer;
 import com.sad.dto.Cohort;
@@ -79,7 +82,7 @@ public class AlexController {
 		List<SurveyQADto> results = (List<SurveyQADto>) query.list();
 
 		query = session.createSQLQuery(
-				"select max(cohortID) as cohortId, cohortname, Max(cohortSemester) as cohortSemester, Max(startdate) as startDate from Cohort group by cohortname order by cohortid")
+				"select cohortID, cohortname, Max(cohortSemester) as cohortSemester, Max(startdate) as startDate from Cohort group by cohortname order by cohortid")
 				.addEntity(Cohort.class);
 		List<Cohort> cohorts = (List<Cohort>) query.list();
 		System.out.println(cohorts.toString());
@@ -549,6 +552,47 @@ public class AlexController {
 	   		}
 		}
 		return count + ":" + String.valueOf(resultDate);
+	}
+	
+	@RequestMapping("/surveyprefs")
+	public String surveyPrefs(@RequestParam("id") String id, Model model) {
+		
+		model.addAttribute("surveyId", id);
+		
+		Configuration config = new Configuration().configure("hibernate.cfg.xml");
+        SessionFactory sessionFactory = config.buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        Criteria crit = session.createCriteria(Cohort.class);
+    
+        crit.add(Restrictions.eq("SurveyID", id));
+		ArrayList<Survey> list = (ArrayList<Survey>) crit.list();
+		Survey survey = (Survey) list.get(0);
+		
+		CohortDaoImpl cohorts = new CohortDaoImpl();
+		
+		ArrayList<Cohort> cohortList = (ArrayList<Cohort>) cohorts.getAllCohorts();
+		
+		String[] surveyCohortIds = survey.getCohorts().split(",");
+		ArrayList<Cohort> surveyCohorts = new ArrayList<Cohort>();
+		
+		for (int i=0; i< cohortList.size(); i++) {
+			
+			for(int j=0; i < surveyCohortIds.length; i++) {
+				int cohortId = Integer.valueOf(surveyCohortIds[i]);
+				if (cohortList.get(i).getCohortID() == cohortId) {
+					surveyCohorts.add(cohortList.get(i));
+				}	
+			}	
+		}
+		
+		String message = ("<form action='updateSurvey' method='post'>");
+		message += ("<input type='text' placeholder='"+survey.getDescription()+"'><br>");
+		
+		
+        model.addAttribute("cohortList", list);
+		
+		return "survey";
 	}
 
 }

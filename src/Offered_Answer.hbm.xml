@@ -15,5 +15,10 @@
 		<property name="answerText">
 			<column name="AnswerText" sql-type="varchar(255)" length="255"></column>
 		</property>
+		
+		<property name="isCustom">
+			<column name="IsCustom" sql-type="bit" ></column>
+		</property>
+		
 	</class>
 </hibernate-mapping>		

@@ -21,7 +21,9 @@
 		<property name="createDate">
 			<column name="CreateDate" sql-type="date"></column>
 		</property>
-
+		<property name="cohorts">
+			<column name="Cohorts" sql-type="varchar(50)" length="50"></column>
+		</property>
 
 
 	</class>
