@@ -94,7 +94,7 @@ public class AlexController {
 				.addEntity(Cohort.class);
 		List<Cohort> cohorts = (List<Cohort>) query.list();
 		System.out.println(cohorts.toString());
-
+  
 		query = session.createSQLQuery("select * from Survey where surveyId =" + surveyID + ";")
 				.addEntity(Survey.class);
 		List<Survey> surveyDto = (List<Survey>) query.list();
@@ -106,10 +106,10 @@ public class AlexController {
 
 		// select bootcamp dropdown
 		message += ("<img class='center-block imgSize center' src='resources/grandcircuslogo.png'>");
-		message += ("<h1 class='surveyHeader'>" + surveyDto.get(0).getDescription() + "</h1>");
-		message += ("<p class='center'>Feedback is a gift!</p>");
+		message += ("<h1 class='surveyHeader' style='text-align:center;padding-top:1%;'>" + surveyDto.get(0).getDescription() + "</h1>");
+		message += ("<p class='center' style='text-align:center;padding-bottom:5%;'>Feedback is a gift!</p>");
 
-		message += ("<label>Select Your Bootcamp</label>");
+		message += ("<label style='padding-top:1%;'>Select Your Bootcamp: </label>");
 		message += ("<select id='cohorts' onChange='selectedDrop(this);' name = 'cohorts' required><option selected='0'>Select a language</option>");
 
 		for (int i = 0; i < cohorts.size(); i++) {
@@ -138,7 +138,7 @@ public class AlexController {
 		questionNum++;
 		questionNum++;
 		// select person name dropdown
-		message += ("<label>Select Your Name</label>");
+		message += ("<label style='padding-top:1%;'>Select Your Name: </label>");
 		message += ("<select id='students' name = 'students' required >");
 		message += ("<option selected='0' >Select an option from above</option>");
 		message += ("</select ><br>");
@@ -176,7 +176,7 @@ public class AlexController {
 			case "radio":
 				questionIDs.add(String.valueOf(questionID));
 				message += ("<fieldset name='" + questionID + "'>");
-				message += ("<br><label>" + results.get(i).getQuestionText() + "</label><br>");
+				message += ("<label style='padding-top:5%;'>" + results.get(i).getQuestionText() + "</label><br>");
 				continueLoop = true;
 
 				// loop through rows to catch each answer for radio button, advancing row index
@@ -206,7 +206,7 @@ public class AlexController {
 
 			case "slider":
 				questionIDs.add(String.valueOf(questionID));
-				message += ("<label>" + results.get(i).getQuestionText() + "</label> <br>");
+				message += ("<label style='padding-top:5%;'>" + results.get(i).getQuestionText() + "</label> <br>");
 
 				// get lower and upper bounds for slider
 				String answer1 = results.get(i).getAnswerText();
@@ -242,7 +242,7 @@ public class AlexController {
 				}
 
 				questionIDs.add(String.valueOf(questionID));
-				message += ("<label>" + results.get(i).getQuestionText() + "</label><br>");
+				message += ("<label style='padding-top:5%;'>" + results.get(i).getQuestionText() + "</label><br>");
 				message += ("<select name ='" + questionID + "''>");
 				continueLoop = true;
 
@@ -261,8 +261,8 @@ public class AlexController {
 
 			case "short answer":
 				questionIDs.add(String.valueOf(questionID));
-				message += ("<label>" + results.get(i).getQuestionText() + "</label> <br>"
-						+ "<input type='text' value='' name='" + questionID + "'> <br><br>");
+				message += ("<label style='padding-top:5%;'>" + results.get(i).getQuestionText() + "</label> <br>"
+						+ "<input type='text' value=''width='100%' name='" + questionID + "'> <br><br>");
 				break;
 
 			default:

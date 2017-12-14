@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <link rel='stylesheet' href='webjars/bootstrap/3.2.0/css/bootstrap.min.css'>
-    <link href="resources/style.css" type="text/css" rel="stylesheet">
+    <link href="resources/css/style.css" type="text/css" rel="stylesheet">
     
 <title>Home</title>
 </head>
