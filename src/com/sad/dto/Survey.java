@@ -9,6 +9,7 @@ public class Survey implements Serializable{
 	private String description;
 	private Date frequency;
 	private Date createDate;
+	private String cohorts;
 	
 	public Survey() {
 		
@@ -16,12 +17,25 @@ public class Survey implements Serializable{
 	
 	
 
-	public Survey(int surveyID, String description, Date frequency, Date createDate) {
+	public Survey(int surveyID, String description, Date frequency, Date createDate, String cohorts) {
 		super();
 		this.surveyID = surveyID;
 		this.description = description;
 		this.frequency = frequency;
 		this.createDate = createDate;
+		this.cohorts = cohorts;
+	}
+
+
+
+	public String getCohorts() {
+		return cohorts;
+	}
+
+
+
+	public void setCohorts(String cohorts) {
+		this.cohorts = cohorts;
 	}
 
 

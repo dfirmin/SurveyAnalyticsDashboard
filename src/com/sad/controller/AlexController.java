@@ -17,6 +17,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -42,10 +43,12 @@ import com.sad.dto.Survey;
 import com.sad.dto.SurveyQADto;
 import com.sad.dto.Users;
 import com.sad.info.Credentials;
+import com.sad.util.HibernateUtil;
 
 @Controller
 public class AlexController {
 
+	private static SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 	ArrayList<String> questionIDs = new ArrayList<String>();
 	ArrayList<Answer> answers = new ArrayList<Answer>();
 	int surveyID = 1;
@@ -63,8 +66,6 @@ public class AlexController {
 		answers.clear();
 
 		// initialize database connection
-		Configuration config = new Configuration().configure("hibernate.cfg.xml");
-		SessionFactory sessionFactory = config.buildSessionFactory();
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 
@@ -400,8 +401,7 @@ public class AlexController {
 
 		if ((pageNum - 1) == 1) {
 			qCount -= 2;
-			Configuration config = new Configuration().configure("hibernate.cfg.xml");
-			SessionFactory sessionFactory = config.buildSessionFactory();
+			
 			Session session = sessionFactory.openSession();
 			Transaction tx = session.beginTransaction();
 			int cohortID = Integer.valueOf(request.getParameter("cohorts"));
@@ -558,26 +558,31 @@ public class AlexController {
 	public String surveyPrefs(@RequestParam("id") String id, Model model) {
 		
 		model.addAttribute("surveyId", id);
-		
-		Configuration config = new Configuration().configure("hibernate.cfg.xml");
-        SessionFactory sessionFactory = config.buildSessionFactory();
+	
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
-        Criteria crit = session.createCriteria(Cohort.class);
+        Criteria crit = session.createCriteria(Survey.class);
     
         crit.add(Restrictions.eq("SurveyID", id));
 		ArrayList<Survey> list = (ArrayList<Survey>) crit.list();
 		Survey survey = (Survey) list.get(0);
+				
+		crit = session.createCriteria(Cohort.class);
+		crit.addOrder(Order.desc("StartDate"));
+		ArrayList<Cohort> cohortList = (ArrayList<Cohort>) crit.list();
 		
-		CohortDaoImpl cohorts = new CohortDaoImpl();
-		
-		ArrayList<Cohort> cohortList = (ArrayList<Cohort>) cohorts.getAllCohorts();
 		
 		String[] surveyCohortIds = survey.getCohorts().split(",");
 		ArrayList<Cohort> surveyCohorts = new ArrayList<Cohort>();
 		
+		
+		String message = ("<form action='updateSurvey' method='post'>");
+		message += ("<input type='text' placeholder='"+survey.getDescription()+"'><br>");
+		
+		message += ("<select id='cohorts' name = 'cohorts'><option value='' disabled selected>Select Section to Add</option>");
+		
 		for (int i=0; i< cohortList.size(); i++) {
-			
+			message += ("<option value='"+cohortList.get(i).getCohortID()+"' disabled selected>'"+cohortList.get(i).getCohortName()+"'</option>");
 			for(int j=0; i < surveyCohortIds.length; i++) {
 				int cohortId = Integer.valueOf(surveyCohortIds[i]);
 				if (cohortList.get(i).getCohortID() == cohortId) {
@@ -585,9 +590,10 @@ public class AlexController {
 				}	
 			}	
 		}
+		message += ("</select><br>");
 		
-		String message = ("<form action='updateSurvey' method='post'>");
-		message += ("<input type='text' placeholder='"+survey.getDescription()+"'><br>");
+
+		
 		
 		
         model.addAttribute("cohortList", list);
