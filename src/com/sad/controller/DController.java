@@ -76,6 +76,9 @@ public class DController {
 	// update person form
 	@RequestMapping(value = "/updatestudentform", method = RequestMethod.POST)
 	public ModelAndView updatePerson(Model model, HttpServletRequest request) {
+		// Populate dropdown list
+		cohortDropDownList(model);
+
 		int id = Integer.parseInt(request.getParameter("id"));
 		String firstName = request.getParameter("firstname");
 		String lastName = request.getParameter("lastname");
@@ -193,29 +196,22 @@ public class DController {
 
 	}
 
-	
-	
 	public static void emotionChart(Model model) throws ClassNotFoundException {
 		String myDriver = "com.mysql.jdbc.Driver";
 		Class.forName(myDriver);
 		Connection conn = null;
 		try {
 
-			conn = DriverManager.getConnection(
-					"jdbc:mysql://surveydb.cukvcoyfuo0c.us-east-2.rds.amazonaws.com/SurveyDB", "survey",
-					"Surveydatabase01");
+			conn = DriverManager.getConnection("jdbc:mysql://surveydb.cukvcoyfuo0c.us-east-2.rds.amazonaws.com/MikeDB",
+					"survey", "Surveydatabase01");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String query1 = ("SELECT SUM(NumberofStudents) AS Sum FROM(SELECT WatsonResponse, COUNT(*) AS NumberofStudents\n" + 
-				"FROM Answer\n" + 
-				"WHERE QuestionID = 1 && SurveyID = 1\n" + 
-				"GROUP BY WatsonResponse) As T;");
-		String query2 = ("SELECT WatsonResponse, COUNT(*) AS NumberofStudents\n" + 
-				"FROM Answer\n" + 
-				"WHERE QuestionID = 1 && SurveyID = 1\n" + 
-				"GROUP BY WatsonResponse;");
+		String query1 = ("SELECT SUM(NumberofStudents) AS Sum FROM(SELECT WatsonResponse, COUNT(*) AS NumberofStudents\n"
+				+ "FROM Answer\n" + "WHERE QuestionID = 25 && SurveyID = 1\n" + "GROUP BY WatsonResponse) As T;");
+		String query2 = ("SELECT WatsonResponse, COUNT(*) AS NumberofStudents\n" + "FROM Answer\n"
+				+ "WHERE QuestionID = 25 && SurveyID = 1\n" + "GROUP BY WatsonResponse;");
 		// create the java statement
 		Statement st = null;
 		try {
@@ -229,7 +225,7 @@ public class DController {
 		try {
 			ResultSet rs1 = st.executeQuery(query1);
 			int sum = 0;
-			while(rs1.next()) {
+			while (rs1.next()) {
 				sum += rs1.getInt("Sum");
 			}
 			System.out.println("The sum is " + sum);
@@ -238,17 +234,16 @@ public class DController {
 			while (rs2.next()) {
 				String watsonResponse = rs2.getString("WatsonResponse");
 				int numberOfStudents = rs2.getInt("NumberofStudents");
-				double avg = (double)numberOfStudents / sum;
+				double avg = (double) numberOfStudents / sum;
 				double percentage = avg * 100;
 				System.out.println("The average is " + avg);
 				System.out.println("The percentage is " + percentage);
-				googlechart+= ",['" + watsonResponse + "',"+ percentage+"]";
+				googlechart += ",['" + watsonResponse + "'," + percentage + "]";
 
-				
 			}
-			googlechart+= "]";
+			googlechart += "]";
 			System.out.println(googlechart);
-			
+
 			model.addAttribute("chartData", googlechart);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -257,26 +252,25 @@ public class DController {
 
 	}
 
-	
 	@RequestMapping("/modifySurvey")
 	public String modifySurveyPage(Model model) {
 		Configuration config = new Configuration().configure("hibernate.cfg.xml");
 		SessionFactory sessionFactory = config.buildSessionFactory();
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
-   
+
 		// sql query to pull survey questions and answers
 		Query query = session.createSQLQuery(
 				"SELECT survey_qaid,Question.QuestionID, QuestionText, QuestionType, Offered_Answer.OfferedAnswerID, AnswerText, IsCustom FROM Question "
 						+ "inner JOIN Survey_QA " + "ON Question.QuestionID = Survey_QA.QuestionID "
 						+ "inner JOIN Offered_Answer "
 						+ "ON Offered_Answer.OfferedAnswerID = Survey_QA.OfferedAnswerID "
-						+ "WHERE Survey_QA.SurveyID =" + 1
-						+ " Order by questionid,  survey_qaid, OfferedAnswerID ;" + "")
+						+ "WHERE Survey_QA.SurveyID =" + 1 + " Order by questionid,  survey_qaid, OfferedAnswerID ;"
+						+ "")
 				.addEntity(SurveyQADto.class);
 		List<SurveyQADto> results = (List<SurveyQADto>) query.list();
 		model.addAttribute("surveyQuestions", results);
 		return "modifySurvey";
 	}
-	
+
 }

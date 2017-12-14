@@ -10,14 +10,14 @@ import org.hibernate.cfg.Configuration;
 
 import com.sad.dto.Cohort;
 import com.sad.dto.Offered_Answer;
+import com.sad.util.HibernateUtil;
 
 public class Offered_AnswerDaoImpl implements Offered_AnswerDao {
-
+	private static SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	
 	@Override
 	public ArrayList<Offered_Answer> getAllOffered_Answer() {
-		Configuration config = new Configuration().configure("hibernate.cfg.xml");
 
-		SessionFactory sessionFactory = config.buildSessionFactory();
 
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
@@ -30,11 +30,8 @@ public class Offered_AnswerDaoImpl implements Offered_AnswerDao {
 
 	@Override
 	public void updateOffered_Answer(Offered_Answer offeredanswer) {
-		Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
-
-		SessionFactory sessionFact = cfg.buildSessionFactory();
-
-		Session codes = sessionFact.openSession();
+	
+		Session codes = sessionFactory.openSession();
 
 		codes.beginTransaction();
 
@@ -46,11 +43,8 @@ public class Offered_AnswerDaoImpl implements Offered_AnswerDao {
 
 	@Override
 	public void deleteOffered_Answer(Offered_Answer offeredAnswer) {
-		Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
 
-		SessionFactory sessionFact = cfg.buildSessionFactory();
-
-		Session session = sessionFact.openSession();
+		Session session = sessionFactory.openSession();
 
 		session.beginTransaction();
 
@@ -63,9 +57,7 @@ public class Offered_AnswerDaoImpl implements Offered_AnswerDao {
 
 	@Override
 	public void addOffered_Answer(Offered_Answer newOfferedAnswer) {
-		Configuration config = new Configuration().configure("hibernate.cfg.xml");
-
-		SessionFactory sessionFactory = config.buildSessionFactory();
+		
 
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();

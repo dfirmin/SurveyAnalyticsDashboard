@@ -42,6 +42,16 @@
 
 	</form>
 	
+	<form action="addSection" method="get">
+	Semester: <br>
+			 <input
+			type="text" name="cohortSemester" required><br> 
+		Start Date:<br>
+		<input id="datepicker" type="text" name="startDate" required><br>
+		<br><br>
+	<input type="submit" value="Add New Section">
+	</form>
+	
 							<table class="table-striped table-bordered table-hover" cellspacing="10">
 						<tr>
 								<th>Class</th>
@@ -54,9 +64,7 @@
 									<td>${myVar.cohortName}</td>
 									<td>${myVar.cohortSemester}</td>
 									<td>${myVar.startDate}</td>
-									<!--  <td><a href="delete?id=${myVar.cohortID}"> Delete </a></td>
-									<td><a href="updatecohortform?id=${myVar.cohortID}&cohortName=${myVar.cohortName}">
-											Update </a></td>-->
+									<td><a href="delete?id=${myVar.cohortID}"> Delete </a></td>
 								</tr>
 							</c:forEach>
 			

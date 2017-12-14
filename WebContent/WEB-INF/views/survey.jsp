@@ -22,16 +22,27 @@
 <script src="resources/js/watsontest.js"></script>
 
 <script type="text/javascript">
-	var getConf = ${getConf};
-	var getJobsApp = ${getJobsApp};
-	var chartData = ${chartData};
-	
+	var getConf = $
+	{
+		getConf
+	};
+	var getJobsApp = $
+	{
+		getJobsApp
+	};
+	var chartData = $
+	{
+		chartData
+	};
+
 	console.log(getConf);
 	console.log(getJobsApp);
 	google.charts.load('current', {
 		'packages' : [ 'corechart' ]
 	});
-	google.charts.load('current', {'packages':['bar']});
+	google.charts.load('current', {
+		'packages' : [ 'bar' ]
+	});
 	google.charts.setOnLoadCallback(watsonBarTest);
 	google.charts.setOnLoadCallback(confOverTime);
 	google.charts.setOnLoadCallback(jobs_applied);
@@ -99,10 +110,13 @@
 					<div class="row">
 						<div class="main-pane">
 							<div class="inner-div">
-								<h1 class="pageTitle">DASHBOARD</h1>
+								<h1 class="pageTitle">Surveys</h1>
 							</div>
-							<a href="modifySurvey">Survey 1</a>
+
 						</div>
+					</div>
+					<div>
+						<a href="modifySurvey">Survey 1</a>
 					</div>
 
 

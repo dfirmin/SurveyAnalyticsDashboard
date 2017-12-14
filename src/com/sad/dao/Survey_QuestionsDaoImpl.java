@@ -10,14 +10,15 @@ import org.hibernate.cfg.Configuration;
 
 import com.sad.dto.Survey_QA;
 import com.sad.dto.Survey_Question;
+import com.sad.util.HibernateUtil;
 
 public class Survey_QuestionsDaoImpl implements Survey_QuestionsDao {
-
+	
+	private static SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	
 	@Override
 	public ArrayList<Survey_Question> getAllSurvey_QuestionsDaos() {
-		Configuration config = new Configuration().configure("hibernate.cfg.xml");
-
-		SessionFactory sessionFactory = config.buildSessionFactory();
+		
 
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
@@ -30,11 +31,9 @@ public class Survey_QuestionsDaoImpl implements Survey_QuestionsDao {
 
 	@Override
 	public void updateSurvey_QuestionsDao(Survey_Question surveyquestion) {
-		Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
+		
 
-		SessionFactory sessionFact = cfg.buildSessionFactory();
-
-		Session codes = sessionFact.openSession();
+		Session codes = sessionFactory.openSession();
 
 		codes.beginTransaction();
 
@@ -46,11 +45,8 @@ public class Survey_QuestionsDaoImpl implements Survey_QuestionsDao {
 
 	@Override
 	public void deleteSurvey_QuestionsDao(Survey_Question surveyquestion) {
-		Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
-
-		SessionFactory sessionFact = cfg.buildSessionFactory();
-
-		Session session = sessionFact.openSession();
+		
+		Session session = sessionFactory.openSession();
 
 		session.beginTransaction();
 
@@ -63,9 +59,7 @@ public class Survey_QuestionsDaoImpl implements Survey_QuestionsDao {
 
 	@Override
 	public void addSurvey_QuestionsDao(Survey_Question newSurveyQuestion) {
-		Configuration config = new Configuration().configure("hibernate.cfg.xml");
-
-		SessionFactory sessionFactory = config.buildSessionFactory();
+	
 
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();

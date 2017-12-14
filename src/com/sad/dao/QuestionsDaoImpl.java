@@ -10,14 +10,14 @@ import org.hibernate.cfg.Configuration;
 
 import com.sad.dto.Persons;
 import com.sad.dto.Question;
+import com.sad.util.HibernateUtil;
 
 public class QuestionsDaoImpl implements QuestionDao {
-
+	private static SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	
 	@Override
 	public ArrayList<Question> getAllQuestion() {
-		Configuration config = new Configuration().configure("hibernate.cfg.xml");
-
-		SessionFactory sessionFactory = config.buildSessionFactory();
+		
 
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
@@ -30,11 +30,9 @@ public class QuestionsDaoImpl implements QuestionDao {
 
 	@Override
 	public void updateQuestion(Question question) {
-		Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
+		
 
-		SessionFactory sessionFact = cfg.buildSessionFactory();
-
-		Session codes = sessionFact.openSession();
+		Session codes = sessionFactory.openSession();
 
 		codes.beginTransaction();
 
@@ -46,11 +44,9 @@ public class QuestionsDaoImpl implements QuestionDao {
 
 	@Override
 	public void deleteQuestion(Question question) {
-		Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
 
-		SessionFactory sessionFact = cfg.buildSessionFactory();
 
-		Session session = sessionFact.openSession();
+		Session session = sessionFactory.openSession();
 
 		session.beginTransaction();
 
@@ -63,10 +59,7 @@ public class QuestionsDaoImpl implements QuestionDao {
 
 	@Override
 	public void addQuestion(Question newQuestion) {
-		// TODO Auto-generated method stub
-		Configuration config = new Configuration().configure("hibernate.cfg.xml");
-
-		SessionFactory sessionFactory = config.buildSessionFactory();
+		
 
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
