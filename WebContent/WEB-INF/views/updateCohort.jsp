@@ -51,8 +51,7 @@
 		<br><br>
 	<input type="submit" value="Add New Section">
 	</form>
-	
-							<table class="table-striped table-bordered table-hover" cellspacing="10">
+					<table class="table-striped table-bordered table-hover" cellspacing="10">
 						<tr>
 								<th>Class</th>
 								<th>Semester</th>

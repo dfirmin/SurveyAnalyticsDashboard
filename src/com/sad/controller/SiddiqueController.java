@@ -124,8 +124,24 @@ public class SiddiqueController {
 	}
 	
 	//This allows you to update a specific cohort by semester and start date
-	@RequestMapping("addSection")
-	public String updateSection(@RequestParam())
+	@RequestMapping(value= "addSection", method = RequestMethod.GET)
+	public ModelAndView updateSection(@RequestParam("cohortSemester") String cohortSem, @RequestParam("startDate") String sDate, Model model) {
+		model.addAttribute("cohortSemester", cohortSem);
+		model.addAttribute("startDate", sDate);
+		
+		Configuration config = new Configuration().configure("hibernate.cfg.xml");
+		SessionFactory sessionFactory = config.buildSessionFactory();
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		Criteria crit = session.createCriteria(Cohort.class);
+		crit.add(Restrictions.eq("cohortSemester", cohortSem));
+		crit.add(Restrictions.eq("startDate", sDate));
+	
+		ArrayList<Cohort> list = (ArrayList<Cohort>) crit.list();
+		
+		model.addAttribute("cohortList", list);
+		return new ModelAndView ("updateCohort", "cohortID", list);
+	}
 
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
 	public ModelAndView update(@RequestParam("id") int id, @RequestParam("cohortName") String cohortName,
