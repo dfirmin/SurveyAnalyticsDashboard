@@ -212,6 +212,8 @@ public static void jobs_applied(Model model) {
 		ArrayList<Jobs_Applied> resultList = new DAOIMPL().getJobsApplied();
 		String js_statement = "[['Number of Jobs Applied', 'Count'],";
 		
+		String[] label = {"1-3","4-7", "8-11", "11+"};
+		
 		for (int j=0; j<resultList.size(); j++) {
 			js_statement += "['" + resultList.get(j).getJobs_applied_label() + "', " + resultList.get(j).getCount() + "]";
 			if (j != resultList.size()-1) {
