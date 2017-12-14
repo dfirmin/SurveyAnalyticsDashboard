@@ -144,7 +144,7 @@ public class DAOIMPL implements DAO {
 	@Override
 	public ArrayList<Jobs_Applied> getJobsApplied(){
 		Session session = HC.configureHib();
-		String hql = "select userresponse, count(userresponse) from Answer where questionid = 26 group by userresponse";
+		String hql = "select UserResponse, count(UserResponse) from Answer where questionid = 26 group by userresponse";
 		Query query = session.createSQLQuery(hql).addEntity(Jobs_Applied.class);
 		//query.setParameter("userresponse", 1);
 		//query.setParameter("count(userresponse)", 1);

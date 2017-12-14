@@ -16,7 +16,7 @@
 
         // Set chart options
         var options = {
-        					title:"Percentage of Each Student's Feelings Per Cohort",
+        					title:"Percentage of Each Student's Feelings Per Week",
         					isStacked: 'percent',
         					legend: { position: 'bottom' }
         				};

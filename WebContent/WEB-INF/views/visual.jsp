@@ -49,14 +49,41 @@
 </head>
 <body>
 	<div id="confovertime"></div>
+	</br>
+	</br>
+	</br>
 	<div id="jobs_applied"></div>
+	</br>
+	</br>
+	</br>
 	<div id="interviews"></div>
+	</br>
+	</br>
+	</br>
 	<div id="howConfID"></div>
+	</br>
+	</br>
+	</br>
 	<div id="instruEmotions"></div>
+	</br>
+	</br>
+	</br>
 	<div id="what_make_conf"></div>
+	</br>
+	</br>
+	</br>
 	<div id="material_pace"></div>
+	</br>
+	</br>
+	</br>
 	<div id="tt"></div>
+	</br>
+	</br>
+	</br>
 	<div id="teacher_effect"></div>
+	</br>
+	</br>
+	</br>
 	
 	<div id="conducive_learning"></div>
 </body>	
