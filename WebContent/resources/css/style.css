@@ -15,6 +15,14 @@ html, body {
   color: #1ea8b4;
 }
 
+.background-teal {
+  background-color: #1ea8b4;
+}
+
+.background-orange {
+  background-color: #ed6334;
+}
+
 .darkGrey {
   color: #001D41;
 }
@@ -37,6 +45,15 @@ html, body {
 
 .menu-item:hover {
   text-decoration: none;
+}
+
+label {
+  padding-top: 3%;
+}
+
+input {
+  padding: 1%;
+  width: 100%;
 }
 
 .logoHeader {
@@ -65,7 +82,12 @@ h1 {
 .main-pane {
   margin: 3%;
   background-color: #fff;
+  display: inline-block;
+  width: 93%;
+  height: 100%;
   min-height: 90vh;
+  margin-bottom: 5%;
+  padding-bottom: 5%;
 }
 
 .inner-div {
@@ -80,7 +102,7 @@ h1 {
 }
 
 .sideMenu {
-  background-color: #1ea8b4;
+  background-color: #333333;
   height: 100vh;
   /* percent relative to viewport height */
   margin-top: -50px;
