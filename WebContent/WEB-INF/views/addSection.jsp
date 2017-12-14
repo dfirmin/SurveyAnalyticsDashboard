@@ -5,18 +5,21 @@
 <html>
 <head>
 <style>
-a:link{
-  color: blue;
-  text-decoration: none;
+a:link {
+	color: blue;
+	text-decoration: none;
 }
-a:visited{
-  color: gray;
-  text-decoration: none;
+
+a:visited {
+	color: gray;
+	text-decoration: none;
 }
-a:hover{
-  color: green;
-  text-decoration: none;
+
+a:hover {
+	color: green;
+	text-decoration: none;
 }
+
 table {
 	border: 1px solid black;
 	width: 100%;
@@ -48,47 +51,25 @@ th {
 </script>
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Update Cohort</title>
+<title>Add Section</title>
 </head>
 <body>
 
-	<h1>Update Cohort</h1>
-	<br>
-	<form action="update" method="get">
+	<h1>Add Section</h1>
+	<form action="addNewSection" method="get">
 		<input type="hidden" name="id" value="${cohortID}"> <br>
 		Course Name: <br> <input type="text" name="cohortName"
-			value="${cohortName}" required> <br> Semester: <br>
+			value="${cohortName}" required><br> Semester: <br>
+
 		<input type="text" name="cohortSemester" required><br>
 		Start Date:<br> <input id="datepicker" type="text"
-			name="startDate" required><br> <br>
-		<br> <input type="submit" value="Update Class">
+			name="startDate" required><br> <br> <input
+			type="submit" value="Add Semester">
 
 	</form>
-	<form action="addSemester" method="get"> 
-		<input type="hidden" name="id" value="${cohortID}"> <br>
-		<input type="hidden" name="cohortName"
-			value="${cohortName}"> 
-	<input type="submit" value="Add Section">
-	</form>
-
 	<br>
 	<br>
-	<table class="table-striped table-bordered table-hover"
-		cellspacing="10">
-		<tr>
-			<th>Class</th>
-			<th>Semester</th>
-			<th>Start Date</th>
-		</tr>
-		<c:forEach var="myVar" items="${cohortList}" varStatus="status">
-			<tr>
-				<td>${myVar.cohortName}</td>
-				<td>${myVar.cohortSemester}</td>
-				<td>${myVar.startDate}</td>
-				<td><a href="delete?id=${myVar.cohortID}"> Delete </a></td>
-			</tr>
-		</c:forEach>
+	<a href="cohort">Cohort</a>
 
-	</table>
 </body>
 </html>

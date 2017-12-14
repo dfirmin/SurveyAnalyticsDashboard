@@ -44,6 +44,7 @@
 	
 	google.charts.load('current', {'packages':['bar']});
 	google.charts.load('current', {'packages':['corechart']});
+	google.charts.load('current', {'packages':['corechart']});
 	
 	google.charts.setOnLoadCallback(watsonBarTest);
 	google.charts.setOnLoadCallback(confOverTime);
@@ -112,48 +113,59 @@
 
 				</div>
 				<div class="col-md-10 content">
-
-					<div class="row">
-						<div class="main-pane">
-							<div class="inner-div">
-								<h1 class="pageTitle">DASHBOARD</h1>
+				
+					
+				
+						<div  style="background-color:transparent">
+								
 								<!-- Chart section -->
 
 
-								<div class="container">
+								<div class="container col-md-12">
+								<div class="row"> <div class = "col-xs-12"><h1 class="pageTitle">DASHBOARD</h1> </div></div>
 									<div class="row">
-										<div class="col-sm" id="material_pace"></div>
+									<div class = "col-xs-12"><div class="" id="teacher_effect"></div></div>						
 									</div>
+									<br>
+									
 
 									<div class="row">
-										<div class="col-sm" id="confovertime"></div>
-										<div class="col-sm" id="howConfID"></div>
+										<div class = "col-xs-4"><div id="confovertime"></div></div>
+										<div class = "col-xs-4"><div id="howConfID"></div></div>
+										<div class = "col-xs-4"><div  id="material_pace"></div></div>	
 									</div>
+									<br>
 
 									<div class="row">
-										<div class="col-sm" id="teacher_effect"></div>
-										<div class="col-sm" id="instruEmotions"></div>
+	
+										<div class = "col-xs-4"><div class="" id="instruEmotions"></div></div>
+										<div class = "col-xs-4"><div class="" id="jobs_applied"></div></div>
+										<div class = "col-xs-4"><div id="watsonTestChart"></div></div>
 									</div>
-
+									<br>
 									<div class="row">
-										<div class="col-sm" id="jobs_applied"></div>
-										<div class="col-sm" id="interviews"></div>
-									</div>
-
-									<div class="row">
-										<div class="col-sm" id="watsonTestChart"></div>
-										<div id="what_make_conf"></div>
+										
+										<div class = "col-xs-12"><div id="what_make_conf"></div></div>
+										
 									</div>
 								</div>
-							</div>
 						</div>
-					</div>
+				
 
 
 				</div>
 			</div>
+			<br>
+		
 		</div>
+		
 	</section>
+	
+	<br>
+		<br>
+		<br>
+		<br>
+		<br>
 
 
 
