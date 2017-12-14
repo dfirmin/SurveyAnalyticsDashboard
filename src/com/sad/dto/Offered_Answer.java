@@ -6,16 +6,29 @@ public class Offered_Answer implements Serializable{
 
 	private int offeredAnswerID;
 	private String answerText;
+	private boolean isCustom;
 	
+
+
 	public Offered_Answer() {
 		
 	}
 	
 
-	public Offered_Answer(int offeredAnswerID, String answerText) {
+	public Offered_Answer(int offeredAnswerID, String answerText, boolean isCustom) {
 		super();
 		this.offeredAnswerID = offeredAnswerID;
 		this.answerText = answerText;
+		this.isCustom = isCustom;
+	}
+
+	public boolean getIsCustom() {
+		return isCustom;
+	}
+
+
+	public void setIsCustom(boolean isCustom) {
+		this.isCustom = isCustom;
 	}
 
 
