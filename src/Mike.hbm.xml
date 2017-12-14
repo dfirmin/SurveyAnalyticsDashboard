@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
 
-	<class name="com.sad.MikesStuff.Results" table="Results" schema="MikeDB">
+	<class name="com.sad.MikesStuff.Results" table="Results" schema="SurveyDB">
 		<id name="answerid">	
 			<column name="AnswerID" sql-type="int(11)" length= "11"></column>
 		</id>
@@ -39,7 +39,7 @@
 	</class>
 	
 	<class name="com.sad.MikesStuff.Jobs_Applied" table="Jobs_Applied"
-		schema="MikeDB">
+		schema="SurveyDB">
 		<id name="jobs_applied_label">
 			<column name="userresponse" sql-type="varchar(255)" length="255"></column>
 		</id>
@@ -49,7 +49,7 @@
 	</class>
 	
 	<class name="com.sad.MikesStuff.SummaryResult" table="SummaryResults"
-		schema="MikeDB">
+		schema="SurveyDB">
 		<id name="pID">
 			<column name="Pid" sql-type="int(11)" length="11"></column>
 		</id>
@@ -64,7 +64,7 @@
 		</property>
 	</class>
 	
-	<class name="com.sad.MikesStuff.QOptions" table="QOptions" schema="MikeDB">
+	<class name="com.sad.MikesStuff.QOptions" table="QOptions" schema="SurveyDB">
 		<id name="surveyqaid">
 			<column name="SurveyQAID" sql-type="int(11)" length="11"></column>
 		</id>
@@ -79,7 +79,7 @@
 		</property>
 	</class>
 	
-	<class name="com.sad.MikesStuff.HowConfident" table="HowConfident" schema="MikeDB">
+	<class name="com.sad.MikesStuff.HowConfident" table="HowConfident" schema="SurveyDB">
 		<id name="answerid">
 			<column name="Pid" sql-type="int(11)" length="11"></column>
 		</id>
@@ -94,7 +94,7 @@
 		</property>
 	</class>
 	
-	<class name="com.sad.MikesStuff.ProgramManagement" table="ProgramManagement" schema="MikeDB">
+	<class name="com.sad.MikesStuff.ProgramManagement" table="ProgramManagement" schema="SurveyDB">
 		<id name="answerid">
 			<column name="AnswerID" sql-type="int(11)" length="11"></column>
 		</id>
@@ -109,15 +109,12 @@
 		</property>
 	</class>
 	
-	<class name="com.sad.MikesStuff.WhatConf" table="WhatConf" schema="MikeDB">
+	<class name="com.sad.MikesStuff.WhatConf" table="WhatConf" schema="SurveyDB">
 		<id name="pid">
 			<column name="Pid" sql-type="int(11)" length="11"></column>
 		</id>
-		<property name="cohortid">
-			<column name="CohortID" sql-type="int(11)" length="11"></column>
-		</property>
 		<property name="watsonresponse">
-			<column name="UserResponse" sql-type="varchar(255)" length="255"></column>
+			<column name="WatsonResponse" sql-type="varchar(255)" length="255"></column>
 		</property>
 		<property name="count">
 			<column name="count" sql-type="int(11)" length="11"></column>

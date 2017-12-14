@@ -32,16 +32,16 @@ public class ResultsDaoImpl implements ResultsDao {
 				"				t1.UserResponse as UserResponse,  \n" + 
 				"				t1.WatsonResponse as WatsonResponse, \n" + 
 				"				t1.SubmitDate as SubmitDate,  \n" + 
-				"				MikeDB.Cohort.CohortName as CohortName  \n" + 
+				"				Cohort.CohortName as CohortName  \n" + 
 				"				FROM  \n" + 
-				"					(SELECT MikeDB.Answer.*, \n" + 
-				"						MikeDB.Persons.FirstName as FirstName,  \n" + 
-				"						MikeDB.Persons.LastName as LastName,  \n" + 
-				"						MikeDB.Persons.CohortID as CohortID \n" + 
-				"						FROM MikeDB.Answer LEFT JOIN MikeDB.Persons on\n" + 
-				"						MikeDB.Answer.PersonID = MikeDB.Persons.PersonID  \n" + 
+				"					(SELECT Answer.*, \n" + 
+				"						Persons.FirstName as FirstName,  \n" + 
+				"						Persons.LastName as LastName,  \n" + 
+				"						Persons.CohortID as CohortID \n" + 
+				"						FROM Answer LEFT JOIN Persons on\n" + 
+				"						Answer.PersonID = Persons.PersonID  \n" + 
 				"					 ) as t1 \n" + 
-				"				LEFT JOIN MikeDB.Cohort on t1.CohortID = MikeDB.Cohort.CohortID;";
+				"				LEFT JOIN Cohort on t1.CohortID = Cohort.CohortID;";
 		
 		Query q = session.createSQLQuery(hql).addEntity(Results.class);
 		ArrayList<Results> list = (ArrayList<Results>) q.list();

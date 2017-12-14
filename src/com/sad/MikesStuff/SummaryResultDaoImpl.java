@@ -18,11 +18,11 @@ public class SummaryResultDaoImpl implements SummaryResultDao{
 	Session session = sessionFactory.openSession();
 	Transaction tx = session.beginTransaction();
 	String hql = "select (@cnt \\:= @cnt + 1) as Pid, t2.Cohortid as CohortID, t2.userResponse as userResponse, t2.counter as counter from\n" + 
-			"			(select MikeDB.Persons.CohortID as Cohortid, t1.userresponse as userResponse, count(Userresponse) as counter from\n" + 
-			"					(select MikeDB.Answer.PersonID as PersonID, MikeDB.Answer.UserResponse as userResponse \n" + 
-			"						from MikeDB.Answer where MikeDB.Answer.QuestionID =1) as t1\n" + 
-			"				inner join MikeDB.Persons on MikeDB.Persons.PersonID = t1.PersonID\n" + 
-			"			group by MikeDB.Persons.cohortid, userResponse) as t2\n" + 
+			"			(select Persons.CohortID as Cohortid, t1.userresponse as userResponse, count(Userresponse) as counter from\n" + 
+			"					(select Answer.PersonID as PersonID, Answer.UserResponse as userResponse \n" + 
+			"						from Answer where Answer.QuestionID =1) as t1\n" + 
+			"				inner join Persons on Persons.PersonID = t1.PersonID\n" + 
+			"			group by Persons.cohortid, userResponse) as t2\n" + 
 			"		CROSS JOIN (SELECT @cnt \\:= 0) AS dummy;";
 	Query q = session.createSQLQuery(hql).addEntity(SummaryResult.class);
 	ArrayList<SummaryResult> resultList = (ArrayList<SummaryResult>) q.list();

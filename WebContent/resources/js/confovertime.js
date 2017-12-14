@@ -12,15 +12,6 @@
         // Create the data table.
         var data = new google.visualization.arrayToDataTable(
         		getConf
-        	/*
-        [	
-        		['Week', 'Java', '.NET', 'Front End'],
-            ['1', 1000, 400, 200],
-            ['2', 1170, 460, 250],
-            ['3', 660, 1120, 300],
-            ['4', 1030, 540, 350]
-        ]
-        */
         );
 
         // Set chart options

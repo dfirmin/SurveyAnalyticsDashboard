@@ -17,13 +17,12 @@ public class WhatConfDaoImpl implements WhatConfDao{
 	SessionFactory sessionFactory = config.buildSessionFactory();
 	Session session = sessionFactory.openSession();
 	Transaction tx = session.beginTransaction();
-	String hql = "Select (@s \\:= @s + 1) as Pid, t1.CohortID as CohortID, t1.WatsonResponse as WatsonResponse, t1.count as count\n" + 
+	String hql = "Select (@s \\:= @s + 1) as Pid,  t1.WatsonResponse as WatsonResponse, t1.count as count\n" + 
 			"	from\n" + 
-			"    (select Persons.CohortID as CohortID, WatsonResponse as WatsonResponse, count(WatsonResponse) as count\n" + 
+			"    (select WatsonResponse as WatsonResponse, count(WatsonResponse) as count\n" + 
 			"	from Answer \n" + 
-			"	left join Persons on Answer.PersonID = Persons.PersonID\n" + 
 			"	where QuestionID =3 \n" + 
-			"	group by Persons.CohortID, Answer.WatsonResponse) as t1\n" + 
+			"	group by WatsonResponse) as t1\n" + 
 			"CROSS JOIN (SELECT @s \\:= 0) AS cnt;";
 	Query q = session.createSQLQuery(hql).addEntity(WhatConf.class);
 	ArrayList<WhatConf> resultList = (ArrayList<WhatConf>) q.list();

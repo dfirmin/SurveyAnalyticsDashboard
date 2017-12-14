@@ -22,12 +22,12 @@ public class HowConfidentDaoImpl implements HowConfidentDao {
 				"			t1.UserResponse as UserResponse,\n" + 
 				"			t1.Week as Week,\n" + 
 				"            t1.CohortID as CohortID FROM\n" + 
-				"(select  avg(MikeDB.Answer.UserResponse) as UserResponse, \n" + 
-				"            MikeDB.Answer.Week as Week, \n" + 
-				"            MikeDB.Persons.CohortID as CohortID\n" + 
-				"from MikeDB.Answer left join MikeDB.Persons\n" + 
-				"on MikeDB.Answer.PersonID = MikeDB.Persons.PersonID\n" + 
-				"where QuestionID =2 and MikeDB.Answer.Week is not null\n" + 
+				"(select  avg(Answer.UserResponse) as UserResponse, \n" + 
+				"            Answer.Week as Week, \n" + 
+				"            Persons.CohortID as CohortID\n" + 
+				"from Answer left join Persons\n" + 
+				"on Answer.PersonID = Persons.PersonID\n" + 
+				"where QuestionID =2 and Answer.Week is not null\n" + 
 				"group by Week, CohortID) as t1\n" + 
 				"CROSS JOIN (SELECT @cnt \\:= 0) AS dummy\n" + 
 				"order by Week, CohortID";

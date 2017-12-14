@@ -17,6 +17,8 @@ import com.sad.MikesStuff.ProgramManagement;
 import com.sad.MikesStuff.ProgramManagementDaoImpl;
 import com.sad.MikesStuff.SummaryResult;
 import com.sad.MikesStuff.SummaryResultDaoImpl;
+import com.sad.MikesStuff.WhatConf;
+import com.sad.MikesStuff.WhatConfDaoImpl;
 
 @Controller
 public class MikeHomeController {
@@ -45,7 +47,21 @@ public class MikeHomeController {
 	}
 	
 	public static void moreConf(Model model) {
+		ArrayList<WhatConf> resultList = new WhatConfDaoImpl().getHowConf();
 		
+		String js = "[['Students Responses','Count'],";
+		for (int i=0; i<resultList.size(); i++) {
+			js += "['" + resultList.get(i).getWatsonresponse() + "'," + resultList.get(i).getCount() + "]";
+			
+			if (i != resultList.size()-1) {
+				js +=",";
+			}
+		}
+		js+= "]";
+		
+		System.out.println(js);
+		
+		model.addAttribute("WhatConf", js);
 	}
 	
 	public static void instructor(Model model) {

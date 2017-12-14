@@ -11,17 +11,20 @@
 <script src="resources/js/jobs_applied.js"></script>
 <script src="resources/js/howConfident.js"></script>
 <script src="resources/js/instructor.js"></script>
+<script src="resources/js/what_make_conf.js"></script>
 <script type="text/javascript">
 
 	var getConf = ${getConf };
 	var getJobsApp = ${getJobsApp };
 	var getHowConf = ${getHowConf};
 	var getIE = ${Instructor_el};
+	var getWhatConf = ${WhatConf};
 	
 	console.log(getConf);
 	console.log(getJobsApp);
 	console.log(getHowConf);
 	console.log(getIE);
+	console.log(getWhatConf);
 	
 	google.charts.load('current', {'packages':['corechart']});
 	google.charts.load('current', {'packages':['bar']});
@@ -30,7 +33,7 @@
 	google.charts.setOnLoadCallback(jobs_applied);
 	google.charts.setOnLoadCallback(howConfident);
 	google.charts.setOnLoadCallback(drawInstrEmo);
-	
+	google.charts.setOnLoadCallback(whatMakeConf);
 </script>
 </head>
 <body>
@@ -40,6 +43,7 @@
 	<div id="howConfID"></div>
 	<div id="instruEmotions"></div>
 	<div id="what_make_conf"></div>
+	
 	<div id="material_pace"></div>
 	<div id="conducive_learning"></div>
 </body>	

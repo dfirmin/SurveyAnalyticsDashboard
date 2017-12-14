@@ -19,26 +19,14 @@ public class QOptionsDaoImpl implements QOptionsDao{
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
-		/*
-		 * private int answerid;
-			private int personid;
-			private String firstname;
-			private String lastname;
-			private String cohortname;
-			private int questionid;
-			private int surveyid;
-			private String userresponse;
-			private String watsonresponse;
-		 */
-		
 		String hql = 
-				"select 	MikeDB.Survey_QA.Survey_QAID as SurveyQAID,\n" + 
-				"			MikeDB.Survey_QA.QuestionID as QuestionID,\n" + 
-				"			MikeDB.Survey_QA.OfferedAnswerID as OfferedAnswerID,\n" + 
-				"            MikeDB.Offered_Answer.AnswerText as AnswerText\n" + 
-				"from MikeDB.Survey_QA left join MikeDB.Offered_Answer \n" + 
-				"on MikeDB.Survey_QA.OfferedAnswerID = MikeDB.Offered_Answer.OfferedAnswerID\n" + 
-				"where MikeDB.Offered_Answer.AnswerText is not null and  MikeDB.Offered_Answer.AnswerText <> ' ';";
+				"select 	Survey_QA.Survey_QAID as SurveyQAID,\n" + 
+				"			Survey_QA.QuestionID as QuestionID,\n" + 
+				"			Survey_QA.OfferedAnswerID as OfferedAnswerID,\n" + 
+				"            Offered_Answer.AnswerText as AnswerText\n" + 
+				"from Survey_QA left join Offered_Answer \n" + 
+				"on Survey_QA.OfferedAnswerID = Offered_Answer.OfferedAnswerID\n" + 
+				"where Offered_Answer.AnswerText is not null and  Offered_Answer.AnswerText <> ' ';";
 		
 		Query q = session.createSQLQuery(hql).addEntity(QOptions.class);
 		ArrayList<QOptions> list = (ArrayList<QOptions>) q.list();

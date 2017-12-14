@@ -18,13 +18,13 @@ public class ProgramManagementDaoImpl implements ProgramManagementDao {
 		SessionFactory sessionFactory = config.buildSessionFactory();
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
-		String hql = "Select MikeDB.Answer.AnswerID as AnswerID, \n" + 
-				"			MikeDB.Answer.QuestionID as QuestionID, \n" + 
-				"            MikeDB.Answer.UserResponse as UserResponse,\n" + 
-				"            MikeDB.Answer.WatsonResponse as WatsonResponse\n" + 
-				"from MikeDB.Answer\n" + 
-				"where MikeDB.Answer.QuestionID between 5 and 12\n" + 
-				"order by MikeDB.Answer.AnswerID;";
+		String hql = "Select Answer.AnswerID as AnswerID, \n" + 
+				"			Answer.QuestionID as QuestionID, \n" + 
+				"            Answer.UserResponse as UserResponse,\n" + 
+				"            Answer.WatsonResponse as WatsonResponse\n" + 
+				"from Answer\n" + 
+				"where Answer.QuestionID between 5 and 12\n" + 
+				"order by Answer.AnswerID;";
 		Query query = session.createSQLQuery(hql).addEntity(ProgramManagement.class);
 		ArrayList<ProgramManagement> resultList = (ArrayList<ProgramManagement>) query.list();
 		
