@@ -146,6 +146,8 @@ public class AlexController {
 		int questionID = 0;
 		int qIndex = 0;
 		// loop through each row in query table
+		
+		boolean dropdown = false;
 		for (int i = 0; i < results.size(); i++) {
 			/*
 			 * message += (results.get(i).getQuestionID()+ results.get(i).getQuestionText()+
@@ -153,19 +155,21 @@ public class AlexController {
 			 * results.get(i).getAnswerText());
 			 */
 			questionID = results.get(i).getQuestionID();
-
-			if (questionNum >= 8) {
+			
+			if ((questionNum >= 6 && dropdown == false && pageNum == 1) || (questionNum >= 8 && dropdown == true) || (questionNum >= 5 && dropdown == false && pageNum != 1)) {
+				dropdown = false;
 				String next = pageNum + 1 + ":" + questionNum + ":" + (qIndex);
 				message += ("<input hidden name = 'end' value='0'>");
-
+ 
 				message += ("<input hidden name = 'num' value='" + next + "'>");
-				message += ("<input class='background-teal'  type='submit' value='NEXT'></form>");
+				message += ("<input style='background-color: #1ea8b4;color:#fff; float:right;'  type='submit' value='NEXT'></form>");
 				model.addAttribute("page" + pageNum, message);
 				pageNum++;
 				message = "";
 				questionNum = 0;
 				message = ("<form action='next' method='post'>");
 			}
+		
 			// initial values
 			String questionType = results.get(i).getQuestionType();
 			boolean continueLoop = true;
@@ -223,22 +227,28 @@ public class AlexController {
 						+ "' value='5' list='tickmarks'>");
 				message += ("<datalist id='tickmarks'><option value='1' label='" + arr1[1]
 						+ "'><option value='2'><option value='3'><option value='4'><option value='5' ><option value='6'><option value='7'><option value='8'><option value='9'><option value='10' label='"
-						+ arr2[1] + "'></datalist><br>");
+						+ arr2[1] + "'></datalist>");
+				message += ("<div class='row'><div class='col-md-4'><p style='font-size:14px;'>"+arr1[0]+": "+arr1[1] +"</p></div>");
+				message += ("<div class='col-md-4'></div>");
+				message += ("<div class='col-md-4'><p style='font-size:14px; text-align:right;'>"+arr2[0]+": "+arr2[1] +"</p></div></div><br>");
+				
 				break;
 
 			case "drop-down":
-
+				
 				if (questionNum > 5) {
 					String next = pageNum + 1 + ":" + questionNum + ":" + (qIndex);
 					message += ("<input hidden name = 'end' value='0'>");
 
 					message += ("<input hidden name = 'num' value='" + next + "'>");
-					message += ("<input type='submit' value='NEXT'></form>");
+					message += ("<input style='background-color: #1ea8b4;color:#fff; float:right;' type='submit' value='NEXT'></form>");
 					model.addAttribute("page" + pageNum, message);
 					pageNum++;
 					message = "";
 					questionNum = 0;
 					message = ("<form action='next' method='post'>");
+				}else if (questionNum > 3) {
+					dropdown = true;
 				}
 
 				questionIDs.add(String.valueOf(questionID));
@@ -262,7 +272,7 @@ public class AlexController {
 			case "short answer":
 				questionIDs.add(String.valueOf(questionID));
 				message += ("<label style='padding-top:5%;'>" + results.get(i).getQuestionText() + "</label> <br>"
-						+ "<input type='text' value=''width='100%' name='" + questionID + "'> <br><br>");
+						+ "<input type='text' value='' style='width:100%;' name='" + questionID + "'> <br><br>");
 				break;
 
 			default:
@@ -276,7 +286,7 @@ public class AlexController {
 
 		message += ("<input hidden name = 'end' value='1'>");
 		message += ("<input hidden name = 'num' value='" + next + "'>");
-		message += ("<input class='background-orange' type='submit' value='SUBMIT'></form>");
+		message += ("<input style='background-color: #ed6334;color:#fff; float:right;' type='submit' value='SUBMIT'></form>");
 		tx.commit();
 
 		model.addAttribute("page" + pageNum, message);
