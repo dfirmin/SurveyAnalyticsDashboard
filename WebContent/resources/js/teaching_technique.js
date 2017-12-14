@@ -2,7 +2,7 @@ function drawTeachingTechnique() {
     var data = new google.visualization.arrayToDataTable(getTT);
 
     var options = {
-      title: 'What Would Probably Make Students More Confident',
+      title: 'Key Teaching Techniques',
       legend: { position: 'none' },
       bars: 'horizontal', 
       bar: { groupWidth: "90%" }

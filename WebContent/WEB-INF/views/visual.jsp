@@ -48,38 +48,47 @@
 </script>
 </head>
 <body>
+	<h4> Confovertime </h4>
 	<div id="confovertime"></div>
 	</br>
 	</br>
 	</br>
+	<h4> jobs_applied </h4>
 	<div id="jobs_applied"></div>
 	</br>
 	</br>
 	</br>
+	<h4> interviews </h4>
 	<div id="interviews"></div>
 	</br>
 	</br>
 	</br>
+	<h4> howConfID </h4>
 	<div id="howConfID"></div>
 	</br>
 	</br>
 	</br>
+	<h4> instruEmotions </h4>
 	<div id="instruEmotions"></div>
 	</br>
 	</br>
 	</br>
+	<h4> what_make_conf </h4>
 	<div id="what_make_conf"></div>
 	</br>
 	</br>
 	</br>
+	<h4> material_pace </h4>
 	<div id="material_pace"></div>
 	</br>
 	</br>
 	</br>
+	<h4> tt </h4>
 	<div id="tt"></div>
 	</br>
 	</br>
 	</br>
+	<h4> teacher_effect </h4>
 	<div id="teacher_effect"></div>
 	</br>
 	</br>
