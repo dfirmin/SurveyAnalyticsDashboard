@@ -48,7 +48,7 @@ import com.sad.util.HibernateUtil;
 @Controller
 public class AlexController {
 
-	private static SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	private static SessionFactory sessionFactory = HibernateUtil.getSessionFactory(); 
 	ArrayList<String> questionIDs = new ArrayList<String>();
 	ArrayList<Answer> answers = new ArrayList<Answer>();
 	int surveyID = 1;
@@ -290,8 +290,6 @@ public class AlexController {
 
 		if ((pageNum - 1) == 1) {
 			qCount -= 2;
-			Configuration config = new Configuration().configure("hibernate.cfg.xml");
-			SessionFactory sessionFactory = config.buildSessionFactory();
 			Session session = sessionFactory.openSession();
 			Transaction tx = session.beginTransaction();
 			int cohortID = Integer.valueOf(request.getParameter("cohorts"));
@@ -306,10 +304,10 @@ public class AlexController {
 			week = Integer.valueOf(dateStr.split(":")[0]);
 			userId = Integer.valueOf(request.getParameter("students"));
 		}
-
+		
 		int qID = Integer.valueOf(n.split(":")[2]);
-		int[] watsonTopic = { 3, 7, 11, 15, 16, 19, 20, 22, 23 };
-		int[] watsonEmotion = { 1, 8, 12, 25 };
+		int[] watsonTopic = { 3, 7, 11, 15, 22, 23 };
+		int[] watsonEmotion = { 8, 12, 25 };
 
 		NaturalLanguageUnderstanding service = getNLUService();
 		int arrLength = answers.size();
@@ -401,7 +399,8 @@ public class AlexController {
 
 		if ((pageNum - 1) == 1) {
 			qCount -= 2;
-			
+			Configuration config = new Configuration().configure("hibernate.cfg.xml");
+			SessionFactory sessionFactory = config.buildSessionFactory();
 			Session session = sessionFactory.openSession();
 			Transaction tx = session.beginTransaction();
 			int cohortID = Integer.valueOf(request.getParameter("cohorts"));
@@ -478,6 +477,10 @@ public class AlexController {
 		AnalysisResults results = service.analyze(parameters).execute();
 		System.out.println("KEYWORDS");
 		System.out.println(results);
+		String watsonStr = jsonKeywordString(results.toString());
+		if (watsonStr.equalsIgnoreCase("")) {
+			return text;
+		}
 		return jsonKeywordString(results.toString());
 	}
 
@@ -503,6 +506,7 @@ public class AlexController {
 				result += ",";
 			}
 		}
+		result = result.toUpperCase();
 		return result;
 	}
   
@@ -526,6 +530,8 @@ public class AlexController {
 			}
 
 		}
+		
+		emotion = emotion.toUpperCase();
  
 		return emotion;
 	}   
@@ -558,7 +564,7 @@ public class AlexController {
 	public String surveyPrefs(@RequestParam("id") String id, Model model) {
 		
 		model.addAttribute("surveyId", id);
-	
+		
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
         Criteria crit = session.createCriteria(Survey.class);
@@ -591,6 +597,8 @@ public class AlexController {
 			}	
 		}
 		message += ("</select><br>");
+		
+		
 		
 
 		
