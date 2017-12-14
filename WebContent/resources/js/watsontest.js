@@ -8,8 +8,8 @@ function watsonBarTest() {
 			position : 'none'
 		},
 		chart : {
-			title : 'Watson Test',
-			subtitle : 'popularity by percentage'
+			title : 'Bootcamp Emotions',
+			subtitle : ''
 		},
 		
 		bars : 'horizontal', // Required for Material Bar Charts.
