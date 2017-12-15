@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Dashboard</title>
+<title>Surveys</title>
 <meta name="viewport" content="initial-scale=1, maximum-scale=1">
 
 <link
@@ -65,19 +65,22 @@
 				</div>
 				<div class="col-md-10 content">
 
-					<!-- <section id="breadcrumb">
-						<div class="container ">
-							<ol class="breadcrumb">
-								<li class="">Dashboard</li>
-							</ol>
-						</div>
-					</section>
- -->
-
 					<div class="row">
 						<div class="main-pane">
 							<div class="inner-div">
-								<h1 class="pageTitle">Surveys</h1>
+								<h1 class="pageTitle">SURVEYSh1>
+								<div class="row">
+									<div class="col-md-3">
+										<a href="modifySurvey">
+											<div class="box">
+												<h3 class="surveyTitle">Weekly Survey</h3>
+											</div>
+										</a>
+										<div class="col-md-6" style="float:left; padding:0;"><a href="surveyprefs">Settings</a></div>
+										<div class="col-md-6" style="float:right; text-align:right;padding:0;"><a href="javascript:deleteSurvey();">Delete</a></div>
+	
+									</div>
+								</div>
 							</div>
 
 						</div>
@@ -92,18 +95,17 @@
 		</div>
 	</section>
 
-	<!--<div id="interviews"></div>
-	<div id="indepth_topics"></div>
-	<div id="what_make_conf"></div>
-	<div id="material_pace"></div>
-	<div id="conducive_learning"></div>-->
+<script>
+function deleteSurvey(){
+	alert("Are you sure you want to delete survey? This cannot be undone.");
+}
 
 
-	<script type="text/javascript"
-		src="https://www.gstatic.com/charts/loader.js"></script>
-	<script src="resources/js/confovertime.js"></script>
-	<script src="resources/js/jobs_applied.js"></script>
-	<script src="resources/js/indepth_topics.js"></script>
-	<script type="text/javascript">
+</script>
+</body>
+</html>
 
+
+	
+		
 	
