@@ -72,9 +72,9 @@
 								<div class="row">
 									<div class="col-md-3">
 										<a href="modifySurvey">
-											<div class="box">
-												<h3 class="surveyTitle">Weekly Survey</h3>
-											</div>
+											
+												<h3 class="">Weekly Survey</h3>
+											
 										</a>
 										<div class="col-md-6" style="float:left; padding:0;"><a href="surveyprefs">Settings</a></div>
 										<div class="col-md-6" style="float:right; text-align:right;padding:0;"><a href="javascript:deleteSurvey();">Delete</a></div>
