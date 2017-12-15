@@ -4,15 +4,14 @@ function drawInstrEmo() {
         );
 
         var options = {
-          chart: {
-            title: 'Count How Each Student Feel About Teacher'
-          },
+           title: "Count How Each Student Feel About Teacher",
           bars: 'vertical',
           isStacked: true,
-          legend: { position: 'bottom' }
+          legend: { position: "bottom" }
+          
         };
 
-        var chart = new google.charts.Bar(document.getElementById('instruEmotions'));
+        var chart = new google.visualization.BarChart(document.getElementById('instruEmotions'));
 
-        chart.draw(data, google.charts.Bar.convertOptions(options));
+        chart.draw(data, options);
       }

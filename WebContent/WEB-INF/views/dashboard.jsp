@@ -38,12 +38,7 @@
 	var getEf = ${E_el};
 	var chartData = ${chartData};
 	
-
-	
-	
-	
 	google.charts.load('current', {'packages':['bar']});
-	google.charts.load('current', {'packages':['corechart']});
 	google.charts.load('current', {'packages':['corechart']});
 	
 	google.charts.setOnLoadCallback(watsonBarTest);
@@ -54,6 +49,10 @@
 	google.charts.setOnLoadCallback(whatMakeConf);
 	google.charts.setOnLoadCallback(drawMatPace);
 	google.charts.setOnLoadCallback(drawTeachingTechnique);
+	
+	function makeBigger(that){
+		that.className = "col-xs-12";
+	}
 </script>
 </head>
 <body>
@@ -130,17 +129,17 @@
 									
 
 									<div class="row">
-										<div class = "col-xs-4"><div id="confovertime"></div></div>
-										<div class = "col-xs-4"><div id="howConfID"></div></div>
-										<div class = "col-xs-4"><div  id="material_pace"></div></div>	
+										<div class = "col-xs-4" ><div id="confovertime"></div></div>
+										<div class = "col-xs-4" ><div id="howConfID"></div></div>
+										<div class = "col-xs-4" ><div  id="material_pace"></div></div>	
 									</div>
 									<br>
 
 									<div class="row">
 	
-										<div class = "col-xs-4"><div class="" id="instruEmotions"></div></div>
-										<div class = "col-xs-4"><div class="" id="jobs_applied"></div></div>
-										<div class = "col-xs-4"><div id="watsonTestChart"></div></div>
+										<div class = "col-xs-4" ><div id="instruEmotions"></div></div>
+										<div class = "col-xs-4" ><div id="jobs_applied"></div></div>
+										<div class = "col-xs-4" ><div id="watsonTestChart"></div></div>
 									</div>
 									<br>
 									<div class="row">
@@ -150,9 +149,6 @@
 									</div>
 								</div>
 						</div>
-				
-
-
 				</div>
 			</div>
 			<br>
@@ -168,15 +164,8 @@
 		<br>
 
 
-
-	<script type="text/javascript"
-		src="https://www.gstatic.com/charts/loader.js"></script>
-	<script src="resources/js/confovertime.js"></script>
-	<script src="resources/js/jobs_applied.js"></script>
-	<script src="resources/js/indepth_topics.js"></script>
 	<script type="text/javascript" src="webjars/jquery/2.1.1/jquery.min.js"></script>
 
-	<script type="text/javascript"></script>
 	<script>
 	$('ul.nav li.dropdown').hover(function() {
 		  $(this).find('.dropdown-menu').stop(true, true).delay(50).fadeIn(100);
