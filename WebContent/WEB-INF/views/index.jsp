@@ -12,6 +12,7 @@
 <title>Home</title>
 </head>
 <body>
+<div class="scrollable">
 <%@ include file="homeHeader.jsp" %>  
     <main role="main">
 
@@ -50,7 +51,7 @@
     <footer class="container">
       <p>© SAD Company 2017</p>
     </footer>
-
+</div>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
