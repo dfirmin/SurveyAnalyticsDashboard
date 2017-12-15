@@ -19,7 +19,7 @@
       <div class="jumbotron" style="padding: 10%;background-image: url(https://www.grandcircus.co/wp-content/uploads/2017/10/GC_facecollage2_bw.jpg); background-color: #1ea8b4; background-blend-mode: multiply;" >
         <div class="container main-container" style = "color: white; font-family:brandon, Arial Black, Helvetica, sans-serif">       
           <h1 class="display-3">We are SAD: Survey Analytics Dashboard<h1>
-          <p>You won't know glad, till you get SAD.</p>
+          <p>You won't know glad, till you try SAD.</p>
           
         </div>
       </div>
