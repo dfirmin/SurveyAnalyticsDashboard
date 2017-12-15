@@ -115,12 +115,12 @@
 				
 					
 				
-						<div  style="background-color:transparent">
+						<div  style="background-color:transparent;">
 								
 								<!-- Chart section -->
 
 
-								<div class="container col-md-12">
+								<div class="container col-md-12" style=" margin-bottom:10%;">
 								<div class="row"> <div class = "col-xs-12"><h1 class="pageTitle">DASHBOARD</h1> </div></div>
 									<div class="row">
 									<div class = "col-xs-12"><div class="" id="teacher_effect"></div></div>						
@@ -172,6 +172,7 @@
 		}, function() {
 		  $(this).find('.dropdown-menu').stop(true, true).delay(50).fadeOut(100);
 		});
+	
 	</script>
 </body>
 
