@@ -256,3 +256,24 @@ input[type="submit"] {
 input[type="submit"]:hover {
   opacity: 0.8;
 }
+
+.box {
+  float: left;
+  width: 100%;
+  background-color: #ed6334;
+}
+
+.box:before {
+  content: "";
+  display: block;
+  padding-top: 100%;
+}
+
+.surveyTitle {
+  color: white;
+  text-align: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 3px;
+  font-weight: 400;
+  padding-top: 50%;
+}
