@@ -68,7 +68,7 @@
 					<div class="row">
 						<div class="main-pane">
 							<div class="inner-div">
-								<h1 class="pageTitle">SURVEYSh1>
+								<h1 class="pageTitle">SURVEYS</h1>
 								<div class="row">
 									<div class="col-md-3">
 										<a href="modifySurvey">
