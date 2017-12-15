@@ -3,7 +3,8 @@ package com.sad.controller;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
+import java.util.Iterator;
+import java.util.List;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -12,6 +13,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Controller;
@@ -23,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.sad.dao.CohortDaoImpl;
 import com.sad.dto.Cohort;
+import com.sad.util.HibernateUtil;
 
 @Controller
 public class SiddiqueController {
@@ -53,14 +57,17 @@ public class SiddiqueController {
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
         Criteria crit = session.createCriteria(Cohort.class);
-        //crit.setProjection(Projections.distinct(Projections.property("cohortName")));
+       
         crit.add(Restrictions.eq("cohortName","Java"));
         @SuppressWarnings("unchecked")
 		ArrayList<Cohort> list = (ArrayList<Cohort>) crit.list();
-        System.out.println(list.get(0).getCohortName() + " " + list.get(1).getCohortName());
+     
         CohortDaoImpl dao = new CohortDaoImpl();
         
         list = dao.getAllCohorts();
+        
+
+        	
         
         return new ModelAndView("cohort", "cohortID", list);
 	}

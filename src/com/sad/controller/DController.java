@@ -56,6 +56,7 @@ public class DController {
 
 	@RequestMapping(value = "/deleteperson", method = RequestMethod.GET)
 	public ModelAndView deletePerson(Model model, @RequestParam("id") int id) {
+		cohortDropDownList(model);
 		Persons person = new Persons();
 		person.setPersonID(id);
 		PersonsDaoImpl newPersonDao = new PersonsDaoImpl();

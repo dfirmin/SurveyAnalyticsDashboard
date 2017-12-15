@@ -2,9 +2,8 @@ html, body {
   height: 100%;
   width: 100%;
   font-family: 'Roboto', sans-serif;
-  background-color: #EFF8F8;
-  overflow: hidden;
   font-size: 18px;
+  overflow: hidden;
 }
 
 .orange {
@@ -153,6 +152,10 @@ h1 {
   overflow: scroll;
 }
 
+.scrollable {
+  overflow: scroll;
+}
+
 .center {
   margin: 0 auto;
 }
@@ -184,7 +187,7 @@ h1 {
   left: 0;
   right: 0;
   bottom: 0;
-  background: #137288;
+  background: #1ea8b4;
   -webkit-transform: scaleX(0);
   transform: scaleX(0);
   -webkit-transform-origin: 0 50%;
@@ -247,12 +250,35 @@ body {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
   }
-  input[type="submit"] {
-    opacity: 1;
-    margin-top: 5%;
-    margin-bottom: 5%;
-  }
-  input[type="submit"]:hover {
-    opacity: 0.8;
-  }
+}
+
+input[type="submit"] {
+  opacity: 1;
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+input[type="submit"]:hover {
+  opacity: 0.8;
+}
+
+.box {
+  float: left;
+  width: 100%;
+  background-color: #ed6334;
+}
+
+.box:before {
+  content: "";
+  display: block;
+  padding-top: 100%;
+}
+
+.surveyTitle {
+  color: white;
+  text-align: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 3px;
+  font-weight: 400;
+  padding-top: 50%;
 }

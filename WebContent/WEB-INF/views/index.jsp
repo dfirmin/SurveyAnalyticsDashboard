@@ -12,14 +12,15 @@
 <title>Home</title>
 </head>
 <body>
+<div class="scrollable">
 <%@ include file="homeHeader.jsp" %>  
     <main role="main">
 
       <!-- Main jumbotron for a primary marketing message or call to action -->
-      <div class="jumbotron" style = "background-image: url(https://www.grandcircus.co/wp-content/uploads/2017/10/GC_facecollage2_bw.jpg)">
+      <div class="jumbotron" style="padding: 10%;background-image: url(https://www.grandcircus.co/wp-content/uploads/2017/10/GC_facecollage2_bw.jpg); background-color: #1ea8b4; background-blend-mode: multiply;" >
         <div class="container main-container" style = "color: white; font-family:brandon, Arial Black, Helvetica, sans-serif">       
           <h1 class="display-3">We are SAD: Survey Analytics Dashboard<h1>
-          <p>You won't know glad, till you get SAD.</p>
+          <p>You won't know glad, till you try SAD.</p>
           
         </div>
       </div>
@@ -28,19 +29,16 @@
         <!-- Example row of columns -->
         <div class="row">
           <div class="col-md-4">
-            <h2>Heading</h2>
-            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-            <p><a class="btn btn-secondary" href="#" role="button">View details »</a></p>
+            <h2>Send Surveys</h2>
+            <p>Send custom surveys to any combination of students and cohorts. Make your data unique and get user feedback with our dynamic survey forms. The sky is the limit and your imagination is the ticket to meaningful data.</p>
           </div>
           <div class="col-md-4">
-            <h2>Heading</h2>
-            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-            <p><a class="btn btn-secondary" href="#" role="button">View details »</a></p>
+            <h2>Visualizations</h2>
+            <p>Track trends across your userbase with stunning visuals detailing just about every variation in your surveys. Charts can range from line charts, and bar graphs, to even data filtered by IBM Watson's Emotion Analysis API.  </p>
           </div>
           <div class="col-md-4">
-            <h2>Heading</h2>
-            <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-            <p><a class="btn btn-secondary" href="#" role="button">View details »</a></p>
+            <h2>Manage Users</h2>
+            <p>With our robust Cohort and User database, the ability to add and edit users and cohorts is as simple as a click of a button. Make changes that make a difference and make your life easier.</p>
           </div>
         </div>
 
@@ -51,9 +49,9 @@
     </main>
 
     <footer class="container">
-      <p>© Company 2017</p>
+      <p>© SAD Company 2017</p>
     </footer>
-
+</div>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->

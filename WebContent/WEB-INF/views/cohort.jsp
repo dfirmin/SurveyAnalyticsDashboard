@@ -5,20 +5,7 @@
 <html>
 <head>
 <style>
-a:link{
-  color: blue;
-  text-decoration: none;
-  left: 252px;
-  float: right;
-}
-a:visited{
-  color: gray;
-  text-decoration: none;
-}
-a:hover{
-  color: green;
-  text-decoration: none;
-}
+
 table {
 	border: 1px solid black;
 	width: 100%;
@@ -30,9 +17,7 @@ th {
 	color: black;
 	text-align: center;
 }
-h1 {
-	text-align: center;
-}
+
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Cohorts</title>
@@ -46,49 +31,67 @@ h1 {
 
 </head>
 <body>
+
+
 	<nav class="top navbar navbar-expand-lg navbar-default">
 		<div class="container-fluid">
 			<div class="navbar-header">
+
 				<a class="navbar-brand" href="#"><img
 					style="height: 50px; width: 88px" src="resources/sad_logo.png">
 					<h1 class="logoHeader">SURVEY ANALYTICS DASHBOARD</h1> </a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
+
 				<ul
 					class="nav navbar-nav navbar-right mr-sm                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ">
 					<li class="nav-item"><a href="loginPage">Profile</a></li>
 				</ul>
+
 			</div>
 			<!--/.nav-collapse -->
 		</div>
 		<!--/.container-fluid -->
 	</nav>
 
+
+
+
 	<section id="main">
 		<div class="container container-db">
 			<div class="row">
 				<div class="col-md-2 sideMenu left">
 					<div class="list-group">
-						<a href="dashboard" class="list-group-item main-color-bg"> <span
+						<a href="dashboard" class=" main-color-bg menu-item"> <span
 							class="glyphicon glyphicon-cog" aria-hidden="true"></span>
 							Dashboard
-						</a> <a href="survey" class="list-group-item"><span
+						</a> <a href="survey" class="menu-item"><span
 							class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
 							Surveys <span class="badge"></span></a> <a href="cohort"
-							class="list-group-item"><span
-							class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-							Cohorts <span class="badge"></span></a> <a href="student"
-							class="list-group-item"><span
+							class=" menu-item "><span class="glyphicon glyphicon-pencil"
+							aria-hidden="true"></span> Cohorts <span class="badge"></span></a> <a
+							href="student" class=" menu-item"><span
 							class="glyphicon glyphicon-user" aria-hidden="true"></span>
 							Students <span class="badge"></span></a>
 					</div>
+
+
 				</div>
+				<div class="col-md-10 content">
 
 
-				<div class="col-md-10">
+					<div class="row">
+						<div class="main-pane">
+							<div class="inner-div">
+								<h1 class="pageTitle">Cohorts</h1>
+							</div>
+							
+
+
+							<div class="panel-heading"></div>
+							<div class="col-md-10">
 
 					<div>
-					<h1>Cohorts</h1>
 						<a href="addCohort">Add Cohort</a> <br> <br>
 						<table class="table-striped table-bordered table-hover"
 							cellspacing="10">
@@ -96,13 +99,13 @@ h1 {
 								<th>Class</th>
 								<th>Semester</th>
 								<th>Start Date</th>
-								<th>Update</th>
 								<th>Delete</th>
+								<th>Update</th>
 							</tr>
 							<c:forEach var="myVar" items="${cohortID}" varStatus="status">
 								<tr>
-									<!-- <td>${status.count}</td> -->
-									<!-- <td>${myVar.cohortID}</td> -->
+									
+									<!-- <td>${myVar.cohortID}</td>-->
 									<td>${myVar.cohortName}</td>
 									<td>${myVar.cohortSemester}</td>
 									<td>${myVar.startDate}</td>
@@ -114,6 +117,11 @@ h1 {
 							</c:forEach>
 
 						</table>
+					</div>
+
+
+				</div>
+						</div>
 					</div>
 
 
