@@ -22,33 +22,7 @@
 <script src="resources/js/indepth_topics.js"></script>
 <script src="resources/js/watsontest.js"></script>
 
-<script type="text/javascript">
-	var getConf = $
-	{
-		getConf
-	};
-	var getJobsApp = $
-	{
-		getJobsApp
-	};
-	var chartData = $
-	{
-		chartData
-	};
 
-	console.log(getConf);
-	console.log(getJobsApp);
-	google.charts.load('current', {
-		'packages' : [ 'corechart' ]
-	});
-	google.charts.load('current', {
-		'packages' : [ 'bar' ]
-	});
-	google.charts.setOnLoadCallback(watsonBarTest);
-	google.charts.setOnLoadCallback(confOverTime);
-	google.charts.setOnLoadCallback(jobs_applied);
-	google.charts.setOnLoadCallback(indepth_topics);
-</script>
 </head>
 <body>
 
@@ -121,12 +95,11 @@
 								<div>
 								<div class="dropdown pull-right">
 								<form action="result" method="post">
-									<select id="cohortSelect" name="cohort">
+									<select id="cohortSelect" name="cohort" style = "display:inline-block">
 										<option value="All">All</option>
-										<c:forEach var="cohort" items="${listcohorts}">
-											<option value="${cohort}">${cohort}</option>
-										</c:forEach>
-									</select> <input type="submit" value="Search">
+										<c:forEach var="cohort" items="${listcohorts}"><option value="${cohort}">${cohort}</option></c:forEach>
+			<input type="submit" style = "display:inline-block" value="Search">
+									</select> 
 								</form>
 
 							</div>
@@ -176,18 +149,6 @@
 		</div>
 	</section>
 
-	<!--<div id="interviews"></div>
-	<div id="indepth_topics"></div>
-	<div id="what_make_conf"></div>
-	<div id="material_pace"></div>
-	<div id="conducive_learning"></div>-->
-
-
-	<script type="text/javascript"
-		src="https://www.gstatic.com/charts/loader.js"></script>
-	<script src="resources/js/confovertime.js"></script>
-	<script src="resources/js/jobs_applied.js"></script>
-	<script src="resources/js/indepth_topics.js"></script>
-	<script type="text/javascript">
+</body>
 
 	
