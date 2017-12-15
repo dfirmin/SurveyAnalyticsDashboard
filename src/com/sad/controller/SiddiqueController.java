@@ -61,7 +61,7 @@ public class SiddiqueController {
         crit.add(Restrictions.eq("cohortName","Java"));
         @SuppressWarnings("unchecked")
 		ArrayList<Cohort> list = (ArrayList<Cohort>) crit.list();
-        System.out.println(list.get(0).getCohortName() + " " + list.get(1).getCohortName());
+     
         CohortDaoImpl dao = new CohortDaoImpl();
         
         list = dao.getAllCohorts();

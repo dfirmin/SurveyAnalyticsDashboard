@@ -112,6 +112,8 @@
 											<th>Email</th>
 											<th>Location</th>
 											<th>Cohort</th>
+											<th>Update</th>
+											<th>Delete</th>
 										</tr>
 
 										<tbody>
