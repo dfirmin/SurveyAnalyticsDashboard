@@ -7,11 +7,6 @@ function watsonBarTest() {
 		legend : {
 			position : 'none'
 		},
-		chart : {
-			title : 'Bootcamp Emotions',
-			subtitle : ''
-		},
-		
 		bars : 'vertical', // Required for Material Bar Charts.
 		axes : {
 			x : {
@@ -24,7 +19,8 @@ function watsonBarTest() {
 		},
 		bar : {
 			groupWidth : "90%"
-		}
+		},
+		hAxis: {title: "Techniques" , direction:-1, slantedText:true}
 	};
 	
 	

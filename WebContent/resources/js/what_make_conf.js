@@ -2,7 +2,7 @@ function whatMakeConf() {
     var data = new google.visualization.arrayToDataTable(getWhatConf);
 
     var options = {
-      title: 'What Would Probably Make Students More Confident',
+      title: "What Would Probably Make Students More Confident",
       legend: { position: 'none' },
       bars: 'vertical', 
       bar: { groupWidth: "90%" }
