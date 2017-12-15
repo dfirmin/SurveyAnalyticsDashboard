@@ -99,8 +99,8 @@ th {
 								<th>Class</th>
 								<th>Semester</th>
 								<th>Start Date</th>
-								<th>Update</th>
 								<th>Delete</th>
+								<th>Update</th>
 							</tr>
 							<c:forEach var="myVar" items="${cohortID}" varStatus="status">
 								<tr>
