@@ -18,8 +18,7 @@
         var options = {
         					title:"Percentage of Each Student's Feelings Per Week",
         					isStacked: 'percent',
-        					legend: { position: 'bottom' },
-        					hAxis: {slantedTextAngle = 'true'}
+        					legend: { position: 'bottom' }
         				};
 
         // Instantiate and draw our chart, passing in some options.
