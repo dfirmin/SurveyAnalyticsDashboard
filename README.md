@@ -1,7 +1,9 @@
 # Grand Circus Survey Analytical Dashboard
-# 
+#
+
 ## Introduction
 ## 
+
 This is our final project for the Grand Circus Java Development Bootcamp that students
 were tasked to complete in two weeks. The main purposes of this project is to
 demonstrate our knowledge of deploying a JSP Web Application through use of Spring
