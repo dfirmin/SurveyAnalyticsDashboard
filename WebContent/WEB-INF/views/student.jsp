@@ -15,12 +15,6 @@
 	href='webjars/bootstrap/3.2.0/css/bootstrap.min.css'>
 <link href="resources/css/style.css" type="text/css" rel="stylesheet">
 
-<script type="text/javascript"
-	src="https://www.gstatic.com/charts/loader.js"></script>
-<script src="resources/js/confovertime.js"></script>
-<script src="resources/js/jobs_applied.js"></script>
-<script src="resources/js/indepth_topics.js"></script>
-<script src="resources/js/watsontest.js"></script>
 
 
 </head>
@@ -112,8 +106,8 @@
 											<th>Email</th>
 											<th>Location</th>
 											<th>Cohort</th>
-											<th>Update</th>
 											<th>Delete</th>
+											<th>Update</th>
 										</tr>
 
 										<tbody>
